@@ -4,11 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vendorly — Turn your WhatsApp into a professional online store</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="vendorly-landing.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
 </head>
 <body>
 
@@ -23,8 +22,8 @@
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="nav-actions">
-        <a href="login.html" class="ghost-link">Log in</a>
-        <a href="signup.html" class="btn btn-primary solid-blue">Create your store</a>
+        <a href="#" class="ghost-link">Log in</a>
+        <a href="#" class="btn btn-primary solid-blue">Create free store</a>
         <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
       </div>
     </nav>
@@ -183,28 +182,60 @@
         <div class="tpl-card show tpl-1" data-cat="fashion">
           <div class="tpl-preview">
             <span class="tpl-badge">Fashion</span>
-            <div class="tpl-row"><div class="tpl-block"></div><div class="tpl-block"></div></div>
+            <div class="tpl-device">
+              <div class="tpl-screen">
+                <div class="tpl-screen-banner"></div>
+                <div class="tpl-screen-body">
+                  <div class="tpl-screen-row"><div class="tpl-screen-block"></div><div class="tpl-screen-block"></div></div>
+                  <div class="tpl-screen-row"><div class="tpl-screen-block"></div><div class="tpl-screen-block"></div></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="tpl-meta"><p class="t-name">Luxe Fashion</p><p class="t-cat">Clothing &amp; accessories</p></div>
         </div>
         <div class="tpl-card show tpl-2" data-cat="food">
           <div class="tpl-preview">
             <span class="tpl-badge">Food</span>
-            <div class="tpl-row"><div class="tpl-block"></div><div class="tpl-block"></div></div>
+            <div class="tpl-device">
+              <div class="tpl-screen">
+                <div class="tpl-screen-banner"></div>
+                <div class="tpl-screen-body">
+                  <div class="tpl-screen-row"><div class="tpl-screen-block"></div><div class="tpl-screen-block"></div></div>
+                  <div class="tpl-screen-row"><div class="tpl-screen-block"></div><div class="tpl-screen-block"></div></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="tpl-meta"><p class="t-name">Tasty Bites</p><p class="t-cat">Restaurants &amp; home kitchens</p></div>
         </div>
         <div class="tpl-card show tpl-3" data-cat="beauty">
           <div class="tpl-preview">
             <span class="tpl-badge">Beauty</span>
-            <div class="tpl-row"><div class="tpl-block"></div><div class="tpl-block"></div></div>
+            <div class="tpl-device">
+              <div class="tpl-screen">
+                <div class="tpl-screen-banner"></div>
+                <div class="tpl-screen-body">
+                  <div class="tpl-screen-row"><div class="tpl-screen-block"></div><div class="tpl-screen-block"></div></div>
+                  <div class="tpl-screen-row"><div class="tpl-screen-block"></div><div class="tpl-screen-block"></div></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="tpl-meta"><p class="t-name">Glow Beauty</p><p class="t-cat">Skincare &amp; cosmetics</p></div>
         </div>
         <div class="tpl-card show tpl-4" data-cat="gadgets">
           <div class="tpl-preview">
             <span class="tpl-badge">Gadgets</span>
-            <div class="tpl-row"><div class="tpl-block"></div><div class="tpl-block"></div></div>
+            <div class="tpl-device">
+              <div class="tpl-screen">
+                <div class="tpl-screen-banner"></div>
+                <div class="tpl-screen-body">
+                  <div class="tpl-screen-row"><div class="tpl-screen-block"></div><div class="tpl-screen-block"></div></div>
+                  <div class="tpl-screen-row"><div class="tpl-screen-block"></div><div class="tpl-screen-block"></div></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="tpl-meta"><p class="t-name">Tech World</p><p class="t-cat">Electronics &amp; gadgets</p></div>
         </div>
@@ -296,6 +327,32 @@
   </div>
 </footer>
 
-<script src="script.js"></script>
+<script>
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 8));
+
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.querySelector('.nav-links');
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.style.display === 'flex';
+    navLinks.style.display = open ? 'none' : 'flex';
+    navLinks.style.cssText += open ? '' : 'position:absolute;top:76px;left:0;right:0;background:var(--cream);flex-direction:column;padding:20px 32px;gap:18px;border-bottom:1px solid var(--line);';
+  });
+
+  const tabs = document.querySelectorAll('.tpl-tab');
+  const cards = document.querySelectorAll('.tpl-card');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+      cards.forEach(card => {
+        const match = filter === 'all' || card.dataset.cat === filter;
+        card.classList.toggle('show', match);
+      });
+    });
+  });
+</script>
+
 </body>
 </html>
