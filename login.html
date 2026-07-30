@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in — Vendorly</title>
+  <link rel="icon" href="data:,">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+  <div class="auth-layout">
+
+    <!-- LEFT PANEL -->
+    <div class="auth-left">
+      <a href="index.html" class="logo">
+        <span>Vendorly</span>
+      </a>
+      <div class="auth-left-content">
+        <h2>Nigeria's marketplace, in your pocket</h2>
+        <p>Thousands of sellers. Millions of goods. One place to find exactly what you need.</p>
+        <div class="trust-list">
+          <div class="trust-item">
+            <div class="trust-icon">🛡️</div>
+            <div>
+              <strong>Verified sellers</strong>
+              <span>Every seller is reviewed before listing</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">💬</div>
+            <div>
+              <strong>Direct contact</strong>
+              <span>Chat with sellers via WhatsApp instantly</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">📦</div>
+            <div>
+              <strong>All categories</strong>
+              <span>Electronics, fashion, food, and more</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="auth-left-bg"></div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="auth-right">
+      <div class="auth-box">
+        <h1>Welcome back</h1>
+        <p>Sign in to continue to vendorly</p>
+
+        <div class="success-banner" id="successBanner">Logged in successfully!</div>
+
+        <form id="loginForm">
+          <div class="input-box">
+            <label>Email address</label>
+            <input type="email" placeholder="you@example.com" id="emailAddress">
+            <span class="error-msg" id="emailError">Please enter a valid email</span>
+          </div>
+          <div class="input-box">
+            <label>Password</label>
+            <input type="password" placeholder="Your password" id="password">
+            <span class="error-msg" id="passwordError">Password must be at least 8 characters</span>
+          </div>
+          <div class="remember-row">
+            <label class="remember-me">
+              <input type="checkbox" id="rememberMe">
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="forgot">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn-submit">Log in</button>
+        </form>
+
+        <div class="divider"><span>or</span></div>
+        <button class="btn-social">Continue with Google</button>
+
+        <p class="switch-link">No account? <span onclick="goToSignup()">Sign up free</span></p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>

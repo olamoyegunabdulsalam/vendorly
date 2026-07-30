@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign up — Vendorly</title>
+  <link rel="icon" href="data:,">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+  <div class="auth-layout">
+
+    <!-- LEFT PANEL -->
+    <div class="auth-left">
+      <a href="index.html" class="logo">
+        <span>Vendorly</span>
+      </a>
+      <div class="auth-left-content">
+        <h2>Join thousands of Nigerian sellers</h2>
+        <p>List your goods for free and connect directly with buyers across all 36 states.</p>
+        <div class="trust-list">
+          <div class="trust-item">
+            <div class="trust-icon">⚡</div>
+            <div>
+              <strong>List in minutes</strong>
+              <span>Post your first product right after signing up</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">🚀</div>
+            <div>
+              <strong>Zero commission</strong>
+              <span>Keep 100% of what you earn — we charge nothing</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">🇳🇬</div>
+            <div>
+              <strong>Made for Nigeria</strong>
+              <span>Prices in Naira, buyers near you first</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="auth-left-bg"></div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="auth-right">
+      <div class="auth-box">
+        <h1>Create your account</h1>
+        <p>Free forever. No credit card needed.</p>
+
+        <div class="success-banner" id="successBanner">Account created! Redirecting...</div>
+
+        <form id="signupForm">
+
+          <div class="input-box">
+            <label>Full name</label>
+            <input type="text" placeholder="e.g. Amara Okafor" id="name">
+            <span class="error-msg" id="nameError">Please enter your full name</span>
+          </div>
+
+          <div class="input-box">
+            <label>Email address</label>
+            <input type="email" placeholder="you@example.com" id="email">
+            <span class="error-msg" id="emailError">Please enter a valid email</span>
+          </div>
+
+          <div class="input-box">
+            <label>Password</label>
+            <div class="password-field">
+              <input type="password" placeholder="Min. 8 characters" id="password">
+              <button type="button" class="toggle-password" data-target="password" aria-label="Show password">
+                <span class="eye-icon">👁</span>
+              </button>
+            </div>
+            <span class="error-msg" id="passwordError">Password must be at least 8 characters with uppercase, lowercase, and a number</span>
+          </div>
+
+          <div class="input-box">
+            <label>Confirm password</label>
+            <div class="password-field">
+              <input type="password" placeholder="Re-enter password" id="confirmPassword">
+              <button type="button" class="toggle-password" data-target="confirmPassword" aria-label="Show password">
+                <span class="eye-icon">👁</span>
+              </button>
+            </div>
+            <span class="error-msg" id="confirmPasswordError">Passwords do not match</span>
+          </div>
+
+          <!-- TERMS -->
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="terms">
+              <span class="checkbox-box"></span>
+              I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>
+            </label>
+            <span class="error-msg" id="termsError">You must agree to continue</span>
+          </div>
+
+          <button type="submit" class="btn-submit">Create account</button>
+
+        </form>
+
+        <div class="divider"><span>or</span></div>
+        <button class="btn-social">Continue with Google</button>
+
+        <p class="switch-link">Already have an account? <span onclick="goToLogin()">Log in</span></p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="signup.js"></script>
+</body>
+</html>
