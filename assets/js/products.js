@@ -1,8 +1,10 @@
-// products.js — Product CRUD + image upload
-// Price stored as integer — no floating point issues
-// Colors and sizes are comma-separated text, optional
-
+import { requireAuth } from './auth.js'
 import { supabase } from './supabase.js'
+import { renderBottomNav } from '../components/bottomNav.js'
+
+const user = await requireAuth()
+
+renderBottomNav('products')
 
 // Fetch All Products for a Vendor
 export async function fetchProducts(vendorId) {

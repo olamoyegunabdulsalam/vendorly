@@ -1,0 +1,69 @@
+/* ============================================================
+   dashboard.css — Dashboard home page specific styles
+   ============================================================ */
+
+/* ── Modal Eyebrow ── */
+.modal-eyebrow {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+/* ── Phone Input ── */
+.phone-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.phone-prefix {
+  position: absolute;
+  left: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.phone-input {
+  padding-left: 24px !important;
+}
+
+.form-hint {
+  font-size: 11px;
+  color: var(--gray-400);
+  margin-top: 4px;
+}
+
+/* ── Store Link Label ── */
+.store-link-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+/* ── Skeleton Loaders ── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-card {
+  border-radius: var(--radius-md);
+  aspect-ratio: 1;
+  background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 50%, var(--gray-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* ── Copied state for link button ── */
+.store-link-btn.copied {
+  background: var(--mint);
+  color: var(--white);
+  border-color: var(--mint);
+}
