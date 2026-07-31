@@ -1,66 +1,97 @@
+import { signIn, redirectIfLoggedIn } from './auth.js'
+
+/* ── REDIRECT IF ALREADY LOGGED IN ── */
+await redirectIfLoggedIn()
+
 /* ── NAVIGATION ── */
-
-function goToSignup() {
+document.getElementById("goToSignup").addEventListener("click", () => {
   window.location.href = "signup.html";
-}
-
-
-/* ── LOGIN HANDLER ── */
-
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  handleLogin();
 });
 
-function handleLogin() {
-  const email    = document.getElementById("emailAddress");
-  const password = document.getElementById("password");
-  const emailError    = document.getElementById("emailError");
-  const passwordError = document.getElementById("passwordError");
-  const successBanner = document.getElementById("successBanner");
+/* ── PASSWORD TOGGLE ── */
+document.querySelectorAll('.toggle-password').forEach(function (button) {
+  button.addEventListener('click', function () {
+    const targetId = this.getAttribute('data-target')
+    const input = document.getElementById(targetId)
+    const icon = this.querySelector('.eye-icon')
 
-  /* reset */
-  emailError.style.display    = "none";
-  passwordError.style.display = "none";
-  successBanner.style.display = "none";
-  email.classList.remove("error");
-  password.classList.remove("error");
+    if (input.type === 'password') {
+      input.type = 'text'
+      icon.textContent = '🙈'
+      this.setAttribute('aria-label', 'Hide password')
+    } else {
+      input.type = 'password'
+      icon.textContent = '👁'
+      this.setAttribute('aria-label', 'Show password')
+    }
+  })
+})
 
-  let valid = true;
+/* ── LOGIN HANDLER ── */
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
 
-  /* validate email */
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+  e.preventDefault()
+  handleLogin()
+})
+
+async function handleLogin() {
+  // ── Get inputs — using exact IDs from your HTML ──
+  const email = document.getElementById('emailAddress')   // ← login uses emailAddress not email
+  const password = document.getElementById('password')
+
+  const emailError = document.getElementById('emailError')
+  const passwordError = document.getElementById('passwordError')
+  const successBanner = document.getElementById('successBanner')
+
+  /* ── Reset all errors ── */
+  emailError.style.display = 'none'
+  passwordError.style.display = 'none'
+  successBanner.style.display = 'none'
+  email.classList.remove('error')
+  password.classList.remove('error')
+
+  let valid = true
+
+  /* ── Validate email format ── */
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email.value.trim())) {
-    emailError.style.display = "block";
-    email.classList.add("error");
-    valid = false;
+    emailError.textContent = 'Please enter a valid email address'
+    emailError.style.display = 'block'
+    email.classList.add('error')
+    valid = false
   }
 
-  /* validate password */
+  /* ── Validate password format ── */
   if (!passwordRegex.test(password.value)) {
-    passwordError.textContent   = "Password must be at least 8 characters with uppercase, lowercase, and a number.";
-    passwordError.style.display = "block";
-    password.classList.add("error");
-    valid = false;
+    passwordError.textContent = 'Password must be at least 8 characters with uppercase, lowercase, and a number.'
+    passwordError.style.display = 'block'
+    password.classList.add('error')
+    valid = false
   }
 
-  if (!valid) return;
+  if (!valid) return
 
-  /* check credentials */
-  const savedEmail    = localStorage.getItem("user_email");
-  const savedPassword = localStorage.getItem("user_password");
+  /* ── Disable button to prevent double submit ── */
+  const submitBtn = document.querySelector('#loginForm button[type="submit"]')
+  submitBtn.disabled = true
+  submitBtn.textContent = 'Signing in...'
 
-  if (email.value.trim() === savedEmail && password.value === savedPassword) {
-    localStorage.setItem("loggedIn", "true");
-    successBanner.style.display = "block";
+  try {
+    /* ── Call Supabase — replaces localStorage credential check ── */
+    await signIn(email.value.trim(), password.value)
+
+    successBanner.style.display = 'block'
     setTimeout(function () {
-      window.location.href = "index.html";
-    }, 1200);
-  } else {
-    emailError.textContent   = "Invalid email or password.";
-    emailError.style.display = "block";
-    email.classList.add("error");
+      window.location.href = 'dashboard.html'
+    }, 1200)
+
+  } catch (err) {
+    emailError.textContent = 'Invalid email or password.'
+    emailError.style.display = 'block'
+    email.classList.add('error')
+
+    submitBtn.disabled = false
+    submitBtn.textContent = 'Log in'
   }
 }

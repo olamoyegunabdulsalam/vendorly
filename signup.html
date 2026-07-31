@@ -6,7 +6,7 @@
   <title>Sign up — Vendorly</title>
   <link rel="icon" href="data:,">
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="signup.css">
+  <link rel="stylesheet" href="assets/css/signup.css">
 </head>
 <body>
 
@@ -59,7 +59,7 @@
 
           <div class="input-box">
             <label>Full name</label>
-            <input type="text" placeholder="e.g. Amara Okafor" id="name">
+            <input type="text" placeholder="e.g. Amara Okafor" id="full_name">
             <span class="error-msg" id="nameError">Please enter your full name</span>
           </div>
 
@@ -108,12 +108,12 @@
         <div class="divider"><span>or</span></div>
         <button class="btn-social">Continue with Google</button>
 
-        <p class="switch-link">Already have an account? <span onclick="goToLogin()">Log in</span></p>
+        <p class="switch-link">Already have an account? <span id="goToLogin">Log in</span></p>
       </div>
     </div>
 
   </div>
 
-  <script src="assets/js/signup.js"></script>
+<script type="module" src="assets/js/signup.js"></script>
 </body>
 </html>

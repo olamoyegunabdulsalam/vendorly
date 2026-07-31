@@ -1,8 +1,10 @@
-// store.js Vendor store CRUD functions
-// One store per vendor uses upsert with onConflict: vendor_id
+import { requireAuth } from './auth.js'
+import { supabase } from './supabase.js'  
+import { renderBottomNav } from '../components/bottomNav.js'
 
+const user = await requireAuth()
 
-import { supabase } from './supabase.js'
+renderBottomNav('store')
 
 // Fetch Store by Vendor ID 
 // Uses maybeSingle() returns null if no store exists yet (no error)
