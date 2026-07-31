@@ -793,35 +793,6 @@ nav {
 .template-frame::-webkit-scrollbar{
     display:none;
 }
-.tpl-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 38px;
-}
-
-.tpl-tab {
-  background: var(--white);
-  border: 1px solid var(--line);
-  color: var(--slate);
-  padding: 9px 18px;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: background .15s ease, color .15s ease, border-color .15s ease;
-}
-
-.tpl-tab:hover {
-  border-color: var(--blue-light);
-}
-
-.tpl-tab.active {
-  background: var(--blue);
-  color: var(--white);
-  border-color: var(--blue);
-}
-
 .tpl-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
