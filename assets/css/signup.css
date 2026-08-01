@@ -1,16 +1,16 @@
 /* ── TOKENS ── */
 :root {
-  --navy: #0B1F3A;
-  --navy-2: #12294F;
-  --blue: #1E4B8C;
-  --blue-light: #4C7FD1;
-  --yellow: #FFC93C;
-  --yellow-deep: #E8A400;
-  --cream: #F7F5EF;
+  --navy: #0b1f3a;
+  --navy-2: #12294f;
+  --blue: #1e4b8c;
+  --blue-light: #4c7fd1;
+  --yellow: #ffc93c;
+  --yellow-deep: #e8a400;
+  --cream: #f7f5ef;
   --ink: #101828;
-  --slate: #5B6472;
-  --line: #E4E0D6;
-  --white: #FFFFFF;
+  --slate: #5b6472;
+  --line: #e4e0d6;
+  --white: #ffffff;
   --radius: 14px;
   --radius-lg: 20px;
 }
@@ -25,8 +25,13 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, rgba(255, 201, 60, 0.12) 0%, rgba(30, 75, 140, 0.08) 55%, #fdfcf7 100%);
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 201, 60, 0.12) 0%,
+    rgba(30, 75, 140, 0.08) 55%,
+    #fdfcf7 100%
+  );
   color: var(--ink);
   min-height: 100vh;
 }
@@ -51,6 +56,218 @@ button {
   min-height: 100vh;
 }
 
+.phone-mock {
+  position: relative;
+  width: 240px;
+  height: 486px;
+  background: #0d1424;
+  border-radius: 34px;
+  padding: 10px;
+  margin: 0 auto;
+  box-shadow:
+    0 40px 80px -20px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  animation: pm-float 6s ease-in-out infinite;
+}
+.phone-mock-notch {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 18px;
+  background: #0d1424;
+  border-radius: 0 0 12px 12px;
+  z-index: 5;
+}
+.phone-mock-screen {
+  width: 100%;
+  height: 100%;
+  background: #f7f5ef;
+  border-radius: 26px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.pm-banner {
+  height: 88px;
+  background: linear-gradient(120deg, #1e4b8c, #4c7fd1);
+  padding: 34px 14px 0;
+  flex-shrink: 0;
+}
+.pm-store {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pm-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e4b8c;
+}
+.pm-store-name {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.pm-store-sub {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 8.5px;
+}
+.pm-cats {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px 6px;
+}
+.pm-cat {
+  font-size: 8px;
+  font-weight: 600;
+  padding: 5px 9px;
+  border-radius: 100px;
+  background: #fff;
+  color: #5b6472;
+  border: 1px solid #e4e0d6;
+  white-space: nowrap;
+}
+.pm-cat.active {
+  background: #0b1f3a;
+  color: #fff;
+  border-color: #0b1f3a;
+}
+.pm-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 6px 12px 12px;
+  flex: 1;
+}
+.pm-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 7px;
+  border: 1px solid #e4e0d6;
+}
+.pm-thumb {
+  width: 100%;
+  height: 46px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+.pm-thumb-1 {
+  background: linear-gradient(135deg, #ffe7a8, #ffc93c);
+}
+.pm-thumb-2 {
+  background: linear-gradient(135deg, #c9d9f2, #4c7fd1);
+}
+.pm-thumb-3 {
+  background: linear-gradient(135deg, #f2d9c9, #e8a400);
+}
+.pm-thumb-4 {
+  background: linear-gradient(135deg, #d6e2f0, #12294f);
+}
+.pm-name {
+  font-size: 7.5px;
+  font-weight: 600;
+  color: #101828;
+  margin-bottom: 2px;
+}
+.pm-price {
+  font-size: 8px;
+  font-weight: 800;
+  color: #0b1f3a;
+}
+.pm-cart-btn {
+  margin-top: 6px;
+  width: 100%;
+  padding: 5px 0;
+  background: #0b1f3a;
+  color: #fff;
+  font-size: 7px;
+  font-weight: 700;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.pm-float {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #101828;
+  white-space: nowrap;
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.35);
+  z-index: 4;
+}
+.pm-float-1 {
+  top: 6%;
+  left: -12%;
+  animation: pm-float-a 5.5s ease-in-out infinite;
+}
+.pm-float-2 {
+  top: 40%;
+  right: -18%;
+  animation: pm-float-b 6.5s ease-in-out infinite 0.4s;
+}
+.pm-float-3 {
+  bottom: 8%;
+  left: -14%;
+  animation: pm-float-a 6s ease-in-out infinite 1.1s;
+}
+
+@keyframes pm-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes pm-float-a {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-8px) translateX(3px);
+  }
+}
+@keyframes pm-float-b {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+
+@media (max-width: 900px) {
+  .phone-mock {
+    width: 190px;
+    height: 388px;
+  }
+  .pm-float {
+    font-size: 9.5px;
+    padding: 6px 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .phone-mock,
+  .pm-float {
+    animation: none;
+  }
+}
+
 /* ── LEFT PANEL ── */
 .auth-left {
   flex: 1.08;
@@ -67,8 +284,16 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 80%, rgba(76, 127, 209, 0.20) 0%, transparent 48%),
-    radial-gradient(circle at 80% 20%, rgba(255, 201, 60, 0.18) 0%, transparent 46%);
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(76, 127, 209, 0.2) 0%,
+      transparent 48%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255, 201, 60, 0.18) 0%,
+      transparent 46%
+    );
   pointer-events: none;
 }
 
@@ -79,13 +304,23 @@ button {
   right: 0;
   bottom: 0;
   height: 8px;
-  background: repeating-linear-gradient(-45deg, var(--yellow), var(--yellow) 14px, var(--blue) 14px, var(--blue) 28px);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--yellow),
+    var(--yellow) 14px,
+    var(--blue) 14px,
+    var(--blue) 28px
+  );
 }
 
 .auth-left-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0)
+  );
   pointer-events: none;
 }
 
@@ -101,7 +336,7 @@ button {
 }
 
 .logo span:first-child {
-  font-family: 'Archivo Expanded', sans-serif;
+  font-family: "Archivo Expanded", sans-serif;
   font-weight: 800;
   font-size: 1.24rem;
   letter-spacing: -0.02em;
@@ -109,7 +344,7 @@ button {
 }
 
 .logo span:last-child {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 0.64rem;
   letter-spacing: 0.24em;
   color: var(--yellow);
@@ -126,7 +361,7 @@ button {
 }
 
 .auth-left-content h2 {
-  font-family: 'Archivo Expanded', sans-serif;
+  font-family: "Archivo Expanded", sans-serif;
   font-size: 32px;
   font-weight: 800;
   color: var(--white);
@@ -135,7 +370,7 @@ button {
   margin-bottom: 16px;
 }
 
-.auth-left-content>p {
+.auth-left-content > p {
   font-size: 16px;
   color: rgba(247, 245, 239, 0.78);
   line-height: 1.7;
@@ -158,7 +393,9 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius);
   padding: 16px 18px;
-  transition: border-color 0.2s, transform 0.2s;
+  transition:
+    border-color 0.2s,
+    transform 0.2s;
 }
 
 .trust-item:hover {
@@ -203,7 +440,11 @@ button {
   justify-content: center;
   align-items: center;
   padding: 40px 32px;
-  background: linear-gradient(180deg, rgba(255, 201, 60, 0.10), rgba(76, 127, 209, 0.04));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 201, 60, 0.1),
+    rgba(76, 127, 209, 0.04)
+  );
   overflow-y: auto;
 }
 
@@ -215,7 +456,7 @@ button {
   padding: 42px 38px;
   width: 100%;
   max-width: 440px;
-  box-shadow: 0 24px 60px rgba(11, 31, 58, 0.10);
+  box-shadow: 0 24px 60px rgba(11, 31, 58, 0.1);
   animation: fadeUp 0.5s ease;
   position: relative;
   overflow: hidden;
@@ -228,11 +469,17 @@ button {
   left: 0;
   right: 0;
   height: 6px;
-  background: repeating-linear-gradient(-45deg, var(--yellow), var(--yellow) 10px, var(--blue) 10px, var(--blue) 20px);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--yellow),
+    var(--yellow) 10px,
+    var(--blue) 10px,
+    var(--blue) 20px
+  );
 }
 
 .auth-box h1 {
-  font-family: 'Archivo Expanded', sans-serif;
+  font-family: "Archivo Expanded", sans-serif;
   font-size: clamp(1.5rem, 2.2vw, 1.85rem);
   font-weight: 800;
   color: var(--navy);
@@ -240,7 +487,7 @@ button {
   margin: 6px 0 8px;
 }
 
-.auth-box>p {
+.auth-box > p {
   font-size: 14px;
   color: var(--slate);
   margin-bottom: 28px;
@@ -288,7 +535,7 @@ button {
 
 .input-box input.error {
   border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 /* ── PASSWORD FIELD ── */
@@ -308,7 +555,6 @@ button {
   border: none;
   background: transparent;
   color: var(--slate);
-  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,6 +566,28 @@ button {
 .toggle-password:hover {
   background: rgba(30, 75, 140, 0.08);
   color: var(--blue);
+}
+
+.toggle-password .eye-icon {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.toggle-password .eye-closed {
+  display: none;
+}
+
+.toggle-password.is-visible .eye-open {
+  display: none;
+}
+
+.toggle-password.is-visible .eye-closed {
+  display: block;
 }
 
 /* ── RADIO GROUP ── */
@@ -366,7 +634,7 @@ button {
   background: #fff8de;
 }
 
-.radio-card input[type="radio"]:checked+.radio-box {
+.radio-card input[type="radio"]:checked + .radio-box {
   border-color: var(--blue);
   background: #fff8de;
   box-shadow: 0 0 0 3px rgba(30, 75, 140, 0.12);
@@ -388,7 +656,7 @@ button {
   line-height: 1.4;
 }
 
-.radio-card input[type="radio"]:checked+.radio-box strong {
+.radio-card input[type="radio"]:checked + .radio-box strong {
   color: var(--blue);
 }
 
@@ -435,12 +703,12 @@ button {
   border-color: var(--blue);
 }
 
-.checkbox-label input[type="checkbox"]:checked+.checkbox-box {
+.checkbox-label input[type="checkbox"]:checked + .checkbox-box {
   background: var(--blue);
   border-color: var(--blue);
 }
 
-.checkbox-label input[type="checkbox"]:checked+.checkbox-box::after {
+.checkbox-label input[type="checkbox"]:checked + .checkbox-box::after {
   content: "✓";
   color: #fff;
   font-size: 11px;
@@ -512,7 +780,9 @@ button {
   font-size: 14px;
   font-weight: 600;
   color: var(--blue);
-  transition: background 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 .btn-social:hover {

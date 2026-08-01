@@ -13,15 +13,14 @@ document.querySelectorAll('.toggle-password').forEach(function (button) {
   button.addEventListener('click', function () {
     const targetId = this.getAttribute('data-target')
     const input = document.getElementById(targetId)
-    const icon = this.querySelector('.eye-icon')
 
     if (input.type === 'password') {
       input.type = 'text'
-      icon.textContent = '🙈'
+      this.classList.add('is-visible')
       this.setAttribute('aria-label', 'Hide password')
     } else {
       input.type = 'password'
-      icon.textContent = '👁'
+      this.classList.remove('is-visible')
       this.setAttribute('aria-label', 'Show password')
     }
   })

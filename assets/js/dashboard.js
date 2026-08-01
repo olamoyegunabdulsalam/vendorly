@@ -1,6 +1,6 @@
 import { requireAuth, signOut } from './auth.js'
 import { supabase } from './supabase.js'
-import { fetchStore, saveStore, uploadStoreLogo } from './store.js'
+import { fetchStore, saveStore, uploadStoreLogo, uploadStoreBanner } from './store.js'
 import { fetchProducts } from './products.js'
 import { formatPrice, getStoreUrl, copyToClipboard, showToast, isValidWhatsApp } from './utils.js'
 import { renderBottomNav } from '../components/bottomNav.js'
@@ -37,6 +37,8 @@ function closeSetupModal() {
 
 // Logo preview
 let logoFile = null
+let bannerFile = null
+
 document.getElementById('logoFile').addEventListener('change', (e) => {
   const file = e.target.files[0]
   if (!file) return
@@ -46,6 +48,19 @@ document.getElementById('logoFile').addEventListener('change', (e) => {
   preview.style.display = 'block'
   document.querySelector('.logo-upload-icon').style.display = 'none'
   document.querySelector('.logo-upload-text').style.display = 'none'
+})
+
+document.getElementById('bannerFile').addEventListener('change', (e) => {
+  const file = e.target.files[ 0 ]
+  if (!file) return
+  bannerFile = file
+
+  // Show preview
+  const preview = document.getElementById('bannerPreview')
+  preview.src = URL.createObjectURL(file)
+  preview.style.display = 'block'
+  document.querySelector('.banner-upload-icon').style.display = 'none'
+  document.querySelector('.banner-upload-text').style.display = 'none'
 })
 
 // Create store submit
@@ -85,10 +100,16 @@ document.getElementById('createStoreBtn').addEventListener('click', async () => 
   btn.innerHTML = '<div class="spinner"></div>'
 
   try {
-    // Upload logo if selected
+    // Upload logo
     let logoUrl = null
     if (logoFile) {
       logoUrl = await uploadStoreLogo(user.id, logoFile)
+    }
+
+    // ── upload banner
+    let bannerUrl = null
+    if (bannerFile) {
+      bannerUrl = await uploadStoreBanner(user.id, bannerFile)
     }
 
     // Save store to Supabase
@@ -98,6 +119,7 @@ document.getElementById('createStoreBtn').addEventListener('click', async () => 
       description,
       location,
       ...(logoUrl && { logo_url: logoUrl }),
+      ...(bannerUrl && { banner_url: bannerUrl }),
     })
 
     closeSetupModal()

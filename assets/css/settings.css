@@ -1,0 +1,192 @@
+/* ============================================================
+   settings.css — Settings page specific styles
+   ============================================================ */
+
+.settings-section {
+  padding: 20px 16px 0;
+}
+
+.settings-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-400);
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+
+/* ── Settings Card ── */
+.settings-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.settings-item-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 2px;
+}
+
+.settings-item-desc {
+  font-size: 12px;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+
+.settings-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* ── Logo Preview Circle ── */
+.logo-preview-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--primary);
+  font-family: var(--font-display);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logo-preview-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Banner Upload ── */
+.banner-upload-wrap {
+  margin: 12px 0;
+  position: relative;
+}
+
+.banner-current {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.banner-placeholder {
+  width: 100%;
+  height: 110px;
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--gray-200);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--gray-400);
+  margin-bottom: 10px;
+}
+
+.banner-placeholder span:first-child { font-size: 24px; }
+
+.banner-upload-btn,
+.settings-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  background: transparent;
+  margin-top: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Secondary Button ── */
+.btn-secondary {
+  width: 100%;
+  height: 46px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-secondary:active {
+  background: var(--primary-light);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Notice ── */
+.settings-notice {
+  font-size: 12px;
+  color: var(--mint);
+  font-weight: 600;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: var(--mint-light);
+  border-radius: var(--radius-md);
+  line-height: 1.5;
+}
+
+/* ── Logout Button ── */
+.btn-logout {
+  width: 100%;
+  height: 50px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid #E53E3E;
+  background: transparent;
+  color: #E53E3E;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-logout:active {
+  background: #FFF5F5;
+}
+
+/* ── Version ── */
+.settings-version {
+  text-align: center;
+  font-size: 11px;
+  color: var(--gray-400);
+  padding: 24px 0 12px;
+}

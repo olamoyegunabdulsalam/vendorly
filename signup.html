@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign up — Vendorly</title>
   <link rel="icon" href="data:,">
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="assets/css/signup.css">
 </head>
+
 <body>
 
   <div class="auth-layout">
@@ -18,33 +22,61 @@
         <span>Vendorly</span>
       </a>
       <div class="auth-left-content">
-        <h2>Join thousands of Nigerian sellers</h2>
-        <p>List your goods for free and connect directly with buyers across all 36 states.</p>
-        <div class="trust-list">
-          <div class="trust-item">
-            <div class="trust-icon">⚡</div>
-            <div>
-              <strong>List in minutes</strong>
-              <span>Post your first product right after signing up</span>
+        <div class="phone-mock">
+          <div class="phone-mock-notch"></div>
+          <div class="phone-mock-screen">
+
+            <div class="pm-banner">
+              <div class="pm-store">
+                <div class="pm-avatar">AF</div>
+                <div>
+                  <div class="pm-store-name">Amara Fabrics</div>
+                  <div class="pm-store-sub">Lagos · 214 orders this month</div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon">🚀</div>
-            <div>
-              <strong>Zero commission</strong>
-              <span>Keep 100% of what you earn — we charge nothing</span>
+
+            <div class="pm-cats">
+              <span class="pm-cat active">All</span>
+              <span class="pm-cat">Dresses</span>
+              <span class="pm-cat">Bags</span>
+              <span class="pm-cat">New</span>
             </div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon">🇳🇬</div>
-            <div>
-              <strong>Made for Nigeria</strong>
-              <span>Prices in Naira, buyers near you first</span>
+
+            <div class="pm-grid">
+              <div class="pm-card">
+                <div class="pm-thumb pm-thumb-1"></div>
+                <div class="pm-name">Ankara Wrap Dress</div>
+                <div class="pm-price">₦18,500</div>
+                <div class="pm-cart-btn">Add to Cart</div>
+              </div>
+              <div class="pm-card">
+                <div class="pm-thumb pm-thumb-2"></div>
+                <div class="pm-name">Woven Tote Bag</div>
+                <div class="pm-price">₦12,000</div>
+                <div class="pm-cart-btn">Add to Cart</div>
+              </div>
+              <div class="pm-card">
+                <div class="pm-thumb pm-thumb-3"></div>
+                <div class="pm-name">Beaded Sandals</div>
+                <div class="pm-price">₦9,750</div>
+                <div class="pm-cart-btn">Add to Cart</div>
+              </div>
+              <div class="pm-card">
+                <div class="pm-thumb pm-thumb-4"></div>
+                <div class="pm-name">Silk Head Wrap</div>
+                <div class="pm-price">₦6,200</div>
+                <div class="pm-cart-btn">Add to Cart</div>
+              </div>
             </div>
+
           </div>
+
+          <div class="pm-float pm-float-1">✓ Store Created</div>
+          <div class="pm-float pm-float-2">✓ WhatsApp Order</div>
+          <div class="pm-float pm-float-3">✓ Store Link Copied</div>
         </div>
       </div>
-      <div class="auth-left-bg"></div>
     </div>
 
     <!-- RIGHT PANEL -->
@@ -74,10 +106,20 @@
             <div class="password-field">
               <input type="password" placeholder="Min. 8 characters" id="password">
               <button type="button" class="toggle-password" data-target="password" aria-label="Show password">
-                <span class="eye-icon">👁</span>
+                <svg class="eye-icon eye-open" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg class="eye-icon eye-closed" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 3l18 18"></path>
+                  <path d="M10.6 10.6A3 3 0 0 0 13.4 13.4"></path>
+                  <path d="M9 5.2A13.7 13.7 0 0 1 12 5c6.5 0 10 7 10 7a20.2 20.2 0 0 1-4 5.2"></path>
+                  <path d="M6.2 6.2A20.6 20.6 0 0 0 2 12s3.5 6 10 6a11.3 11.3 0 0 0 4.8-1.1"></path>
+                </svg>
               </button>
             </div>
-            <span class="error-msg" id="passwordError">Password must be at least 8 characters with uppercase, lowercase, and a number</span>
+            <span class="error-msg" id="passwordError">Password must be at least 8 characters with uppercase, lowercase,
+              and a number</span>
           </div>
 
           <div class="input-box">
@@ -85,7 +127,16 @@
             <div class="password-field">
               <input type="password" placeholder="Re-enter password" id="confirmPassword">
               <button type="button" class="toggle-password" data-target="confirmPassword" aria-label="Show password">
-                <span class="eye-icon">👁</span>
+                <svg class="eye-icon eye-open" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg class="eye-icon eye-closed" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 3l18 18"></path>
+                  <path d="M10.6 10.6A3 3 0 0 0 13.4 13.4"></path>
+                  <path d="M9 5.2A13.7 13.7 0 0 1 12 5c6.5 0 10 7 10 7a20.2 20.2 0 0 1-4 5.2"></path>
+                  <path d="M6.2 6.2A20.6 20.6 0 0 0 2 12s3.5 6 10 6a11.3 11.3 0 0 0 4.8-1.1"></path>
+                </svg>
               </button>
             </div>
             <span class="error-msg" id="confirmPasswordError">Passwords do not match</span>
@@ -114,6 +165,7 @@
 
   </div>
 
-<script type="module" src="assets/js/signup.js"></script>
+  <script type="module" src="assets/js/signup.js"></script>
 </body>
+
 </html>

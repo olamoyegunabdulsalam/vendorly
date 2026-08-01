@@ -1,19 +1,14 @@
-import { requireAuth } from './auth.js'
 import { supabase } from './supabase.js'
-import { renderBottomNav } from '../components/bottomNav.js'
-
-const user = await requireAuth()
-
-renderBottomNav('products')
 
 // Fetch All Products for a Vendor
-export async function fetchProducts(vendorId) {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .eq('vendor_id', vendorId)
-    .order('created_at', { ascending: false })
+export async function fetchProducts(vendorId = null, storeId = null) {
+  let query = supabase.from('products').select('*')
 
+  if (vendorId) query = query.eq('vendor_id', vendorId)
+  if (storeId) query = query.eq('store_id', storeId) // if you have store_id column
+  // OR use vendor_id from the fetched store object
+
+  const { data, error } = await query.order('created_at', { ascending: false })
   if (error) throw error
   return data
 }
