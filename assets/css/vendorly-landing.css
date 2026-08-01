@@ -364,7 +364,7 @@ nav {
   color: var(--white);
 }
 
-/* ---------- RECEIPT STACK + FLOATING CARDS ---------- */
+/* ---------- HERO DEVICE + FLOATING CARDS ---------- */
 .hero-visual {
   position: relative;
   display: flex;
@@ -372,142 +372,53 @@ nav {
   padding: 20px 0 34px;
 }
 
-.receipt-stack {
+.hero-device {
   position: relative;
   width: 260px;
+  aspect-ratio: 9 / 18.5;
+  background: var(--ink);
+  border-radius: 32px;
+  padding: 10px;
+  box-shadow: 0 30px 70px -18px rgba(11, 31, 58, 0.55);
 }
 
-.receipt-back {
-  position: absolute;
-  top: 16px;
-  left: 14px;
-  width: 100%;
-  height: 100%;
-  background: var(--white);
-  border-radius: 10px;
-  box-shadow: 0 20px 50px -20px rgba(11, 31, 58, 0.4);
-  transform: rotate(6deg);
-  z-index: 0;
-  opacity: 0.85;
-}
-
-.receipt-card {
-  position: relative;
-  z-index: 1;
-  background: var(--white);
-  border-radius: 10px 10px 0 0;
-  padding: 22px 22px 18px;
-  box-shadow: 0 30px 70px -18px rgba(11, 31, 58, 0.5);
-  transform: rotate(-2.5deg);
-}
-
-.receipt-card::after {
+.hero-device::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -11px;
-  height: 14px;
-  background-image: linear-gradient(45deg, var(--white) 50%, transparent 50%), linear-gradient(-45deg, var(--white) 50%, transparent 50%);
-  background-size: 16px 16px;
-  background-position: bottom;
-  background-repeat: repeat-x;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  z-index: 2;
 }
 
-.receipt-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 6px;
+.hero-device::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: 22%;
+  width: 3px;
+  height: 11%;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px 0 0 2px;
 }
 
-.receipt-top .r-brand {
-  font-family: 'Archivo Expanded';
-  font-weight: 800;
-  font-size: 0.98rem;
-  color: var(--navy);
+.hero-screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--white);
 }
 
-.receipt-top .r-id {
-  font-family: 'IBM Plex Mono';
-  font-size: 0.62rem;
-  color: var(--slate);
-}
-
-.receipt-sub {
-  font-size: 0.68rem;
-  color: var(--slate);
-  margin-bottom: 14px;
-}
-
-.receipt-divider {
-  border-top: 1.5px dashed var(--line);
-  margin: 10px 0;
-}
-
-.receipt-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: 0.78rem;
-  padding: 4px 0;
-}
-
-.receipt-row .r-name {
-  color: var(--ink);
-}
-
-.receipt-row .r-qty {
-  color: var(--slate);
-  font-size: 0.68rem;
-  margin-left: 4px;
-}
-
-.receipt-row .r-price {
-  font-family: 'IBM Plex Mono';
-  color: var(--navy);
-}
-
-.receipt-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-top: 6px;
-}
-
-.receipt-total .r-label {
-  font-family: 'Archivo Expanded';
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--navy);
-}
-
-.receipt-total .r-amount {
-  font-family: 'IBM Plex Mono';
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: var(--navy);
-}
-
-.receipt-stamp {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 16px;
-  border: 1.5px dashed var(--blue);
-  color: var(--blue);
-  font-family: 'IBM Plex Mono';
-  font-size: 0.62rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 5px 10px 5px 8px;
-  border-radius: 20px;
-  transform: rotate(-2deg);
-}
-
-.receipt-stamp svg {
-  width: 12px;
-  height: 12px;
+.hero-screen iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
 }
 
 .float-card {
@@ -520,6 +431,7 @@ nav {
   align-items: center;
   gap: 10px;
   z-index: 2;
+  max-width: 190px;
 }
 
 .float-card .f-icon {
@@ -549,8 +461,8 @@ nav {
 }
 
 .float-1 {
-  top: 0%;
-  right: -2%;
+  top: 4%;
+  right: -14%;
 }
 
 .float-1 .f-icon {
@@ -559,8 +471,8 @@ nav {
 }
 
 .float-2 {
-  top: 42%;
-  right: -11%;
+  top: 46%;
+  right: -18%;
 }
 
 .float-2 .f-icon {
@@ -569,8 +481,8 @@ nav {
 }
 
 .float-3 {
-  bottom: 2%;
-  left: -10%;
+  bottom: 6%;
+  left: -16%;
 }
 
 .float-3 .f-icon {
