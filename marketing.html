@@ -1,30 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Marketing — Vendorly</title>
-    <link rel="icon" href="data:,">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="assets/components/dashboard-shared.css">
-    <link rel="stylesheet" href="assets/css/marketing.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Studio · Vendorly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets\css\marketing.css">
 </head>
-
 <body>
 
-    <div class="app-shell">
-        <div class="page-content">
-            <!-- Your page sections go here -->
-            <div class="dash-section">
-                <p>Your content here</p>
-            </div>
-        </div>
+<div class="wrap">
+
+  <span class="eyebrow">✦ Marketing Studio</span>
+  <h1>Turn any product into <span class="accent">a post</span>.</h1>
+  <p class="lede">Describe what you're selling — get a flyer, caption, and hashtags ready to send on WhatsApp.</p>
+
+  <!-- PRODUCT CONTEXT (optional) -->
+  <div class="product-strip" id="productStrip">
+    <!-- empty state -->
+    <button class="add-product-btn" id="addProductBtn">
+      <span class="plus">+</span>
+      <span>
+        <b>Add a product</b>
+        <span>Optional — pins a name and price to your flyer</span>
+      </span>
+    </button>
+
+    <!-- filled state -->
+    <div class="row" id="productRow" style="display:none;">
+      <img id="productImg" src="" alt="">
+      <div class="info">
+        <div class="label">For this product</div>
+        <b id="productName"></b>
+        <span class="price" id="productPrice"></span>
+      </div>
+      <button class="text-btn" id="editProductBtn">Edit</button>
     </div>
-    <script type="module" src="assets/js/marketing.js"></script>
+
+    <!-- inline add/edit form -->
+    <div class="product-form" id="productForm">
+      <div class="fields-row">
+        <div class="product-image-picker" id="productImagePicker">
+          <img id="productImagePreview" src="" alt="">
+          <div class="picker-icon">⬆<span>Photo</span></div>
+        </div>
+        <input type="file" id="productImageInput" accept="image/png,image/jpeg">
+        <div class="fields">
+          <input type="text" id="productNameInput" placeholder="Product name" maxlength="60">
+          <input type="text" id="productPriceInput" placeholder="Price, e.g. ₦12,500" maxlength="20">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="cancel-btn" id="cancelProductBtn">Cancel</button>
+        <button class="save-btn" id="saveProductBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="composer">
+    <label for="mainPrompt">What are you promoting today?</label>
+    <textarea id="mainPrompt" maxlength="160" placeholder="e.g. New stock of oversized hoodies just arrived, ₦12,500"></textarea>
+    <div class="chip-row">
+      <button class="chip" data-fill="New arrival — just landed in store">New arrival</button>
+      <button class="chip" data-fill="Weekend flash sale, limited stock">Weekend sale</button>
+      <button class="chip" data-fill="Back in stock — customers have been asking">Restock alert</button>
+      <button class="chip" data-fill="Price drop for the next 48 hours">Price drop</button>
+    </div>
+    <div class="composer-footer">
+      <span class="composer-hint" id="mainPromptCount">0 / 160</span>
+      <button class="generate-btn" id="generateCampaignBtn">✦ Generate campaign</button>
+    </div>
+  </div>
+
+  <div class="error-msg" id="errorMsg"></div>
+
+  <div class="results-head">
+    <h2>Your campaign</h2>
+    <span id="lastGeneratedNote">Nothing generated yet</span>
+  </div>
+
+  <div class="results-grid">
+
+    <!-- FLYER -->
+    <div class="card flyer-card">
+      <div class="card-head">
+        <h3>Flyer</h3>
+        <button class="refine-btn" id="refineFlyerBtn" disabled>↻ Refine</button>
+      </div>
+      <div class="flyer-stage">
+        <!-- empty state -->
+        <div class="flyer-empty" id="flyerEmpty">
+          <div class="icon">✦</div>
+          <b>Your flyer will appear here</b>
+          <span>Generate a campaign and we'll create a flyer from your description.</span>
+        </div>
+
+        <!-- filled state -->
+        <div class="flyer-canvas" id="flyerCanvas">
+          <img class="bg" id="flyerBg" src="" alt="">
+          <div class="flyer-top">
+            <div>
+              <div class="brand-name" id="flyerBrandName">Urban Threadz</div>
+              <div class="tagline">Premium Streetwear</div>
+            </div>
+            <div class="badge">UT</div>
+          </div>
+          <div class="flyer-body">
+            <div class="title" id="flyerTitle"></div>
+            <div class="sub">PREMIUM QUALITY · PERFECT FIT</div>
+            <span class="price-pill" id="flyerPrice"></span>
+            <div class="flyer-link">shop.vendorly.com/urbanthreadz</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-outline" id="downloadFlyerBtn" disabled>⬇ Download</button>
+        <button class="btn btn-whatsapp" id="shareFlyerBtn" disabled>Send on WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- CAPTION -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Caption</h3>
+        <button class="refine-btn" id="refineCaptionBtn" disabled>↻ Refine</button>
+      </div>
+      <div class="placeholder-block" id="captionPlaceholder">
+        <b>No caption yet</b>
+        <span>Generate a campaign to get a ready-to-send caption.</span>
+      </div>
+      <div class="caption-text" id="captionBox" style="display:none;"></div>
+      <div class="card-actions">
+        <button class="btn btn-outline" id="copyCaptionBtn" disabled>⧉ Copy</button>
+        <button class="btn btn-whatsapp" id="sendCaptionBtn" disabled>Send on WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- HASHTAGS -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Hashtags</h3>
+        <button class="refine-btn" id="refineHashtagsBtn" disabled>↻ Refine</button>
+      </div>
+      <div class="placeholder-block" id="hashtagPlaceholder">
+        <b>No hashtags yet</b>
+        <span>Generate a campaign to get a set of tags to pick from.</span>
+      </div>
+      <div class="hashtag-grid" id="hashtagGrid" style="display:none;"></div>
+      <div class="card-actions">
+        <button class="btn btn-outline" id="copyHashtagsBtn" disabled>⧉ Copy selected (<span id="selectedCount">0</span>)</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="assets\js\marketing.js"></script>
+
 
 </body>
-
 </html>

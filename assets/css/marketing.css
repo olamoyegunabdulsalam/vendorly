@@ -1,0 +1,853 @@
+/* ============================================================
+     DESIGN TOKENS — cream/white surface, navy/blue accent,
+     yellow reserved for the single primary CTA only
+     ============================================================ */
+:root {
+    --bg: #F7F3EA;
+    --bg-soft: #F1ECDF;
+    --surface: #FFFFFF;
+    --surface-2: #FCFAF4;
+    --border: rgba(20, 28, 45, 0.09);
+    --border-strong: rgba(20, 28, 45, 0.16);
+    --navy: #12213D;
+    --blue: #2E5AAC;
+    --blue-soft: #E7EDF7;
+    --yellow: #FFC93C;
+    --yellow-dark: #F0B400;
+    --whatsapp: #25D366;
+    --whatsapp-dark: #1DA851;
+    --ink: #171E2E;
+    --slate: #5F6B82;
+    --slate-faint: #98A1B3;
+    --danger-bg: #FBE9E7;
+    --danger: #C4432B;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --font-display: "Space Grotesk", -apple-system, sans-serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    background:
+        radial-gradient(1000px 500px at 15% -10%, rgba(46, 90, 172, 0.06), transparent 60%),
+        radial-gradient(800px 400px at 100% 0%, rgba(255, 201, 60, 0.10), transparent 55%),
+        var(--bg);
+    color: var(--ink);
+    padding: 0 0 90px;
+}
+
+.wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+}
+
+/* ---------- header ---------- */
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin: 0 0 14px;
+    background: var(--blue-soft);
+    border: 1px solid rgba(46, 90, 172, 0.2);
+    padding: 5px 12px;
+    border-radius: 999px;
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 1.15;
+    margin: 0 0 12px;
+    color: var(--navy);
+    max-width: 620px;
+    letter-spacing: -.01em;
+}
+
+h1 span.accent {
+    color: var(--blue);
+}
+
+.lede {
+    font-size: 14.5px;
+    color: var(--slate);
+    max-width: 480px;
+    margin: 0 0 32px;
+    line-height: 1.6;
+}
+
+/* ---------- product strip ---------- */
+.product-strip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    margin-bottom: 28px;
+    max-width: 560px;
+    box-shadow: 0 2px 10px rgba(23, 30, 46, 0.04);
+}
+
+.product-strip .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+}
+
+.product-strip img {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.product-strip .label {
+    font-size: 10.5px;
+    color: var(--slate-faint);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.product-strip .info {
+    flex: 1;
+}
+
+.product-strip b {
+    font-size: 13.5px;
+    display: block;
+    color: var(--ink);
+}
+
+.product-strip span.price {
+    font-size: 12px;
+    color: var(--slate);
+}
+
+.product-strip button.text-btn {
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    border-radius: 999px;
+    padding: 6px 13px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--ink);
+    font-family: var(--font-body);
+}
+
+.product-strip button.text-btn:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+/* empty state: add product */
+.add-product-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: 1.5px dashed var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    text-align: left;
+}
+
+.add-product-btn:hover {
+    border-color: var(--blue);
+    background: var(--blue-soft);
+}
+
+.add-product-btn .plus {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--blue-soft);
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.add-product-btn b {
+    font-size: 13.5px;
+    color: var(--ink);
+    display: block;
+}
+
+.add-product-btn span {
+    font-size: 11.5px;
+    color: var(--slate);
+}
+
+/* inline add/edit form */
+.product-form {
+    padding: 16px;
+    display: none;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.product-form.open {
+    display: flex;
+}
+
+.product-form .name-price-row {
+    display: flex;
+    gap: 10px;
+}
+
+.product-form input {
+    flex: 1;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    color: var(--ink);
+    outline: none;
+}
+
+.product-form input:focus {
+    border-color: var(--blue);
+}
+
+.product-form input::placeholder {
+    color: var(--slate-faint);
+}
+
+.product-form .form-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.product-form .form-actions button {
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-body);
+    border: 1.5px solid transparent;
+}
+
+.product-form .save-btn {
+    background: var(--navy);
+    color: #fff;
+}
+
+.product-form .save-btn:hover {
+    background: #1C2E52;
+}
+
+.product-form .cancel-btn {
+    background: transparent;
+    color: var(--slate);
+    border-color: var(--border-strong);
+}
+
+.product-form .cancel-btn:hover {
+    color: var(--ink);
+    border-color: var(--border-strong);
+}
+
+.product-form .fields-row {
+    display: flex;
+    gap: 12px;
+}
+
+.product-image-picker {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: 1.5px dashed var(--border-strong);
+    background: var(--bg-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-image-picker:hover {
+    border-color: var(--blue);
+}
+
+.product-image-picker img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.product-image-picker .picker-icon {
+    font-size: 16px;
+    color: var(--slate-faint);
+    text-align: center;
+}
+
+.product-image-picker .picker-icon span {
+    display: block;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+.product-image-picker.has-image .picker-icon {
+    display: none;
+}
+
+.product-image-picker.has-image img {
+    display: block;
+}
+
+#productImageInput {
+    display: none;
+}
+
+.product-form .fields {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ---------- composer (primary action) ---------- */
+.composer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px 28px 24px;
+    margin-bottom: 44px;
+    box-shadow: 0 18px 44px rgba(23, 30, 46, 0.06);
+}
+
+.composer label {
+    display: block;
+    color: var(--navy);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.composer textarea {
+    width: 100%;
+    min-height: 66px;
+    resize: none;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 15px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    outline: none;
+    margin-bottom: 15px;
+}
+
+.composer textarea::placeholder {
+    color: var(--slate-faint);
+}
+
+.composer textarea:focus {
+    border-color: var(--blue);
+}
+
+.chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.chip {
+    border: 1px solid var(--border-strong);
+    background: var(--surface-2);
+    color: var(--slate);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-body);
+}
+
+.chip:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+.composer-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.composer-hint {
+    font-size: 11.5px;
+    color: var(--slate-faint);
+}
+
+.generate-btn {
+    background: var(--yellow);
+    color: #1A1400;
+    border: none;
+    border-radius: 999px;
+    padding: 14px 26px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: var(--font-body);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 24px rgba(255, 201, 60, 0.3);
+}
+
+.generate-btn:hover {
+    background: var(--yellow-dark);
+}
+
+.generate-btn:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.error-msg {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(196, 67, 43, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-size: 13px;
+    margin-bottom: 22px;
+    display: none;
+}
+
+/* ---------- results ---------- */
+.results-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+}
+
+.results-head h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 19px;
+    margin: 0;
+    color: var(--navy);
+}
+
+.results-head span {
+    font-size: 12px;
+    color: var(--slate-faint);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 18px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(23, 30, 46, 0.04);
+}
+
+.card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.card-head h3 {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--slate);
+    margin: 0;
+}
+
+.refine-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-body);
+}
+
+.refine-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+/* flyer card */
+.flyer-card {
+    grid-row: span 2;
+}
+
+.flyer-stage {
+    flex: 1;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px;
+    margin-bottom: 16px;
+    min-height: 360px;
+}
+
+/* empty state (no flyer generated yet) */
+.flyer-empty {
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 1/1.05;
+    border: 1.5px dashed var(--border-strong);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    padding: 20px;
+    background: var(--surface-2);
+}
+
+.flyer-empty .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--blue-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--blue);
+}
+
+.flyer-empty b {
+    font-size: 13.5px;
+    color: var(--ink);
+}
+
+.flyer-empty span {
+    font-size: 11.5px;
+    color: var(--slate);
+    max-width: 190px;
+    line-height: 1.5;
+}
+
+/* filled flyer canvas */
+.flyer-canvas {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 1/1.05;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(160deg, var(--navy), #0B1224);
+    color: #fff;
+    display: none;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 16px;
+    box-shadow: 0 14px 34px rgba(23, 30, 46, 0.22);
+}
+
+.flyer-canvas.filled {
+    display: flex;
+}
+
+.flyer-canvas.loading {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.flyer-canvas img.bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .9;
+    z-index: 0;
+}
+
+.flyer-canvas::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(0deg, rgba(18, 33, 61, 0.88) 10%, rgba(18, 33, 61, 0.1) 55%);
+}
+
+.flyer-top {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.flyer-top .brand-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.flyer-top .tagline {
+    font-size: 10px;
+    opacity: .75;
+}
+
+.flyer-top .badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .14);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10.5px;
+    font-weight: 700;
+}
+
+.flyer-body {
+    position: relative;
+    z-index: 2;
+}
+
+.flyer-body .title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 5px;
+}
+
+.flyer-body .sub {
+    font-size: 10px;
+    opacity: .75;
+    letter-spacing: .03em;
+    margin-bottom: 9px;
+}
+
+.price-pill {
+    display: inline-block;
+    background: var(--yellow);
+    color: #1A1400;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 4px 9px;
+    border-radius: 7px;
+    margin-bottom: 8px;
+    font-family: var(--font-body);
+}
+
+.flyer-link {
+    font-size: 10px;
+    opacity: .7;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 3px solid rgba(46, 90, 172, .18);
+    border-top-color: var(--blue);
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    flex: 1;
+    border-radius: 999px;
+    border: none;
+    padding: 11px 0;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-body);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--border-strong);
+}
+
+.btn-outline:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+.btn-outline:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.btn-whatsapp {
+    background: var(--whatsapp);
+    color: #fff;
+}
+
+.btn-whatsapp:hover {
+    background: var(--whatsapp-dark);
+}
+
+.btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* caption card */
+.caption-text {
+    font-size: 14px;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    flex: 1;
+    margin-bottom: 18px;
+    color: var(--ink);
+}
+
+.caption-text.empty,
+.hashtag-empty {
+    color: var(--slate-faint);
+    font-style: normal;
+}
+
+.placeholder-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.placeholder-block b {
+    font-size: 13.5px;
+    color: var(--slate);
+}
+
+.placeholder-block span {
+    font-size: 12px;
+    color: var(--slate-faint);
+    line-height: 1.5;
+}
+
+/* hashtag card */
+.hashtag-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 18px;
+    flex: 1;
+    align-content: flex-start;
+}
+
+.hashtag-chip {
+    border: 1.5px solid var(--border-strong);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    color: var(--slate);
+    font-family: var(--font-body);
+}
+
+.hashtag-chip.selected {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+}
+
+.hashtag-chip .check {
+    display: none;
+    font-size: 10px;
+}
+
+.hashtag-chip.selected .check {
+    display: inline;
+}
+
+@media (max-width: 780px) {
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .flyer-card {
+        grid-row: auto;
+    }
+
+    h1 {
+        font-size: 29px;
+    }
+
+    .product-form .fields {
+        flex-direction: column;
+    }
+}
