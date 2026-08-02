@@ -1,7 +1,7 @@
 // ============================================================
-// bottomNav.js — Reusable bottom navigation component
-// Usage: import { renderBottomNav } from './components/bottomNav.js'
-//        renderBottomNav('home') ← pass the active tab name
+// bottomNav.js — Responsive nav component
+// Mobile: bottom tab bar
+// Desktop: sidebar with icons + labels (like X/Twitter)
 // ============================================================
 
 const tabs = [
@@ -19,26 +19,28 @@ const tabs = [
     label: 'Products',
     href: 'products.html',
     icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="2" y="3" width="20" height="14" rx="2"/>
-      <path d="M8 21h8M12 17v4"/>
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 01-8 0"/>
     </svg>`,
   },
   {
     id: 'add',
-    label: '',
-    href: null,
-    icon: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    label: 'Add Product',
+    href: 'add-product.html',
+    icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <line x1="12" y1="5" x2="12" y2="19"/>
+      <line x1="5" y1="12" x2="19" y2="12"/>
     </svg>`,
   },
   {
     id: 'marketing',
-    label: 'Marketing',
+    label: 'Ai Marketing',
     href: 'marketing.html',
     icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      <path d="M15.54 8.46a5 5 0 010 7.07"/>
+      <path d="M19.07 4.93a10 10 0 010 14.14"/>
     </svg>`,
   },
   {
@@ -47,15 +49,44 @@ const tabs = [
     href: 'settings.html',
     icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="3"/>
-      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
     </svg>`,
   },
 ]
 
-export function renderBottomNav(activeTab = 'home', onAddClick = null) {
-  // Remove existing nav if already rendered
-  const existing = document.getElementById('bottom-nav')
-  if (existing) existing.remove()
+// ── Detect desktop ────────────────────────────────────────────
+function isDesktop() {
+  return window.innerWidth >= 768
+}
+
+// ── Render Nav ────────────────────────────────────────────────
+export function renderBottomNav(activeTab = 'home', onAddClick = null, storeName = '', logoUrl = '') {
+  if (isDesktop()) {
+    renderSidebar(activeTab, onAddClick, storeName, logoUrl)
+  } else {
+    renderMobileNav(activeTab, onAddClick)
+  }
+
+  // Re-render on resize
+  let resizeTimer
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer)
+    resizeTimer = setTimeout(() => {
+      // Remove both and re-render correct one
+      document.getElementById('bottom-nav')?.remove()
+      document.getElementById('sidebar-nav')?.remove()
+      if (isDesktop()) {
+        renderSidebar(activeTab, onAddClick, storeName, logoUrl)
+      } else {
+        renderMobileNav(activeTab, onAddClick)
+      }
+    }, 150)
+  })
+}
+
+// ── Mobile Bottom Nav ─────────────────────────────────────────
+function renderMobileNav(activeTab, onAddClick) {
+  document.getElementById('bottom-nav')?.remove()
 
   const nav = document.createElement('nav')
   nav.id = 'bottom-nav'
@@ -69,7 +100,6 @@ export function renderBottomNav(activeTab = 'home', onAddClick = null) {
         </button>
       `
     }
-
     const isActive = tab.id === activeTab
     return `
       <a href="${tab.href}" class="nav-item ${isActive ? 'active' : ''}" data-tab="${tab.id}">
@@ -81,16 +111,85 @@ export function renderBottomNav(activeTab = 'home', onAddClick = null) {
 
   document.querySelector('.app-shell').appendChild(nav)
 
-  // Handle add button click
-  const addBtn = document.getElementById('nav-add-btn')
-  if (addBtn) {
-    addBtn.addEventListener('click', () => {
-      if (onAddClick) {
-        onAddClick()
-      } else {
-        // Default — navigate to add product page
-        window.location.href = 'add-product.html'
-      }
-    })
+  document.getElementById('nav-add-btn')?.addEventListener('click', () => {
+    if (onAddClick) onAddClick()
+    else window.location.href = 'add-product.html'
+  })
+}
+
+// ── Desktop Sidebar ───────────────────────────────────────────
+function renderSidebar(activeTab, onAddClick, storeName, logoUrl) {
+  document.getElementById('sidebar-nav')?.remove()
+
+  // Wrap body in desktop layout if not already
+  if (!document.querySelector('.desktop-layout')) {
+    const shell = document.querySelector('.app-shell')
+    const layout = document.createElement('div')
+    layout.className = 'desktop-layout'
+    shell.parentNode.insertBefore(layout, shell)
+    layout.appendChild(shell)
   }
+
+  const sidebar = document.createElement('aside')
+  sidebar.id = 'sidebar-nav'
+  sidebar.className = 'sidebar'
+
+  // Build sidebar nav items — skip the mobile-only add button
+  const navItems = tabs.filter(t => t.id !== 'add').map(tab => {
+    const isActive = tab.id === activeTab
+    return `
+      <a href="${tab.href}" class="sidebar-item ${isActive ? 'active' : ''}" data-tab="${tab.id}">
+        <span class="sidebar-item-icon">${tab.icon}</span>
+        <span class="sidebar-item-label">${tab.label}</span>
+      </a>
+    `
+  }).join('')
+
+  // Avatar initials or image
+  const avatarContent = logoUrl
+    ? `<img src="${logoUrl}" alt="${storeName}">`
+    : `<span>${storeName ? storeName.charAt(0).toUpperCase() : '?'}</span>`
+
+  sidebar.innerHTML = `
+    <!-- Logo -->
+    <a href="dashboard.html" class="sidebar-logo">
+      <div class="sidebar-logo-icon">🛍️</div>
+      <span class="sidebar-logo-text">Vendorly</span>
+    </a>
+
+    <!-- Nav items -->
+    <nav class="sidebar-nav">
+      ${navItems}
+
+      <!-- Add Product button -->
+      <button class="sidebar-add-btn" id="sidebar-add-btn">
+        <div class="sidebar-add-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <span>Add Product</span>
+      </button>
+    </nav>
+
+    <!-- Vendor profile at bottom -->
+    <a href="settings.html" class="sidebar-profile">
+      <div class="sidebar-profile-avatar">${avatarContent}</div>
+      <div class="sidebar-profile-info">
+        <p class="sidebar-profile-name">${storeName || 'My Store'}</p>
+        <p class="sidebar-profile-handle">View Settings</p>
+      </div>
+    </a>
+  `
+
+  // Insert sidebar before app-shell inside desktop-layout
+  const layout = document.querySelector('.desktop-layout')
+  layout.insertBefore(sidebar, layout.firstChild)
+
+  // Add button handler
+  document.getElementById('sidebar-add-btn')?.addEventListener('click', () => {
+    if (onAddClick) onAddClick()
+    else window.location.href = 'add-product.html'
+  })
 }

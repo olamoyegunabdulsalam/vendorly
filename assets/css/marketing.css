@@ -24,10 +24,25 @@
     --radius-lg: 24px;
     --radius-md: 16px;
     --radius-sm: 10px;
-    --font-display: "Space Grotesk", -apple-system, sans-serif;
-    --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+--font-display: 'Archivo Expanded', sans-serif;
+--font-body: 'Inter', sans-serif;
 }
 
+:root {
+  --navy: #0b1f3a;
+  --navy-2: #12294f;
+  --blue: #1e4b8c;
+  --blue-light: #4c7fd1;
+  --yellow: #ffc93c;
+  --yellow-deep: #e8a400;
+  --cream: #f7f5ef;
+  --ink: #101828;
+  --slate: #5b6472;
+  --line: #e4e0d6;
+  --white: #ffffff;
+  --radius: 14px;
+  --radius-lg: 20px;
+}
 * {
     box-sizing: border-box;
 }

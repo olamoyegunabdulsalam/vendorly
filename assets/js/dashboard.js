@@ -7,14 +7,15 @@ import { renderBottomNav } from '../components/bottomNav.js'
 
 const user = await requireAuth()
 
-// Render bottom nav — 'home' is active tab
-renderBottomNav('home')
 
 // Load vendor data
 const [store, products] = await Promise.all([
   fetchStore(user.id),
   fetchProducts(user.id),
 ])
+
+// Render bottom nav — 'home' is active tab
+renderBottomNav('home', null, store.store_name, store.logo_url)
 
 if (!store) {
   // First time — show store setup modal

@@ -1,7 +1,14 @@
+import { requireAuth } from './auth.js'
+import { supabase } from './supabase.js'
+import { renderBottomNav } from '../components/bottomNav.js'
+import { fetchStore } from './store.js'
 
-/* ============================================================
-   BACKEND CONFIG — point at your existing backend
-   ============================================================ */
+const user = await requireAuth()
+
+const store = await fetchStore(user.id)
+
+renderBottomNav('marketing', null, store.store_name, store.logo_url)
+
 const API_BASE = "/api/marketing";
 
 const ENDPOINTS = {

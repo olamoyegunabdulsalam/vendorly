@@ -3,10 +3,6 @@ import { signIn, redirectIfLoggedIn } from './auth.js'
 /* ── REDIRECT IF ALREADY LOGGED IN ── */
 await redirectIfLoggedIn()
 
-/* ── NAVIGATION ── */
-document.getElementById("goToSignup").addEventListener("click", () => {
-  window.location.href = "signup.html";
-});
 
 /* ── PASSWORD TOGGLE ── */
 document.querySelectorAll('.toggle-password').forEach(function (button) {

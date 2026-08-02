@@ -376,6 +376,26 @@ body {
   background: var(--bg);
 }
 
+/* ── View Details Button ── */
+.product-card-view-btn {
+  margin-top: 8px;
+  width: 100%;
+  height: 30px;
+  border-radius: var(--radius-full);
+  background: var(--navy-primary);
+  color: var(--card);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.02em;
+}
+
+.product-card:active .product-card-view-btn {
+  background: var(--blue-primary);
+}
+
 /* ── Skeleton Loaders ── */
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
@@ -886,4 +906,71 @@ body {
 
 #vendorly-toast {
   animation: slideUp 0.25s ease forwards;
+}
+
+
+/* ══════════════════════════════════════════
+   DESKTOP RESPONSIVE — store page
+══════════════════════════════════════════ */
+
+@media (min-width: 768px) {
+
+  /* Center the store shell with max width */
+  body {
+    display: flex;
+    justify-content: center;
+    background: var(--bg);
+  }
+
+  .store-shell {
+    max-width: 680px;
+    min-height: 100vh;
+    box-shadow: 0 0 0 1px var(--border), 0 8px 32px rgba(11,31,58,0.10);
+  }
+
+  /* Wider product grid on desktop */
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  /* Cart pill position adjusted */
+  .cart-pill {
+    position: fixed;
+    bottom: 32px;
+  }
+
+  /* Bottom sheet max width matches shell */
+  .bottom-sheet {
+    max-width: 680px;
+  }
+
+  /* Store header slightly taller */
+  .store-header {
+    padding: 28px 24px 36px;
+  }
+
+  /* Search and products padding */
+  .store-search-wrap {
+    padding: 20px 20px 10px;
+  }
+
+  .products-section {
+    padding: 10px 20px 120px;
+  }
+}
+
+@media (min-width: 1080px) {
+
+  .store-shell {
+    max-width: 780px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .bottom-sheet {
+    max-width: 780px;
+  }
 }

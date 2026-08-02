@@ -141,18 +141,19 @@ function renderProducts(products) {
     ).join('')
 
     return `
-      <div class="product-card" data-id="${p.id}" role="button" tabindex="0">
-        ${p.image_url
-          ? `<img class="product-card-image" src="${p.image_url}" alt="${p.name}" loading="lazy">`
-          : `<div class="product-card-image-placeholder">🛍️</div>`
-        }
-        <div class="product-card-body">
-          <p class="product-card-name">${p.name}</p>
-          <p class="product-card-price">${formatPrice(p.price)}</p>
-          ${colorDots ? `<div class="product-card-variants">${colorDots}</div>` : ''}
-        </div>
-      </div>
-    `
+  <div class="product-card" data-id="${p.id}" role="button" tabindex="0">
+    ${p.image_url
+        ? `<img class="product-card-image" src="${p.image_url}" alt="${p.name}" loading="lazy">`
+        : `<div class="product-card-image-placeholder">🛍️</div>`
+      }
+    <div class="product-card-body">
+      <p class="product-card-name">${p.name}</p>
+      <p class="product-card-price">${formatPrice(p.price)}</p>
+      ${colorDots ? `<div class="product-card-variants">${colorDots}</div>` : ''}
+      <div class="product-card-view-btn">View Details</div>
+    </div>
+  </div>
+`
   }).join('')
 
   // Attach click events to product cards
@@ -287,12 +288,11 @@ document.getElementById('detailOverlay').addEventListener('click', (e) => {
 document.getElementById('addToCartBtn').addEventListener('click', () => {
   if (!currentProduct) return
 
+  const productName = currentProduct.name 
   addToCart(currentProduct, selectedColor, selectedSize)
-  closeDetailSheet()
+  closeDetailSheet()  
   updateCartPill()
-
-  // Brief toast
-  showToast(`${currentProduct.name} added to cart`)
+  showToast(`${productName} added to cart`)
 })
 
 // ── Cart Pill ─────────────────────────────────────────────────

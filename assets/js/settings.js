@@ -8,14 +8,16 @@ import { showToast } from './utils.js'
 import { renderBottomNav } from '../components/bottomNav.js'
 
 // ── Init ─────────────────────────────────────────────────────
-const user  = await requireAuth()
-renderBottomNav('settings')
+const user = await requireAuth()
 
 // Load current user email + store data
 const [authUser, store] = await Promise.all([
   getUser(),
   fetchStore(user.id),
 ])
+
+
+renderBottomNav('settings', null, store.store_name, store.logo_url)
 
 // ── Populate fields ───────────────────────────────────────────
 document.getElementById('currentEmail').textContent = authUser?.email || ''

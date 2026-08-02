@@ -1,6 +1,6 @@
 /* ============================================================
    dashboard-shared.css — Shared styles for all dashboard pages
-   Import this in every dashboard page CSS file
+   Responsive: sidebar on desktop, bottom tab on mobile (like X)
    ============================================================ */
 
 /* ── Brand Tokens ── */
@@ -34,22 +34,27 @@
   --font-body: 'Inter', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
   --nav-height: 68px;
+  --sidebar-width-collapsed: 80px;
+  --sidebar-width-expanded: 240px;
+  --content-max-width: 680px;
 }
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
 body {
   font-family: var(--font-body);
   background: var(--gray-100);
   color: var(--dark);
   min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
 }
 
-/* ── App Shell — 430px centered mobile container ── */
+/* ============================================================
+   MOBILE LAYOUT — bottom tab bar (default)
+   ============================================================ */
+
+/* ── App Shell ── */
 .app-shell {
   position: relative;
   width: 100%;
@@ -60,9 +65,10 @@ body {
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0 0 0 1px var(--gray-200), var(--shadow-lg);
+  margin: 0 auto;
 }
 
-/* ── Page Content — scrollable area above nav ── */
+/* ── Page Content ── */
 .page-content {
   flex: 1;
   overflow-y: auto;
@@ -70,11 +76,10 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* hide scrollbar but keep scroll */
 .page-content::-webkit-scrollbar { display: none; }
 .page-content { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* ── Bottom Navigation ── */
+/* ── Bottom Navigation (mobile) ── */
 .bottom-nav {
   position: sticky;
   bottom: 0;
@@ -91,7 +96,10 @@ body {
   flex-shrink: 0;
 }
 
-/* ── Nav Item ── */
+/* Sidebar hidden on mobile */
+.sidebar { display: none; }
+
+/* ── Nav Item (mobile bottom tab) ── */
 .nav-item {
   display: flex;
   flex-direction: column;
@@ -107,14 +115,8 @@ body {
 }
 
 .nav-item:hover { color: var(--primary); }
-
-.nav-item.active {
-  color: var(--primary);
-}
-
-.nav-item.active .nav-icon svg {
-  stroke: var(--primary);
-}
+.nav-item.active { color: var(--primary); }
+.nav-item.active .nav-icon svg { stroke: var(--primary); }
 
 .nav-icon {
   display: flex;
@@ -130,7 +132,7 @@ body {
   line-height: 1;
 }
 
-/* ── Add Button (center nav) ── */
+/* ── Add Button (mobile center) ── */
 .nav-add-btn {
   width: 52px;
   height: 52px;
@@ -143,7 +145,7 @@ body {
   justify-content: center;
   color: var(--white);
   flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(53, 37, 205, 0.35);
+  box-shadow: 0 4px 16px rgba(53,37,205,0.35);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   -webkit-tap-highlight-color: transparent;
   margin-bottom: 12px;
@@ -151,8 +153,266 @@ body {
 
 .nav-add-btn:active {
   transform: scale(0.93);
-  box-shadow: 0 2px 8px rgba(53, 37, 205, 0.25);
+  box-shadow: 0 2px 8px rgba(53,37,205,0.25);
 }
+
+/* ============================================================
+   DESKTOP LAYOUT — sidebar nav (768px and above)
+   ============================================================ */
+@media (min-width: 768px) {
+
+  body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  /* ── Desktop wrapper ── */
+  .desktop-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1280px;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* ── Sidebar (desktop) ── */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar-width-expanded);
+    min-height: 100vh;
+    background: var(--white);
+    border-right: 1px solid var(--gray-200);
+    padding: 24px 16px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+    z-index: 50;
+  }
+
+  /* ── Sidebar Logo ── */
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    margin-bottom: 24px;
+    text-decoration: none;
+  }
+
+  .sidebar-logo-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-logo-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--dark);
+    font-family: var(--font-display);
+  }
+
+  /* ── Sidebar Nav Items ── */
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--gray-700);
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    width: 100%;
+    font-family: var(--font-body);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sidebar-item:hover {
+    background: var(--gray-100);
+    color: var(--dark);
+  }
+
+  .sidebar-item.active {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .sidebar-item.active svg {
+    stroke: var(--primary);
+  }
+
+  .sidebar-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+  }
+
+  .sidebar-item-label {
+    font-size: 15px;
+    font-weight: inherit;
+  }
+
+  /* ── Sidebar Add Button (desktop) ── */
+  .sidebar-add-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: var(--radius-lg);
+    background: var(--primary);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-family: var(--font-body);
+    margin: 8px 0;
+    transition: opacity 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sidebar-add-btn:hover { opacity: 0.9; }
+  .sidebar-add-btn:active { opacity: 0.8; }
+
+  .sidebar-add-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ── Sidebar Vendor Profile (bottom of sidebar) ── */
+  .sidebar-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: var(--radius-lg);
+    margin-top: auto;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    text-decoration: none;
+  }
+
+  .sidebar-profile:hover { background: var(--gray-100); }
+
+  .sidebar-profile-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-full);
+    background: var(--primary-light);
+    border: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .sidebar-profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .sidebar-profile-info { flex: 1; min-width: 0; }
+
+  .sidebar-profile-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sidebar-profile-handle {
+    font-size: 11px;
+    color: var(--gray-500);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── Hide bottom nav on desktop ── */
+  .bottom-nav { display: none !important; }
+
+  /* ── App Shell becomes content area ── */
+  .app-shell {
+    max-width: var(--content-max-width);
+    min-height: 100vh;
+    box-shadow: none;
+    border-right: 1px solid var(--gray-200);
+    border-left: 1px solid var(--gray-200);
+    margin: 0;
+    flex: 1;
+  }
+
+  /* ── Page content no bottom padding on desktop ── */
+  .page-content {
+    padding-bottom: 24px;
+  }
+
+  /* ── Right panel placeholder (future) ── */
+  .right-panel {
+    width: 320px;
+    flex-shrink: 0;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+/* ── Large desktop — wider content ── */
+@media (min-width: 1080px) {
+  .app-shell {
+    max-width: 780px;
+  }
+
+  .right-panel {
+    width: 360px;
+  }
+}
+
+/* ============================================================
+   SHARED COMPONENTS
+   ============================================================ */
 
 /* ── Dashboard Header ── */
 .dash-header {
@@ -199,7 +459,6 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--white);
-  position: relative;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -221,16 +480,10 @@ body {
   flex-shrink: 0;
 }
 
-.dash-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.dash-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 /* ── Section ── */
-.dash-section {
-  padding: 20px 20px 0;
-}
+.dash-section { padding: 20px 20px 0; }
 
 .dash-section-header {
   display: flex;
@@ -250,7 +503,6 @@ body {
   font-weight: 600;
   color: var(--primary);
   text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
 /* ── Store Link Card ── */
@@ -272,10 +524,7 @@ body {
   line-height: 1.4;
 }
 
-.store-link-actions {
-  display: flex;
-  gap: 8px;
-}
+.store-link-actions { display: flex; gap: 8px; }
 
 .store-link-btn {
   flex: 1;
@@ -303,7 +552,7 @@ body {
 
 .store-link-btn:active { opacity: 0.8; transform: scale(0.97); }
 
-/* ── Quick Actions Grid ── */
+/* ── Quick Actions ── */
 .quick-actions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -346,7 +595,7 @@ body {
   color: var(--dark);
 }
 
-/* ── Recent Products Grid ── */
+/* ── Recent Products ── */
 .recent-products-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -383,9 +632,7 @@ body {
   font-size: 20px;
 }
 
-.recent-product-info {
-  padding: 8px;
-}
+.recent-product-info { padding: 8px; }
 
 .recent-product-name {
   font-size: 11px;
@@ -434,11 +681,11 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ── Modal Overlay ── */
+/* ── Modal ── */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 14, 26, 0.55);
+  background: rgba(15,14,26,0.55);
   backdrop-filter: blur(2px);
   display: flex;
   align-items: flex-end;
@@ -456,7 +703,7 @@ body {
 
 .modal-sheet {
   width: 100%;
-  max-width: 430px;
+  max-width: 480px;
   background: var(--white);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   padding: 0 0 32px;
@@ -466,9 +713,7 @@ body {
   transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.modal-overlay.open .modal-sheet {
-  transform: translateY(0);
-}
+.modal-overlay.open .modal-sheet { transform: translateY(0); }
 
 .modal-handle {
   width: 36px;
@@ -505,7 +750,6 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--gray-500);
-  -webkit-tap-highlight-color: transparent;
 }
 
 .modal-body { padding: 20px; }
@@ -521,11 +765,8 @@ body {
   margin-bottom: 6px;
 }
 
-.form-label span { color: var(--gray-400); font-weight: 400; }
-
 .form-input,
-.form-textarea,
-.form-select {
+.form-textarea {
   width: 100%;
   height: 46px;
   border-radius: var(--radius-md);
@@ -550,10 +791,8 @@ body {
 
 .form-input:focus,
 .form-textarea:focus { border-color: var(--primary); }
-
 .form-input::placeholder,
 .form-textarea::placeholder { color: var(--gray-400); }
-
 .form-input.error { border-color: var(--coral); }
 
 .form-error {
@@ -582,27 +821,12 @@ body {
 }
 
 .logo-upload:hover { border-color: var(--primary); background: var(--primary-light); }
-
-.logo-upload input[type="file"] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
+.logo-upload input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 .logo-upload-icon { font-size: 22px; }
 .logo-upload-text { font-size: 12px; font-weight: 600; color: var(--gray-500); }
+.logo-preview { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
 
-.logo-preview {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  inset: 0;
-  border-radius: var(--radius-md);
-}
-
-/* ── Submit Button ── */
+/* ── Buttons ── */
 .btn-primary {
   width: 100%;
   height: 50px;
@@ -625,18 +849,69 @@ body {
 .btn-primary:active { opacity: 0.85; transform: scale(0.98); }
 .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
+/* ── Page Header ── */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-100);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.back-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--gray-100);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dark);
+  flex-shrink: 0;
+}
+
+.page-header-text { flex: 1; }
+
+.page-title {
+  font-size: 17px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--dark);
+}
+
+.page-subtitle { font-size: 12px; color: var(--gray-500); margin-top: 1px; }
+
+.header-action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
 /* ── Toast ── */
 @keyframes slideUp {
   from { transform: translateX(-50%) translateY(20px); opacity: 0; }
-  to { transform: translateX(-50%) translateY(0); opacity: 1; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
 
-#vendorly-toast {
-  animation: slideUp 0.25s ease forwards;
-}
+#vendorly-toast { animation: slideUp 0.25s ease forwards; }
 
 /* ── Spinner ── */
 @keyframes spin { to { transform: rotate(360deg); } }
+
 .spinner {
   width: 24px;
   height: 24px;
@@ -651,7 +926,6 @@ body {
   border-top-color: var(--primary);
 }
 
-/* ── Responsive — full screen on real mobile ── */
 @media (max-width: 430px) {
   .app-shell { box-shadow: none; }
 }
