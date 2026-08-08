@@ -3,45 +3,34 @@
      yellow reserved for the single primary CTA only
      ============================================================ */
 :root {
-    --bg: #F7F3EA;
+    /* synced to shared palette: navy #0B1F3A / blue #1E4B8C / yellow #FFC93C / cream #F7F5EF */
+    --navy: #0B1F3A;
+    --navy-2: #12294F;
+    --blue: #1E4B8C;
+    --blue-light: #4C7FD1;
+    --yellow: #FFC93C;
+    --yellow-dark: #E8A400;
+    --ink: #101828;
+    --slate: #5B6472;
+    --line: #E4E0D6;
+    --white: #FFFFFF;
+    --bg: #F7F5EF;
     --bg-soft: #F1ECDF;
     --surface: #FFFFFF;
     --surface-2: #FCFAF4;
-    --border: rgba(20, 28, 45, 0.09);
-    --border-strong: rgba(20, 28, 45, 0.16);
-    --navy: #12213D;
-    --blue: #2E5AAC;
+    --border: rgba(16, 24, 40, 0.09);
+    --border-strong: rgba(16, 24, 40, 0.16);
     --blue-soft: #E7EDF7;
-    --yellow: #FFC93C;
-    --yellow-dark: #F0B400;
     --whatsapp: #25D366;
     --whatsapp-dark: #1DA851;
-    --ink: #171E2E;
-    --slate: #5F6B82;
     --slate-faint: #98A1B3;
     --danger-bg: #FBE9E7;
     --danger: #C4432B;
-    --radius-lg: 24px;
+    --radius-lg: 20px;
     --radius-md: 16px;
     --radius-sm: 10px;
---font-display: 'Archivo Expanded', sans-serif;
---font-body: 'Inter', sans-serif;
-}
-
-:root {
-  --navy: #0b1f3a;
-  --navy-2: #12294f;
-  --blue: #1e4b8c;
-  --blue-light: #4c7fd1;
-  --yellow: #ffc93c;
-  --yellow-deep: #e8a400;
-  --cream: #f7f5ef;
-  --ink: #101828;
-  --slate: #5b6472;
-  --line: #e4e0d6;
-  --white: #ffffff;
-  --radius: 14px;
-  --radius-lg: 20px;
+    --font-display: 'Archivo Expanded', sans-serif;
+    --font-body: 'Inter', sans-serif;
 }
 * {
     box-sizing: border-box;
@@ -51,7 +40,7 @@ body {
     margin: 0;
     font-family: var(--font-body);
     background:
-        radial-gradient(1000px 500px at 15% -10%, rgba(46, 90, 172, 0.06), transparent 60%),
+        radial-gradient(1000px 500px at 15% -10%, rgba(30, 75, 140, 0.06), transparent 60%),
         radial-gradient(800px 400px at 100% 0%, rgba(255, 201, 60, 0.10), transparent 55%),
         var(--bg);
     color: var(--ink);
@@ -76,7 +65,7 @@ body {
     text-transform: uppercase;
     margin: 0 0 14px;
     background: var(--blue-soft);
-    border: 1px solid rgba(46, 90, 172, 0.2);
+    border: 1px solid rgba(30, 75, 140, 0.2);
     padding: 5px 12px;
     border-radius: 999px;
 }
@@ -111,7 +100,7 @@ h1 span.accent {
     border-radius: var(--radius-md);
     margin-bottom: 28px;
     max-width: 560px;
-    box-shadow: 0 2px 10px rgba(23, 30, 46, 0.04);
+    box-shadow: 0 2px 10px rgba(16, 24, 40, 0.04);
 }
 
 .product-strip .row {
@@ -272,7 +261,7 @@ h1 span.accent {
 }
 
 .product-form .save-btn:hover {
-    background: #1C2E52;
+    background: #081527;
 }
 
 .product-form .cancel-btn {
@@ -355,7 +344,7 @@ h1 span.accent {
     border-radius: var(--radius-lg);
     padding: 28px 28px 24px;
     margin-bottom: 44px;
-    box-shadow: 0 18px 44px rgba(23, 30, 46, 0.06);
+    box-shadow: 0 18px 44px rgba(16, 24, 40, 0.06);
 }
 
 .composer label {
@@ -496,7 +485,7 @@ h1 span.accent {
     padding: 22px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 2px 10px rgba(23, 30, 46, 0.04);
+    box-shadow: 0 2px 10px rgba(16, 24, 40, 0.04);
 }
 
 .card-head {
@@ -606,7 +595,7 @@ h1 span.accent {
     flex-direction: column;
     justify-content: flex-end;
     padding: 16px;
-    box-shadow: 0 14px 34px rgba(23, 30, 46, 0.22);
+    box-shadow: 0 14px 34px rgba(16, 24, 40, 0.22);
 }
 
 .flyer-canvas.filled {
@@ -711,7 +700,7 @@ h1 span.accent {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    border: 3px solid rgba(46, 90, 172, .18);
+    border: 3px solid rgba(30, 75, 140, .18);
     border-top-color: var(--blue);
     animation: spin .8s linear infinite;
 }

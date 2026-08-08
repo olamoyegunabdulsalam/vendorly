@@ -3,16 +3,24 @@
    Responsive: sidebar on desktop, bottom tab on mobile (like X)
    ============================================================ */
 
-/* ── Brand Tokens ── */
+/* ── Brand Tokens (synced to shared palette: navy #0B1F3A / blue #1E4B8C / yellow #FFC93C / cream #F7F5EF) ── */
 :root {
-  --primary: #3525cd;
-  --primary-light: #ede9ff;
-  --primary-dark: #2318a8;
-  --mint: #006b5f;
-  --mint-light: #e6f4f2;
-  --coral: #8b1b34;
-  --coral-light: #fdf0f3;
-  --dark: #0f0e1a;
+  --navy: #0b1f3a;
+  --navy-2: #12294f;
+  --blue: #1e4b8c;
+  --blue-light: #4c7fd1;
+  --yellow: #ffc93c;
+  --yellow-deep: #e8a400;
+  --line: #e4e0d6;
+  --primary: #1e4b8c;
+  --primary-light: #eaf2ff;
+  --primary-dark: #0b1f3a;
+  --accent: #ffc93c;
+  --accent-light: #fff3cf;
+  --cream: #f7f5ef;
+  --cream-soft: #fcfaf7;
+  --surface: #ffffff;
+  --dark: #0b1f3a;
   --gray-700: #374151;
   --gray-500: #6b7280;
   --gray-400: #9ca3af;
@@ -20,8 +28,12 @@
   --gray-100: #f3f4f6;
   --gray-50: #f9fafb;
   --white: #ffffff;
-  --success: #006b5f;
-  --error: #8b1b34;
+  --success: #2e7d32;
+  --error: #b23a3a;
+  --mint: #2e7d32;
+  --mint-light: #e8f5e9;
+  --coral: #b23a3a;
+  --coral-light: #fceaea;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -45,7 +57,7 @@ html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 
 body {
   font-family: var(--font-body);
-  background: var(--gray-100);
+  background: linear-gradient(135deg, var(--cream) 0%, var(--cream-soft) 100%);
   color: var(--dark);
   min-height: 100vh;
 }
@@ -60,17 +72,20 @@ body {
   width: 100%;
   max-width: 430px;
   min-height: 100vh;
-  background: var(--white);
+  height: 100vh;
+  max-height: 100vh;
+  background: var(--surface);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 0 0 1px var(--gray-200), var(--shadow-lg);
+  box-shadow: 0 0 0 1px rgba(30, 75, 140, 0.12), var(--shadow-lg);
   margin: 0 auto;
 }
 
 /* ── Page Content ── */
 .page-content {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding-bottom: calc(var(--nav-height) + 16px);
   -webkit-overflow-scrolling: touch;
@@ -86,8 +101,8 @@ body {
   left: 0;
   right: 0;
   height: var(--nav-height);
-  background: var(--white);
-  border-top: 1px solid var(--gray-200);
+  background: var(--surface);
+  border-top: 1px solid rgba(30, 75, 140, 0.12);
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -145,7 +160,7 @@ body {
   justify-content: center;
   color: var(--white);
   flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(53,37,205,0.35);
+  box-shadow: 0 4px 16px rgba(30,75,140,0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   -webkit-tap-highlight-color: transparent;
   margin-bottom: 12px;
@@ -153,7 +168,7 @@ body {
 
 .nav-add-btn:active {
   transform: scale(0.93);
-  box-shadow: 0 2px 8px rgba(53,37,205,0.25);
+  box-shadow: 0 2px 8px rgba(30,75,140,0.2);
 }
 
 /* ============================================================
@@ -183,8 +198,8 @@ body {
     flex-direction: column;
     width: var(--sidebar-width-expanded);
     min-height: 100vh;
-    background: var(--white);
-    border-right: 1px solid var(--gray-200);
+    background: var(--surface);
+    border-right: 1px solid rgba(30, 75, 140, 0.12);
     padding: 24px 16px;
     position: sticky;
     top: 0;
@@ -376,6 +391,9 @@ body {
   .app-shell {
     max-width: var(--content-max-width);
     min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
     box-shadow: none;
     border-right: 1px solid var(--gray-200);
     border-left: 1px solid var(--gray-200);
@@ -778,6 +796,7 @@ body {
   background: var(--white);
   outline: none;
   transition: border-color 0.15s ease;
+  appearance: none;
   -webkit-appearance: none;
 }
 
