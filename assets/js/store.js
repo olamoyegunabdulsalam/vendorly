@@ -1,4 +1,5 @@
 import { supabase } from './supabase.js'
+import {generateSlug} from './utils.js'
 
 // Fetch Store by Vendor ID 
 // Uses maybeSingle() returns null if no store exists yet (no error)
@@ -29,18 +30,60 @@ export async function fetchStoreById(storeId) {
 // Save Store (Create or Update)─
 // Upserts on vendor_id one store per vendor
 // Returns the real store row including DB-generated id
+
 export async function saveStore(vendorId, storeData) {
+    // Auto generate slug from store name if not already set
+    const baseSlug = storeData.slug || generateSlug(storeData.store_name)
+    const slug = await getUniqueSlug(baseSlug, vendorId)
+
     const { data, error } = await supabase
         .from('stores')
         .upsert(
-            { vendor_id: vendorId, ...storeData, updated_at: new Date().toISOString() },
+            {
+                vendor_id: vendorId,
+                ...storeData,
+                slug,  
+                updated_at: new Date().toISOString()
+            },
             { onConflict: 'vendor_id' }
         )
         .select()
-        .single() // get real DB id back fixes the demo-store link bug
+        .single()
 
     if (error) throw error
     return data
+}
+
+export async function fetchStoreBySlug(slug) {
+    const { data, error } = await supabase
+        .from('stores')
+        .select('*')
+        .eq('slug', slug)
+        .maybeSingle()
+
+    if (error) throw error
+    return data
+}
+
+// In store.js — handle slug conflicts
+async function getUniqueSlug(baseslug, vendorId) {
+    let slug = baseslug
+    let count = 1
+
+    while (true) {
+        const { data } = await supabase
+            .from('stores')
+            .select('id, vendor_id')
+            .eq('slug', slug)
+            .maybeSingle()
+
+        // No conflict or it belongs to this vendor
+        if (!data || data.vendor_id === vendorId) return slug
+
+        // Conflict — append number
+        slug = `${baseslug}-${count}`
+        count++
+    }
 }
 
 // Upload Store Logo

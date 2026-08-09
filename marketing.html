@@ -12,169 +12,302 @@
         rel="stylesheet">
     <link rel="stylesheet" href="assets/components/dashboard-shared.css">
     <link rel="stylesheet" href="assets/css/marketing.css">
+    <link rel="stylesheet" href="assets/css/flyer-templates.css">
 </head>
 
 <body>
 
     <div class="app-shell">
         <div class="page-content">
-            <div class="wrap">
 
-                <span class="eyebrow">✦ Marketing Studio</span>
-                <h1>Turn any product into <span class="accent">a post</span>.</h1>
-                <p class="lede">Describe what you're selling — get a flyer, caption, and hashtags ready to send on
-                    WhatsApp.
-                </p>
-
-                <!-- PRODUCT CONTEXT (optional) -->
-                <div class="product-strip" id="productStrip">
-                    <!-- empty state -->
-                    <button class="add-product-btn" id="addProductBtn">
-                        <span class="plus">+</span>
-                        <span>
-                            <b>Add a product</b>
-                            <span>Optional — pins a name and price to your flyer</span>
-                        </span>
-                    </button>
-
-                    <!-- filled state -->
-                    <div class="row" id="productRow" style="display:none;">
-                        <img id="productImg" src="" alt="">
-                        <div class="info">
-                            <div class="label">For this product</div>
-                            <b id="productName"></b>
-                            <span class="price" id="productPrice"></span>
-                        </div>
-                        <button class="text-btn" id="editProductBtn">Edit</button>
-                    </div>
-
-                    <!-- inline add/edit form -->
-                    <div class="product-form" id="productForm">
-                        <div class="fields-row">
-                            <div class="product-image-picker" id="productImagePicker">
-                                <img id="productImagePreview" src="" alt="">
-                                <div class="picker-icon">⬆<span>Photo</span></div>
-                            </div>
-                            <input type="file" id="productImageInput" accept="image/png,image/jpeg">
-                            <div class="fields">
-                                <input type="text" id="productNameInput" placeholder="Product name" maxlength="60">
-                                <input type="text" id="productPriceInput" placeholder="Price, e.g. ₦12,500"
-                                    maxlength="20">
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button class="cancel-btn" id="cancelProductBtn">Cancel</button>
-                            <button class="save-btn" id="saveProductBtn">Save</button>
+            <!-- HEADER -->
+            <div class="dash-header">
+                <div class="dash-header-left">
+                    <div class="dash-brand-block">
+                        <img class="dash-brand-logo" src="assets/images/vendorly-logo.png" alt="Vendorly">
+                        <div class="dash-brand-text">
+                            <span class="dash-brand-name">Vendorly</span>
+                            <span class="dash-brand-tagline">Build • Share • Sell</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="composer">
-                    <label for="mainPrompt">What are you promoting today?</label>
-                    <textarea id="mainPrompt" maxlength="160"
-                        placeholder="e.g. New stock of oversized hoodies just arrived, ₦12,500"></textarea>
-                    <div class="chip-row">
-                        <button class="chip" data-fill="New arrival — just landed in store">New arrival</button>
-                        <button class="chip" data-fill="Weekend flash sale, limited stock">Weekend sale</button>
-                        <button class="chip" data-fill="Back in stock — customers have been asking">Restock
-                            alert</button>
-                        <button class="chip" data-fill="Price drop for the next 48 hours">Price drop</button>
-                    </div>
-                    <div class="composer-footer">
-                        <span class="composer-hint" id="mainPromptCount">0 / 160</span>
-                        <button class="generate-btn" id="generateCampaignBtn">✦ Generate campaign</button>
-                    </div>
-                </div>
-
-                <div class="error-msg" id="errorMsg"></div>
-
-                <div class="results-head">
-                    <h2>Your campaign</h2>
-                    <span id="lastGeneratedNote">Nothing generated yet</span>
-                </div>
-
-                <div class="results-grid">
-
-                    <!-- FLYER -->
-                    <div class="card flyer-card">
-                        <div class="card-head">
-                            <h3>Flyer</h3>
-                            <button class="refine-btn" id="refineFlyerBtn" disabled>↻ Refine</button>
-                        </div>
-                        <div class="flyer-stage">
-                            <!-- empty state -->
-                            <div class="flyer-empty" id="flyerEmpty">
-                                <div class="icon">✦</div>
-                                <b>Your flyer will appear here</b>
-                                <span>Generate a campaign and we'll create a flyer from your description.</span>
-                            </div>
-
-                            <!-- filled state -->
-                            <div class="flyer-canvas" id="flyerCanvas">
-                                <img class="bg" id="flyerBg" src="" alt="">
-                                <div class="flyer-top">
-                                    <div>
-                                        <div class="brand-name" id="flyerBrandName">Urban Threadz</div>
-                                        <div class="tagline">Premium Streetwear</div>
-                                    </div>
-                                    <div class="badge">UT</div>
-                                </div>
-                                <div class="flyer-body">
-                                    <div class="title" id="flyerTitle"></div>
-                                    <div class="sub">PREMIUM QUALITY · PERFECT FIT</div>
-                                    <span class="price-pill" id="flyerPrice"></span>
-                                    <div class="flyer-link">shop.vendorly.com/urbanthreadz</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn btn-outline" id="downloadFlyerBtn" disabled>⬇ Download</button>
-                            <button class="btn btn-whatsapp" id="shareFlyerBtn" disabled>Send on WhatsApp</button>
-                        </div>
-                    </div>
-
-                    <!-- CAPTION -->
-                    <div class="card">
-                        <div class="card-head">
-                            <h3>Caption</h3>
-                            <button class="refine-btn" id="refineCaptionBtn" disabled>↻ Refine</button>
-                        </div>
-                        <div class="placeholder-block" id="captionPlaceholder">
-                            <b>No caption yet</b>
-                            <span>Generate a campaign to get a ready-to-send caption.</span>
-                        </div>
-                        <div class="caption-text" id="captionBox" style="display:none;"></div>
-                        <div class="card-actions">
-                            <button class="btn btn-outline" id="copyCaptionBtn" disabled>⧉ Copy</button>
-                            <button class="btn btn-whatsapp" id="sendCaptionBtn" disabled>Send on WhatsApp</button>
-                        </div>
-                    </div>
-
-                    <!-- HASHTAGS -->
-                    <div class="card">
-                        <div class="card-head">
-                            <h3>Hashtags</h3>
-                            <button class="refine-btn" id="refineHashtagsBtn" disabled>↻ Refine</button>
-                        </div>
-                        <div class="placeholder-block" id="hashtagPlaceholder">
-                            <b>No hashtags yet</b>
-                            <span>Generate a campaign to get a set of tags to pick from.</span>
-                        </div>
-                        <div class="hashtag-grid" id="hashtagGrid" style="display:none;"></div>
-                        <div class="card-actions">
-                            <button class="btn btn-outline" id="copyHashtagsBtn" disabled>⧉ Copy selected (<span
-                                    id="selectedCount">0</span>)</button>
-                        </div>
-                    </div>
-
+                <div class="dash-header-right">
+                    <div class="dash-avatar" id="vendorAvatar">?</div>
                 </div>
             </div>
+
+            <!-- STUDIO LAYOUT -->
+            <div class="studio-layout">
+
+                <!---LEFT PANE — CONTROLS -->
+                <div class="studio-left">
+
+                    <!-- Page intro -->
+                    <div class="studio-intro">
+                        <div class="studio-eyebrow">
+                            <span class="eyebrow-dot"></span>
+                            AI Marketing Studio
+                        </div>
+                        <h1 class="studio-title">Create your <span class="accent">campaign</span></h1>
+                        <p class="studio-lede">Pick a product, describe what you want get a flyer, caption and hashtags
+                            in seconds.</p>
+                    </div>
+
+                    <!-- Step 1 — Product -->
+                    <div class="studio-step">
+                        <div class="step-label">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Select a product</span>
+                            <span class="step-optional">Optional</span>
+                        </div>
+
+                        <div class="product-select-box" id="productSelectBox">
+                            <div class="product-select-preview" id="productSelectPreview">
+                                <span class="product-select-icon">📦</span>
+                                <span class="product-select-placeholder">Choose a product to feature</span>
+                            </div>
+                            <select class="product-select" id="productSelect">
+                                <option value="">No product — promote my store</option>
+                            </select>
+                        </div>
+
+                        <!-- Selected product card -->
+                        <div class="selected-product-card" id="selectedProductCard" style="display:none">
+                            <img class="selected-product-img" id="selectedProductImg" src="" alt="">
+                            <div class="selected-product-info">
+                                <p class="selected-product-name" id="selectedProductName"></p>
+                                <p class="selected-product-price" id="selectedProductPrice"></p>
+                            </div>
+                            <button class="selected-product-clear" id="clearProductBtn"
+                                aria-label="Remove product">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 — Prompt -->
+                    <div class="studio-step">
+                        <div class="step-label">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Describe your promotion</span>
+                        </div>
+
+                        <div class="composer-wrap">
+                            <textarea id="mainPrompt" class="studio-textarea" maxlength="160"
+                                placeholder="e.g. New stock of oversized hoodies just arrived — limited sizes, don't miss out"></textarea>
+                            <span class="char-count" id="mainPromptCount">0 / 160</span>
+                        </div>
+
+                        <!-- Quick chips -->
+                        <div class="chip-row">
+                            <button class="chip" data-fill="New arrival — just landed in store">✦ New arrival</button>
+                            <button class="chip" data-fill="Weekend flash sale, limited stock">🔥 Flash sale</button>
+                            <button class="chip" data-fill="Back in stock — customers have been asking">📦
+                                Restock</button>
+                            <button class="chip" data-fill="Price drop for the next 48 hours">💸 Price drop</button>
+                        </div>
+                    </div>
+
+                    <!-- Generate CTA -->
+                    <div class="generate-wrap">
+                        <button class="generate-btn" id="generateCampaignBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                            </svg>
+                            Generate Campaign
+                        </button>
+                        <p class="generate-hint">Powered by Claude AI · Takes ~5 seconds</p>
+                    </div>
+
+                    <!-- Error -->
+                    <div class="error-msg" id="errorMsg" style="display:none"></div>
+
+                    <!-- Step 3 — Caption (below generate on left) -->
+                    <div class="output-card" id="captionCard">
+                        <div class="output-card-head">
+                            <div class="output-card-title">
+                                <span class="output-icon">✍️</span>
+                                Caption
+                            </div>
+                            <button class="refine-btn" id="refineCaptionBtn" disabled>↻ Refine</button>
+                        </div>
+                        <div class="output-placeholder" id="captionPlaceholder">
+                            <p>Your caption will appear here after generating</p>
+                        </div>
+                        <div class="caption-text" id="captionBox" style="display:none"></div>
+                        <div class="output-actions" id="captionActions" style="display:none">
+                            <button class="btn btn-outline" id="copyCaptionBtn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                </svg>
+                                Copy Caption
+                            </button>
+                            <button class="btn btn-whatsapp" id="sendCaptionBtn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
+                                </svg>
+                                Send on WhatsApp
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 — Hashtags -->
+                    <div class="output-card" id="hashtagCard">
+                        <div class="output-card-head">
+                            <div class="output-card-title">
+                                <span class="output-icon">#️⃣</span>
+                                Hashtags
+                            </div>
+                            <button class="refine-btn" id="refineHashtagsBtn" disabled>↻ Refine</button>
+                        </div>
+                        <div class="output-placeholder" id="hashtagPlaceholder">
+                            <p>Hashtags will appear here after generating</p>
+                        </div>
+                        <div class="hashtag-grid" id="hashtagGrid" style="display:none"></div>
+                        <div class="output-actions" id="hashtagActions" style="display:none">
+                            <button class="btn btn-outline btn-full" id="copyHashtagsBtn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                </svg>
+                                Copy Selected (<span id="selectedCount">0</span>)
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- end studio-left -->
+
+
+                <!-- 
+           RIGHT PANE — LIVE PREVIEW
+       -->
+                <div class="studio-right">
+
+                    <div class="preview-panel">
+
+                        <!-- Preview header -->
+                        <div class="preview-header">
+                            <div class="preview-header-left">
+                                <span class="preview-label">Live Preview</span>
+                                <span class="preview-status" id="lastGeneratedNote">Not generated yet</span>
+                            </div>
+                            <button class="refine-btn" id="refineFlyerBtn" disabled>↻ Refine Flyer</button>
+                        </div>
+
+                        <!-- Flyer stage -->
+                        <div class="flyer-stage">
+
+                            <!-- Skeleton -->
+                            <div class="flyer-skeleton" id="flyerSkeleton" style="display:none">
+                                <div class="skeleton-hero"></div>
+                                <div class="skeleton-line line-lg"></div>
+                                <div class="skeleton-line line-md"></div>
+                                <div class="skeleton-line line-sm"></div>
+                                <div class="skeleton-row">
+                                    <div class="skeleton-pill"></div>
+                                    <div class="skeleton-pill small"></div>
+                                </div>
+                            </div>
+
+                            <!-- Empty state -->
+                            <div class="flyer-empty" id="flyerEmpty">
+                                <div class="flyer-empty-inner">
+                                    <div class="flyer-empty-icon">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                                            <rect x="3" y="3" width="18" height="18" rx="3" />
+                                            <path d="M3 9h18M9 21V9" />
+                                        </svg>
+                                    </div>
+                                    <p class="flyer-empty-title">Your flyer lives here</p>
+                                    <p class="flyer-empty-desc">Select a product and generate a campaign — your flyer
+                                        will appear instantly</p>
+                                </div>
+                            </div>
+
+                            <!-- Flyer canvas — all existing IDs preserved -->
+                            <div class="flyer-canvas" id="flyerCanvas">
+                                <div class="flyer-visual">
+                                    <div class="flyer-shape shape-a"></div>
+                                    <div class="flyer-shape shape-b"></div>
+                                    <img class="bg" id="flyerBg" src="" alt="">
+                                    <div class="hero-glow"></div>
+                                </div>
+                                <div class="flyer-top">
+                                    <div class="brand-block">
+                                        <div class="brand-name" id="flyerBrandName">Store Name</div>
+                                        <div class="tagline">Premium Collection</div>
+                                    </div>
+                                    <div class="badge-group">
+                                        <span class="flyer-badge" id="flyerBadge">NEW</span>
+                                        <div class="badge">ST</div>
+                                    </div>
+                                </div>
+                                <div class="flyer-body">
+                                    <div class="eyebrow-row">
+                                        <span class="mini-pill">AI campaign</span>
+                                    </div>
+                                    <div class="title" id="flyerTitle">YOUR HEADLINE</div>
+                                    <div class="sub">PREMIUM QUALITY · PERFECT FIT</div>
+                                    <div class="price-row">
+                                        <span class="price-pill" id="flyerPrice"></span>
+                                        <span class="cta-pill">Shop now →</span>
+                                    </div>
+                                    <div class="footer-row">
+                                        <div class="flyer-link" id="flyerStoreLink">vendorly.com/store/yourstore</div>
+                                        <div class="store-pill">Store</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end flyer-stage -->
+
+                        <!-- Flyer actions -->
+                        <div class="flyer-actions">
+                            <button class="btn btn-outline" id="downloadFlyerBtn" disabled>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                                Download PNG
+                            </button>
+                            <button class="btn btn-whatsapp" id="shareFlyerBtn" disabled>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
+                                </svg>
+                                Share on WhatsApp
+                            </button>
+                        </div>
+
+                        <!-- Template indicator -->
+                        <div class="template-indicator" id="templateIndicator" style="display:none">
+                            <span class="template-dot"></span>
+                            <span id="templateName">Luxury Fashion</span>
+                            <span class="template-sep">·</span>
+                            <button class="template-reshuffle" id="reshuffleBtn">Try another style</button>
+                        </div>
+
+                    </div>
+                    <!-- end preview-panel -->
+
+                </div>
+                <!-- end studio-right -->
+
+            </div>
+            <!-- end studio-layout -->
+
         </div>
     </div>
 
     <script type="module" src="assets/js/marketing.js"></script>
-
-
 </body>
 
 </html>

@@ -1,13 +1,13 @@
-import { fetchStoreById } from './store.js'
+import { fetchStoreById, fetchStoreBySlug } from './store.js'
 import { fetchProducts } from './products.js'
 import {
   getCart, addToCart, removeFromCart, updateQty,
   getCartCount, getCartTotal, clearCart,
   sendWhatsAppOrder
 } from './cart.js'
-import { formatPrice, getStoreIdFromUrl, parseTags } from './utils.js'
+import { formatPrice, getStoreIdFromUrl, parseTags, getStoreUrl } from './utils.js'
 
-// ── State ────────────────────────────────────────────────────
+// State
 let store        = null
 let allProducts  = []
 let filteredProducts = []
@@ -15,43 +15,42 @@ let currentProduct   = null
 let selectedColor    = null
 let selectedSize = null
 
-// ── Init ─────────────────────────────────────────────────────
+// Init
 async function init() {
-  const storeId = getStoreIdFromUrl()
+  // Read slug from clean URL path /store/amara-fashion
+  const pathParts = window.location.pathname.split('/').filter(Boolean)
+  const storeIndex = pathParts.indexOf('store')
+  const slugFromPath = storeIndex !== -1 ? pathParts[ storeIndex + 1 ] : null
 
-  if (!storeId) {
-    showError()
-    return
+  // Fallbacks for local dev
+  const params = new URLSearchParams(window.location.search)
+  const slugFromQuery = params.get('slug')
+  const idFromQuery = params.get('id')
+
+  const slug = slugFromPath || slugFromQuery
+  const storeId = idFromQuery
+
+  let storeData = null
+
+  if (slug && slug !== 'store.html') {
+    storeData = await fetchStoreBySlug(slug)
+  } else if (storeId) {
+    storeData = await fetchStoreById(storeId)
   }
 
-  try {
-    // ── Step 1: fetch store first
-    const storeData = await fetchStoreById(storeId)
+  if (!storeData) { showError(); return }
 
-    if (!storeData) {
-      showError()
-      return
-    }
+  store = storeData
+  const products = await fetchProducts(storeData.vendor_id)
+  allProducts = products || []
+  filteredProducts = [ ...allProducts ]
 
-    store = storeData
-
-    // ── Step 2: use vendor_id from store to fetch products
-    const products = await fetchProducts(storeData.vendor_id)
-
-    allProducts = products || []
-    filteredProducts = [ ...allProducts ]
-
-    renderStore()
-    renderProducts(filteredProducts)
-    hideLoader()
-
-  } catch (err) {
-    console.error('Store load error:', err)
-    showError()
-  }
+  renderStore()
+  renderProducts(filteredProducts)
+  hideLoader()
 }
 
-// ── Render Store Header ───────────────────────────────────────
+// Render Store Header─
 function renderStore() {
   // Store name
   document.getElementById('storeName').textContent = store.store_name
@@ -99,7 +98,7 @@ function renderStore() {
   waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(`Hi! I found your store on Vendorly — ${store.store_name}`)}`
 }
 
-// ── Render Products ───────────────────────────────────────────
+// Render Products─
 function renderProducts(products) {
   const grid = document.getElementById('productsGrid')
   const emptyProducts = document.getElementById('emptyProducts')
@@ -165,7 +164,7 @@ function renderProducts(products) {
   })
 }
 
-// ── Search ────────────────────────────────────────────────────
+// Search
 const searchInput = document.getElementById('searchInput')
 const searchClear = document.getElementById('searchClear')
 
@@ -193,7 +192,7 @@ searchClear.addEventListener('click', () => {
   searchInput.focus()
 })
 
-// ── Product Detail Sheet ──────────────────────────────────────
+// Product Detail Sheet
 function openDetailSheet(product) {
   currentProduct = product
   selectedColor  = null
@@ -284,7 +283,7 @@ document.getElementById('detailOverlay').addEventListener('click', (e) => {
   if (e.target === e.currentTarget) closeDetailSheet()
 })
 
-// ── Add to Cart ───────────────────────────────────────────────
+// Add to Cart─
 document.getElementById('addToCartBtn').addEventListener('click', () => {
   if (!currentProduct) return
 
@@ -295,7 +294,7 @@ document.getElementById('addToCartBtn').addEventListener('click', () => {
   showToast(`${productName} added to cart`)
 })
 
-// ── Cart Pill ─────────────────────────────────────────────────
+// Cart Pill─
 function updateCartPill() {
   const count = getCartCount()
   const pill  = document.getElementById('cartPill')
@@ -311,7 +310,7 @@ function updateCartPill() {
 
 document.getElementById('cartPill').addEventListener('click', openCartSheet)
 
-// ── Cart Sheet ────────────────────────────────────────────────
+// Cart Sheet
 function openCartSheet() {
   renderCartItems()
   document.getElementById('cartOverlay').classList.add('open')
@@ -406,12 +405,12 @@ function renderCartItems() {
   })
 }
 
-// ── Send Order ────────────────────────────────────────────────
+// Send Order
 document.getElementById('sendOrderBtn').addEventListener('click', () => {
   const cart = getCart()
   if (cart.length === 0) return
 
-  const storeUrl = `${window.location.origin}/store.html?id=${store.id}`
+  const storeUrl = getStoreUrl(store.id, store.slug) 
   sendWhatsAppOrder(store.whatsapp, cart, storeUrl)
 
   // Show confirmation
@@ -426,7 +425,7 @@ document.getElementById('confirmContinueBtn').addEventListener('click', () => {
   closeCartSheet()
 })
 
-// ── Helpers ───────────────────────────────────────────────────
+// Helpers─
 function hideLoader() {
   const loader = document.getElementById('storeLoader')
   loader.style.opacity = '0'
@@ -465,6 +464,6 @@ function showToast(message, type = 'success') {
   setTimeout(() => toast.remove(), 2500)
 }
 
-// ── Run ───────────────────────────────────────────────────────
+// Run─
 updateCartPill() // restore cart count from localStorage on load
 init()

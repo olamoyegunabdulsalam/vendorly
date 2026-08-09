@@ -1,383 +1,536 @@
 import { requireAuth } from './auth.js'
-import { supabase } from './supabase.js'
-import { renderBottomNav } from '../components/bottomNav.js'
 import { fetchStore } from './store.js'
+import { fetchProducts } from './products.js'
+import { formatPrice, getStoreUrl, copyToClipboard, showToast } from './utils.js'
+import { renderBottomNav } from '../components/bottomNav.js'
+import { supabase } from './supabase.js'
 
+// Init
 const user = await requireAuth()
-
 const store = await fetchStore(user.id)
+const products = await fetchProducts(user.id)
 
-renderBottomNav('marketing', null, store.store_name, store.logo_url)
+renderBottomNav('marketing', null, store?.store_name, store?.logo_url)
 
-const API_BASE = "/api/marketing";
+function renderHeader(store) {
+    const storeName = store?.store_name || 'Your Store'
 
-const ENDPOINTS = {
-    flyer: `${API_BASE}/flyer`,     // POST -> { imageUrl }
-    caption: `${API_BASE}/caption`,   // POST -> { caption }
-    hashtags: `${API_BASE}/hashtags`,  // POST -> { hashtags: string[] }
-    campaign: `${API_BASE}/campaign`,  // POST -> { imageUrl, caption, hashtags: string[] }
-};
-
-// Product context is optional. null until the seller adds one.
-let currentProduct = null;
-
-const STORE = {
-    slug: "urbanthreadz",
-    name: "Urban Threadz",
-    whatsappNumber: "2348012345678" // seller's WhatsApp number, digits only, no +
-};
-
-let selectedHashtags = new Set();
-let hasFlyer = false;
-
-function showError(msg) {
-    const el = document.getElementById("errorMsg");
-    el.textContent = msg;
-    el.style.display = "block";
-}
-function hideError() { document.getElementById("errorMsg").style.display = "none"; }
-
-async function callBackend(url, payload) {
-    hideError();
-    const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-    });
-    if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        throw new Error(`Couldn't generate that (${res.status}). ${text || "Try again."}`);
-    }
-    return res.json();
-}
-
-function whatsappLink(text) {
-    return `https://wa.me/${STORE.whatsappNumber}?text=${encodeURIComponent(text)}`;
-}
-
-/* ---------- composer ---------- */
-const mainPrompt = document.getElementById("mainPrompt");
-const mainPromptCount = document.getElementById("mainPromptCount");
-mainPrompt.addEventListener("input", () => {
-    mainPromptCount.textContent = `${mainPrompt.value.length} / 160`;
-});
-document.querySelectorAll(".chip").forEach(chip => {
-    chip.addEventListener("click", () => {
-        mainPrompt.value = chip.dataset.fill;
-        mainPrompt.dispatchEvent(new Event("input"));
-    });
-});
-
-/* ============================================================
-   PRODUCT CONTEXT — optional. Add / edit via an inline form;
-   generation works fine with no product attached.
-   ============================================================ */
-const addProductBtn = document.getElementById("addProductBtn");
-const productRow = document.getElementById("productRow");
-const productForm = document.getElementById("productForm");
-const productNameInput = document.getElementById("productNameInput");
-const productPriceInput = document.getElementById("productPriceInput");
-const productImagePicker = document.getElementById("productImagePicker");
-const productImageInput = document.getElementById("productImageInput");
-const productImagePreview = document.getElementById("productImagePreview");
-const editProductBtn = document.getElementById("editProductBtn");
-const cancelProductBtn = document.getElementById("cancelProductBtn");
-const saveProductBtn = document.getElementById("saveProductBtn");
-
-// Holds the image for whatever's currently in the form (persists across
-// cancel only via currentProduct; cleared/reset each time the form opens).
-let draftImageUrl = null;
-
-function setDraftImage(src) {
-    draftImageUrl = src;
-    productImagePreview.src = src || "";
-    productImagePicker.classList.toggle("has-image", !!src);
-}
-
-productImagePicker.addEventListener("click", () => productImageInput.click());
-productImageInput.addEventListener("change", () => {
-    const file = productImageInput.files[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-        showError("Image is larger than 5MB — try a smaller file.");
-        return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => setDraftImage(reader.result);
-    reader.readAsDataURL(file);
-});
-
-function openProductForm() {
-    addProductBtn.style.display = "none";
-    productRow.style.display = "none";
-    productForm.classList.add("open");
-    productNameInput.value = currentProduct ? currentProduct.name : "";
-    productPriceInput.value = currentProduct ? currentProduct.price : "";
-    setDraftImage(currentProduct ? currentProduct.imageUrl : null);
-    productNameInput.focus();
-}
-function closeProductForm() {
-    productForm.classList.remove("open");
-    renderProductState();
-}
-function renderProductState() {
-    if (currentProduct) {
-        addProductBtn.style.display = "none";
-        productRow.style.display = "flex";
-        document.getElementById("productName").textContent = currentProduct.name;
-        document.getElementById("productPrice").textContent = currentProduct.price || "";
-        const img = document.getElementById("productImg");
-        img.style.display = currentProduct.imageUrl ? "block" : "none";
-        img.src = currentProduct.imageUrl || "";
+    const avatar = document.getElementById('vendorAvatar')
+    if (store?.logo_url) {
+        avatar.innerHTML = `<img src="${store.logo_url}" alt="${storeName}">`
     } else {
-        addProductBtn.style.display = "flex";
-        productRow.style.display = "none";
+        avatar.textContent = storeName.charAt(0).toUpperCase() || '?'
     }
 }
 
-addProductBtn.addEventListener("click", openProductForm);
-editProductBtn.addEventListener("click", openProductForm);
-cancelProductBtn.addEventListener("click", closeProductForm);
-saveProductBtn.addEventListener("click", () => {
-    const name = productNameInput.value.trim();
-    const price = productPriceInput.value.trim();
-    if (!name) {
-        showError("Give the product a name before saving.");
-        return;
-    }
-    currentProduct = {
-        id: currentProduct?.id || `prod_${Date.now()}`,
-        name,
-        price,
-        imageUrl: draftImageUrl || null
-    };
-    productForm.classList.remove("open");
-    renderProductState();
-});
+renderHeader(store)
 
-renderProductState();
+// State
+let selectedProduct = null
+let generatedCaption = ''
+let generatedHashtags = []
+let selectedHashtags = new Set()
+const storeUrl = getStoreUrl(store.id, store.slug)
 
-/* ============================================================
-   FLYER — AI-generated only. Starts empty; fills in once
-   ENDPOINTS.flyer or ENDPOINTS.campaign returns an imageUrl.
-   ============================================================ */
-const flyerEmpty = document.getElementById("flyerEmpty");
-const flyerCanvas = document.getElementById("flyerCanvas");
-const flyerBg = document.getElementById("flyerBg");
-const flyerTitle = document.getElementById("flyerTitle");
-const flyerPrice = document.getElementById("flyerPrice");
-const flyerBrandName = document.getElementById("flyerBrandName");
-const refineFlyerBtn = document.getElementById("refineFlyerBtn");
-const downloadFlyerBtn = document.getElementById("downloadFlyerBtn");
-const shareFlyerBtn = document.getElementById("shareFlyerBtn");
+// Populate Product Selector
+const productSelect = document.getElementById('productSelect')
 
-flyerBrandName.textContent = STORE.name;
-
-function setFlyerImage(src) {
-    flyerBg.src = src;
-    flyerTitle.innerHTML = (currentProduct?.name || "").replace(/\s+/g, "<br>") || "Your product";
-    flyerPrice.textContent = currentProduct?.price || "";
-    flyerPrice.style.display = currentProduct?.price ? "inline-block" : "none";
-    flyerEmpty.style.display = "none";
-    flyerCanvas.classList.add("filled");
-    hasFlyer = true;
-    refineFlyerBtn.disabled = false;
-    downloadFlyerBtn.disabled = false;
-    shareFlyerBtn.disabled = false;
+if (products && products.length > 0) {
+    products.forEach(p => {
+        const option = document.createElement('option')
+        option.value = p.id
+        option.textContent = `${p.name} — ${formatPrice(p.price)}`
+        productSelect.appendChild(option)
+    })
 }
 
-async function generateFlyer(promptText) {
-    const stage = document.querySelector(".flyer-stage");
-    const original = stage.innerHTML;
-    stage.innerHTML = `<div class="spinner"></div>`;
-    refineFlyerBtn.disabled = true;
+// Product select change
+productSelect.addEventListener('change', () => {
+    const id = productSelect.value
+
+    if (!id) {
+        selectedProduct = null
+        document.getElementById('selectedProductCard').style.display = 'none'
+        updateFlyerPreview()
+        return
+    }
+
+    selectedProduct = products.find(p => p.id === id)
+    if (!selectedProduct) return
+
+    // Show selected product card
+    const card = document.getElementById('selectedProductCard')
+    const img = document.getElementById('selectedProductImg')
+
+    if (selectedProduct.image_url) {
+        img.src = selectedProduct.image_url
+        img.style.display = 'block'
+    } else {
+        img.style.display = 'none'
+    }
+
+    document.getElementById('selectedProductName').textContent = selectedProduct.name
+    document.getElementById('selectedProductPrice').textContent = formatPrice(selectedProduct.price)
+    card.style.display = 'flex'
+
+    // Update flyer preview immediately
+    updateFlyerPreview()
+})
+
+// Clear selected product
+document.getElementById('clearProductBtn').addEventListener('click', () => {
+    productSelect.value = ''
+    selectedProduct = null
+    document.getElementById('selectedProductCard').style.display = 'none'
+    updateFlyerPreview()
+})
+
+// Prompt Character Count
+const mainPrompt = document.getElementById('mainPrompt')
+
+mainPrompt.addEventListener('input', () => {
+    document.getElementById('mainPromptCount').textContent =
+        `${mainPrompt.value.length} / 160`
+})
+
+// Chips
+document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+        mainPrompt.value = chip.dataset.fill
+        mainPrompt.dispatchEvent(new Event('input'))
+    })
+})
+
+
+// Generate Campaign
+document.getElementById('generateCampaignBtn').addEventListener('click', async () => {
+    const prompt = mainPrompt.value.trim()
+
+    if (!prompt && !selectedProduct) {
+        showError('Please describe what you are promoting or select a product.')
+        return
+    }
+
+    hideError()
+    setGenerating(true)
+
     try {
-        const data = await callBackend(ENDPOINTS.flyer, {
-            productId: currentProduct?.id || null,
-            productName: currentProduct?.name || null,
-            price: currentProduct?.price || null,
-            productImage: currentProduct?.imageUrl || null,
-            storeName: STORE.name,
-            storeSlug: STORE.slug,
-            prompt: promptText || "Clean product flyer, premium quality look"
-        });
-        stage.innerHTML = original;
-        setFlyerImage(data.imageUrl);
+        const result = await callGeminiAPI(prompt, selectedProduct, store)
+        renderResults(result, prompt)
+        document.getElementById('lastGeneratedNote').textContent =
+            `Generated just now · ${new Date().toLocaleTimeString()}`
     } catch (err) {
-        stage.innerHTML = original;
-        showError(err.message);
+        showError('Failed to generate campaign. Please try again.')
+        console.error(err)
     } finally {
-        refineFlyerBtn.disabled = !hasFlyer;
+        setGenerating(false)
+    }
+})
+
+// Call Gemini API
+async function callGeminiAPI(prompt, product, store) {
+    const {
+        data: { session }
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+        throw new Error('User is not logged in.')
+    }
+
+    const response = await fetch(
+        `${import.meta.env?.VITE_SUPABASE_URL ?? 'https://dkvhlfigmyzekmnwzhil.supabase.co'}/functions/v1/generate-campaign`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+                prompt,
+                productName: product?.name || '',
+                productPrice: product ? formatPrice(product.price) : '',
+                storeName: store?.store_name || 'My Store',
+                storeUrl
+            })
+        }
+    )
+
+    if (!response.ok) {
+        const text = await response.text()
+        console.error(text)
+        throw new Error(`Edge Function Error: ${response.status}`)
+    }
+
+    return await response.json()
+}
+
+// Render Results
+function renderResults(result, prompt) {
+    generatedCaption = result.caption || ''
+    generatedHashtags = result.hashtags || []
+    selectedHashtags = new Set()
+
+    // Update flyer
+    document.getElementById('flyerTitle').textContent = result.flyer_headline || ''
+    document.querySelector('.flyer-canvas .sub').textContent = result.flyer_subtext || ''
+    applyFlyerVisualStyle(prompt)
+    updateFlyerPreview()
+
+    // Show flyer canvas
+    document.getElementById('flyerEmpty').style.display = 'none'
+    document.getElementById('flyerCanvas').classList.add('filled')
+
+    // Caption
+    document.getElementById('captionPlaceholder').style.display = 'none'
+    const captionBox = document.getElementById('captionBox')
+    captionBox.textContent = generatedCaption
+    captionBox.style.display = 'block'
+
+    // Hashtags
+    document.getElementById('hashtagPlaceholder').style.display = 'none'
+    renderHashtags(generatedHashtags)
+
+    // Enable all buttons
+    enableButtons()
+    showTemplateIndicator(currentTemplate)
+    showOutputActions()
+}
+
+// Update Flyer Preview
+function updateFlyerPreview() {
+    const storeName = store?.store_name || 'My Store'
+    const flyerCanvas = document.getElementById('flyerCanvas')
+
+    document.getElementById('flyerBrandName').textContent = storeName
+    document.querySelector('.flyer-canvas .flyer-link').textContent = storeUrl
+
+    // Replace initials with real store logo
+    const badge = document.querySelector('.flyer-canvas .badge')
+    if (store?.logo_url) {
+        badge.innerHTML = `<img src="${store.logo_url}" alt="${storeName}"
+      style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`
+    } else {
+        // Fallback to initials if no logo
+        badge.textContent = storeName.substring(0, 2).toUpperCase()
+    }
+
+    // Product image as hero — rest stays the same
+    const bgImg = document.getElementById('flyerBg')
+    if (selectedProduct?.image_url) {
+        bgImg.src = selectedProduct.image_url
+        bgImg.style.display = 'block'
+        flyerCanvas.classList.add('has-image')
+    } else {
+        bgImg.style.display = 'none'
+        flyerCanvas.classList.remove('has-image')
+    }
+
+    // Price pill
+    const pricePill = document.getElementById('flyerPrice')
+    if (selectedProduct) {
+        pricePill.textContent = formatPrice(selectedProduct.price)
+        pricePill.style.display = 'inline-flex'
+    } else {
+        pricePill.style.display = 'none'
+    }
+
+    const storeLinkEl = document.getElementById('flyerStoreLink')
+    if (storeLinkEl) storeLinkEl.textContent = storeUrl
+}
+
+function showTemplateIndicator(template) {
+    const indicator = document.getElementById('templateIndicator')
+    const nameEl = document.getElementById('templateName')
+    if (indicator && nameEl && template) {
+        nameEl.textContent = template.name
+        indicator.style.display = 'flex'
     }
 }
-refineFlyerBtn.addEventListener("click", () => generateFlyer(mainPrompt.value.trim()));
 
-downloadFlyerBtn.addEventListener("click", () => {
-    const a = document.createElement("a");
-    a.href = flyerBg.src;
-    a.download = `${STORE.slug}-flyer.png`;
-    a.click();
-});
+function showOutputActions() {
+    document.getElementById('captionActions').style.display = 'flex'
+    document.getElementById('hashtagActions').style.display = 'flex'
+}
 
-shareFlyerBtn.addEventListener("click", async () => {
-    if (navigator.share && navigator.canShare) {
-        try {
-            const res = await fetch(flyerBg.src);
-            const blob = await res.blob();
-            const file = new File([blob], "flyer.png", { type: blob.type });
-            if (navigator.canShare({ files: [file] })) {
-                await navigator.share({ files: [file], title: currentProduct?.name || "Flyer" });
-                return;
+document.getElementById('reshuffleBtn')?.addEventListener('click', () => {
+    applyFlyerVisualStyle(mainPrompt.value.trim())
+    updateFlyerPreview()
+    showTemplateIndicator(currentTemplate)
+})
+
+// 8 premium templates — each maps to a CSS class
+const FLYER_TEMPLATES = [
+    {
+        id: 'luxury-fashion',
+        name: 'Luxury Fashion',
+        class: 'template-luxury-fashion',
+        defaultBadge: 'NEW IN',
+        tagline: 'Premium Collection',
+    },
+    {
+        id: 'naija-market',
+        name: 'Naija Market',
+        class: 'template-naija-market',
+        defaultBadge: 'HOT DEAL',
+        tagline: 'Shop Direct · No Middleman',
+    },
+    {
+        id: 'clean-minimal',
+        name: 'Clean Minimal',
+        class: 'template-clean-minimal',
+        defaultBadge: 'NEW',
+        tagline: 'Quality You Can Trust',
+    },
+    {
+        id: 'beauty',
+        name: 'Beauty & Glow',
+        class: 'template-beauty',
+        defaultBadge: 'GLOW UP',
+        tagline: 'Feel Beautiful Every Day',
+    },
+    {
+        id: 'streetwear',
+        name: 'Streetwear Hype',
+        class: 'template-streetwear',
+        defaultBadge: 'DROP',
+        tagline: 'Limited Edition',
+    },
+    {
+        id: 'food',
+        name: 'Food & Eats',
+        class: 'template-food',
+        defaultBadge: 'FRESH',
+        tagline: 'Made with Love · Order Now',
+    },
+    {
+        id: 'tech-purple',
+        name: 'Tech & Gadgets',
+        class: 'template-tech-purple',
+        defaultBadge: 'LATEST',
+        tagline: 'Powered by Innovation',
+    },
+    {
+        id: 'emerald',
+        name: 'Fresh & Natural',
+        class: 'template-emerald',
+        defaultBadge: 'FRESH',
+        tagline: 'Pure Quality · Fast Delivery',
+    },
+]
+
+// All template classes — used to clear before applying new one
+const ALL_TEMPLATE_CLASSES = FLYER_TEMPLATES.map(t => t.class)
+
+// Current active template
+let currentTemplate = null
+
+function applyFlyerVisualStyle(prompt) {
+    const canvas = document.getElementById('flyerCanvas')
+
+    // Remove all existing template classes
+    canvas.classList.remove(...ALL_TEMPLATE_CLASSES)
+
+    // Pick random template
+    const template = FLYER_TEMPLATES[ Math.floor(Math.random() * FLYER_TEMPLATES.length) ]
+    currentTemplate = template
+
+    // Apply template class
+    canvas.classList.add(template.class)
+
+    // Update tagline
+    const taglineEl = canvas.querySelector('.tagline')
+    if (taglineEl) taglineEl.textContent = template.tagline
+
+    // Apply smart badge
+    const badge = getSmartBadge(prompt, template)
+    const badgeEl = document.getElementById('flyerBadge')
+    if (badgeEl) badgeEl.textContent = badge
+}
+
+function getSmartBadge(prompt, template) {
+    const text = `${prompt || ''} ${selectedProduct?.name || ''}`.toLowerCase()
+
+    const badgeMap = [
+        { regex: /new|just arrived|fresh|launch|brand new|just in/i, label: 'NEW IN' },
+        { regex: /limited|limited stock|only few|last chance|almost gone/i, label: 'LIMITED' },
+        { regex: /sale|discount|flash sale|price drop|off|slash/i, label: 'SALE' },
+        { regex: /trending|viral|hot|everyone/i, label: 'TRENDING' },
+        { regex: /restock|back in stock|returned/i, label: 'RESTOCKED' },
+        { regex: /best seller|selling fast|popular|must have/i, label: 'BEST SELLER' },
+        { regex: /food|eat|meal|snack|drink|juice|fresh/i, label: 'FRESH' },
+        { regex: /beauty|skin|glow|cream|hair/i, label: 'GLOW UP' },
+        { regex: /tech|phone|gadget|device|electronic/i, label: 'LATEST' },
+    ]
+
+    const match = badgeMap.find(b => b.regex.test(text))
+    return match ? match.label : template.defaultBadge
+}
+
+
+// Render Hashtags
+function renderHashtags(hashtags) {
+    const grid = document.getElementById('hashtagGrid')
+    grid.style.display = 'flex'
+
+    grid.innerHTML = hashtags.map(tag => `
+    <button class="hashtag-chip" data-tag="${tag}">
+      <span class="check">✓</span>
+      ${tag}
+    </button>
+  `).join('')
+
+    grid.querySelectorAll('.hashtag-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const tag = chip.dataset.tag
+            if (selectedHashtags.has(tag)) {
+                selectedHashtags.delete(tag)
+                chip.classList.remove('selected')
+            } else {
+                selectedHashtags.add(tag)
+                chip.classList.add('selected')
             }
-        } catch (e) { /* fall through to link-based share */ }
-    }
-    const label = currentProduct
-        ? `Check out ${currentProduct.name}${currentProduct.price ? " — " + currentProduct.price : ""}`
-        : "Check out our latest post";
-    window.open(whatsappLink(label), "_blank");
-});
-
-/* ============================================================
-   CAPTION — starts empty until generated
-   ============================================================ */
-const captionPlaceholder = document.getElementById("captionPlaceholder");
-const captionBox = document.getElementById("captionBox");
-const refineCaptionBtn = document.getElementById("refineCaptionBtn");
-const copyCaptionBtn = document.getElementById("copyCaptionBtn");
-const sendCaptionBtn = document.getElementById("sendCaptionBtn");
-
-function setCaption(text) {
-    captionBox.textContent = text;
-    captionPlaceholder.style.display = "none";
-    captionBox.style.display = "block";
-    refineCaptionBtn.disabled = false;
-    copyCaptionBtn.disabled = false;
-    sendCaptionBtn.disabled = false;
+            document.getElementById('selectedCount').textContent = selectedHashtags.size
+        })
+    })
 }
 
-async function generateCaption(promptText) {
-    const hadCaption = captionBox.style.display === "block";
-    const original = captionBox.textContent;
-    if (hadCaption) captionBox.textContent = "Writing…";
-    refineCaptionBtn.disabled = true;
-    try {
-        const data = await callBackend(ENDPOINTS.caption, {
-            productId: currentProduct?.id || null,
-            productName: currentProduct?.name || null,
-            price: currentProduct?.price || null,
-            productImage: currentProduct?.imageUrl || null,
-            storeSlug: STORE.slug,
-            prompt: promptText || "Short, friendly promotional caption"
-        });
-        setCaption(data.caption);
-    } catch (err) {
-        if (hadCaption) captionBox.textContent = original;
-        showError(err.message);
-    } finally {
-        refineCaptionBtn.disabled = false;
-    }
-}
-refineCaptionBtn.addEventListener("click", () => generateCaption(mainPrompt.value.trim()));
-
-copyCaptionBtn.addEventListener("click", () => {
-    navigator.clipboard.writeText(captionBox.textContent.trim());
-});
-sendCaptionBtn.addEventListener("click", () => {
-    window.open(whatsappLink(captionBox.textContent.trim()), "_blank");
-});
-
-/* ============================================================
-   HASHTAGS — starts empty until generated
-   ============================================================ */
-const hashtagPlaceholder = document.getElementById("hashtagPlaceholder");
-const hashtagGrid = document.getElementById("hashtagGrid");
-const refineHashtagsBtn = document.getElementById("refineHashtagsBtn");
-const copyHashtagsBtn = document.getElementById("copyHashtagsBtn");
-const selectedCountEl = document.getElementById("selectedCount");
-
-function renderHashtags(tags, preselectFirstN = 0) {
-    hashtagGrid.innerHTML = "";
-    selectedHashtags.clear();
-    tags.forEach((tag, i) => {
-        const chip = document.createElement("button");
-        chip.className = "hashtag-chip";
-        chip.innerHTML = `#${tag.replace(/^#/, "")} <span class="check">✓</span>`;
-        if (i < preselectFirstN) { chip.classList.add("selected"); selectedHashtags.add(tag); }
-        chip.addEventListener("click", () => {
-            chip.classList.toggle("selected");
-            if (chip.classList.contains("selected")) selectedHashtags.add(tag);
-            else selectedHashtags.delete(tag);
-            selectedCountEl.textContent = selectedHashtags.size;
-        });
-        hashtagGrid.appendChild(chip);
-    });
-    selectedCountEl.textContent = selectedHashtags.size;
-    hashtagPlaceholder.style.display = "none";
-    hashtagGrid.style.display = "flex";
-    refineHashtagsBtn.disabled = false;
-    copyHashtagsBtn.disabled = false;
+// Enable Buttons
+function enableButtons() {
+    ;[ 'refineFlyerBtn', 'refineCaptionBtn', 'refineHashtagsBtn',
+        'downloadFlyerBtn', 'shareFlyerBtn',
+        'copyCaptionBtn', 'sendCaptionBtn',
+        'copyHashtagsBtn'
+    ].forEach(id => {
+        const el = document.getElementById(id)
+        if (el) el.disabled = false
+    })
 }
 
-async function generateHashtags(promptText) {
-    const hadTags = hashtagGrid.style.display === "flex";
-    refineHashtagsBtn.disabled = true;
-    const prevHTML = hashtagGrid.innerHTML;
-    if (hadTags) hashtagGrid.innerHTML = `<div class="spinner"></div>`;
-    try {
-        const data = await callBackend(ENDPOINTS.hashtags, {
-            productId: currentProduct?.id || null,
-            productName: currentProduct?.name || null,
-            productImage: currentProduct?.imageUrl || null,
-            storeSlug: STORE.slug,
-            prompt: promptText || "Trending hashtags for this product"
-        });
-        renderHashtags(data.hashtags, Math.min(4, data.hashtags.length));
-    } catch (err) {
-        if (hadTags) hashtagGrid.innerHTML = prevHTML;
-        showError(err.message);
-    } finally {
-        refineHashtagsBtn.disabled = false;
-    }
-}
-refineHashtagsBtn.addEventListener("click", () => generateHashtags(mainPrompt.value.trim()));
-
-copyHashtagsBtn.addEventListener("click", () => {
-    const text = [...selectedHashtags].map(t => `#${t.replace(/^#/, "")}`).join(" ");
-    navigator.clipboard.writeText(text);
-});
-
-/* ============================================================
-   GENERATE CAMPAIGN — the primary action, fills all three cards
-   ============================================================ */
-const generateCampaignBtn = document.getElementById("generateCampaignBtn");
-generateCampaignBtn.addEventListener("click", async () => {
-    const promptText = mainPrompt.value.trim();
-    if (!promptText) {
-        showError("Tell us what you're promoting first.");
-        return;
-    }
-    generateCampaignBtn.disabled = true;
-    generateCampaignBtn.textContent = "Generating…";
-    hideError();
+// Download Flyer
+document.getElementById('downloadFlyerBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('downloadFlyerBtn')
+    btn.disabled = true
+    btn.textContent = 'Preparing...'
 
     try {
-        const data = await callBackend(ENDPOINTS.campaign, {
-            productId: currentProduct?.id || null,
-            productName: currentProduct?.name || null,
-            price: currentProduct?.price || null,
-            productImage: currentProduct?.imageUrl || null,
-            storeSlug: STORE.slug,
-            storeName: STORE.name,
-            prompt: promptText
-        });
-        if (data.imageUrl) setFlyerImage(data.imageUrl);
-        if (data.caption) setCaption(data.caption);
-        if (data.hashtags) renderHashtags(data.hashtags, Math.min(4, data.hashtags.length));
-        document.getElementById("lastGeneratedNote").textContent = "Generated just now";
+        // Dynamically load html2canvas
+        if (!window.html2canvas) {
+            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
+        }
+
+        const canvas = await window.html2canvas(document.getElementById('flyerCanvas'), {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: null,
+        })
+
+        const link = document.createElement('a')
+        link.download = `${store?.store_name || 'vendorly'}-flyer.png`
+        link.href = canvas.toDataURL('image/png')
+        link.click()
+
+        showToast('Flyer downloaded ✓')
     } catch (err) {
-        showError(err.message);
+        showToast('Download failed. Try again.', 'error')
+        console.error(err)
     } finally {
-        generateCampaignBtn.disabled = false;
-        generateCampaignBtn.textContent = "✦ Generate campaign";
+        btn.disabled = false
+        btn.textContent = '⬇ Download'
     }
-});
+})
+
+// Share Flyer on WhatsApp
+document.getElementById('shareFlyerBtn').addEventListener('click', () => {
+    const message = encodeURIComponent(
+        `${store?.store_name || 'My Store'}\n\nCheck out our store: ${storeUrl}`
+    )
+    const phone = store?.whatsapp?.replace(/[^0-9]/g, '') || ''
+    window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
+})
+
+// Copy Caption
+document.getElementById('copyCaptionBtn').addEventListener('click', async () => {
+    if (!generatedCaption) return
+    await copyToClipboard(generatedCaption)
+    showToast('Caption copied ✓')
+})
+
+// Send Caption on WhatsApp
+document.getElementById('sendCaptionBtn').addEventListener('click', () => {
+    if (!generatedCaption) return
+    const phone = store?.whatsapp?.replace(/[^0-9]/g, '') || ''
+    const message = encodeURIComponent(generatedCaption)
+    window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
+})
+
+// Copy Hashtags
+document.getElementById('copyHashtagsBtn').addEventListener('click', async () => {
+    const tags = selectedHashtags.size > 0
+        ? Array.from(selectedHashtags).join(' ')
+        : generatedHashtags.join(' ')
+
+    if (!tags) return
+    await copyToClipboard(tags)
+    showToast(`${selectedHashtags.size > 0 ? 'Selected' : 'All'} hashtags copied ✓`)
+})
+
+// Refine Buttons
+document.getElementById('refineFlyerBtn').addEventListener('click', () => {
+    mainPrompt.value = mainPrompt.value + ' (make the flyer headline more catchy)'
+    document.getElementById('generateCampaignBtn').click()
+})
+
+document.getElementById('refineCaptionBtn').addEventListener('click', () => {
+    mainPrompt.value = mainPrompt.value + ' (make the caption shorter and punchier)'
+    document.getElementById('generateCampaignBtn').click()
+})
+
+document.getElementById('refineHashtagsBtn').addEventListener('click', () => {
+    mainPrompt.value = mainPrompt.value + ' (suggest different hashtags more specific to Nigeria)'
+    document.getElementById('generateCampaignBtn').click()
+})
+
+// Helpers
+function setGenerating(loading) {
+    const btn = document.getElementById('generateCampaignBtn')
+    const loader = document.getElementById('flyerSkeleton')
+    const canvas = document.getElementById('flyerCanvas')
+    const empty = document.getElementById('flyerEmpty')
+
+    btn.disabled = loading
+    btn.textContent = loading ? '✦ Generating...' : '✦ Generate campaign'
+
+    if (loading) {
+        empty.style.display = 'none'
+        canvas.classList.remove('filled')
+        canvas.classList.add('loading')
+        loader.style.display = 'flex'
+    } else {
+        canvas.classList.remove('loading')
+        loader.style.display = 'none'
+    }
+}
+
+function showError(message) {
+    const el = document.getElementById('errorMsg')
+    el.textContent = message
+    el.style.display = 'block'
+}
+
+function hideError() {
+    const el = document.getElementById('errorMsg')
+    el.style.display = 'none'
+    el.textContent = ''
+}
+
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = src
+        script.onload = resolve
+        script.onerror = reject
+        document.head.appendChild(script)
+    })
+}
+

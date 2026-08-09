@@ -1,23 +1,49 @@
-/* ============================================================
-   products.css — Products list page
-   ============================================================ */
+:root {
+  --primary: #5b3df5;
+  --primary-hover: #4a2fe0;
+  --primary-light: #eee9ff;
+  --bg: #f7f8fc;
+  --surface: #ffffff;
+  --surface-secondary: #f1f3f9;
+  --border: #e6e8f0;
+  --heading: #111827;
+  --text: #475467;
+  --muted: #98a2b3;
+  --success: #18b56a;
+  --warning: #f6b91a;
+  --danger: #e5484d;
+  --whatsapp: #25d366;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+  --shadow-card: 0 8px 24px rgba(17, 24, 39, 0.06);
+  --gray-50: var(--surface-secondary);
+  --gray-100: var(--surface-secondary);
+  --gray-200: var(--border);
+  --gray-400: var(--muted);
+  --gray-500: var(--text);
+  --dark: var(--heading);
+  --coral: var(--danger);
+  --coral-light: rgba(229, 72, 77, 0.12);
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
 
-/* ── Toolbar ── */
+
+/* Toolbar */
 .products-toolbar {
   padding: 12px 16px;
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-100);
-  position: sticky;
-  top: 0;
-  z-index: 40;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
 }
 
 .search-box {
   position: relative;
   display: flex;
   align-items: center;
-  background: var(--gray-50);
-  border: 1.5px solid var(--gray-200);
+  background: var(--surface-secondary);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-full);
   padding: 0 14px;
   transition: border-color 0.15s;
@@ -50,7 +76,7 @@
 }
 
 .search-clear {
-  background: var(--gray-200);
+  background: var(--border);
   border: none;
   width: 18px;
   height: 18px;
@@ -71,7 +97,13 @@
   text-decoration: none;
 }
 
-/* ── Products List ── */
+.page-subtitle {
+  font-size: 13px;
+  color: var(--text);
+  padding: 10px 20px 0;
+}
+
+/* Products List */
 #productsList {
   padding: 12px 16px;
   display: flex;
@@ -79,10 +111,11 @@
   gap: 10px;
 }
 
-/* ── Product Item Card ── */
+/* Product Item Card */
 .product-item {
-  background: var(--white);
-  border: 1px solid var(--gray-200);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
   border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
@@ -149,8 +182,8 @@
 .product-item-variant-tag {
   font-size: 10px;
   font-weight: 600;
-  color: var(--gray-500);
-  background: var(--gray-100);
+  color: var(--text);
+  background: var(--surface-secondary);
   border-radius: var(--radius-full);
   padding: 2px 8px;
 }
@@ -196,7 +229,7 @@
   color: var(--white);
 }
 
-/* ── Skeleton Loaders ── */
+/* Skeleton Loaders */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -226,14 +259,14 @@
   animation: shimmer 1.4s infinite;
 }
 
-/* ── Delete Modal Buttons ── */
+/* Delete Modal Buttons */
 .btn-cancel {
   flex: 1;
   height: 46px;
   border-radius: var(--radius-full);
   border: 1.5px solid var(--gray-200);
   background: transparent;
-  color: var(--gray-500);
+  color: var(--text);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;

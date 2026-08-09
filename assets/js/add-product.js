@@ -1,15 +1,10 @@
-// ============================================================
-// add-product.js — Add and Edit product page
-// Works for both adding new and editing existing products
-// Detects edit mode via ?id= in URL
-// ============================================================
 
 import { requireAuth } from './auth.js'
 import { fetchStore } from './store.js'
 import { fetchProducts, addProduct, updateProduct, uploadProductImage } from './products.js'
 import { showToast, parseTags, tagsToString } from './utils.js'
 
-// ── Init ─────────────────────────────────────────────────────
+//  Init ─
 const user  = await requireAuth()
 const store = await fetchStore(user.id)
 
@@ -26,7 +21,7 @@ if (isEditing) {
   document.getElementById('saveProductBtn').textContent = 'Save Changes'
 }
 
-// ── Load Existing Product (edit mode) ─────────────────────────
+//  Load Existing Product (edit mode) ─
 let existingProduct = null
 let imageFile       = null
 let colorTags       = []
@@ -74,7 +69,7 @@ if (isEditing) {
   }
 }
 
-// ── Image Upload ──────────────────────────────────────────────
+//  Image Upload 
 document.getElementById('imageFile').addEventListener('change', (e) => {
   const file = e.target.files[0]
   if (!file) return
@@ -97,7 +92,7 @@ document.getElementById('changeImageBtn').addEventListener('click', () => {
   document.getElementById('imageFile').click()
 })
 
-// ── Description Character Count ───────────────────────────────
+//  Description Character Count ─
 function updateDescCount() {
   const val = document.getElementById('productDescription').value.length
   document.getElementById('descCount').textContent = `${val} / 500`
@@ -105,7 +100,7 @@ function updateDescCount() {
 
 document.getElementById('productDescription').addEventListener('input', updateDescCount)
 
-// ── Tag Input — Colors ────────────────────────────────────────
+//  Tag Input — Colors 
 setupTagInput('colorsInput', 'colorsList', colorTags, 'colors')
 setupTagInput('sizesInput',  'sizesList',  sizeTags,  'sizes')
 
@@ -170,7 +165,7 @@ function renderTags(type) {
   })
 }
 
-// ── Save Product ──────────────────────────────────────────────
+//  Save Product 
 document.getElementById('saveProductBtn').addEventListener('click', async () => {
   const name        = document.getElementById('productName').value.trim()
   const priceRaw    = document.getElementById('productPrice').value.trim()
@@ -241,7 +236,7 @@ document.getElementById('saveProductBtn').addEventListener('click', async () => 
   }
 })
 
-// ── Delete Product (from edit page) ──────────────────────────
+//  Delete Product (from edit page) 
 document.getElementById('deleteProductBtn').addEventListener('click', () => {
   // Navigate back to products page with delete intent
   // Products page handles the actual deletion with confirmation modal

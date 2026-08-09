@@ -1,19 +1,28 @@
-// ============================================================
-// products-page.js — Products list page
-// ============================================================
-
 import { requireAuth } from './auth.js'
 import { fetchStore } from './store.js'
 import { fetchProducts, deleteProduct, deleteProductImage } from './products.js'
 import { formatPrice, showToast } from './utils.js'
 import { renderBottomNav } from '../components/bottomNav.js'
 
-// ── Init ─────────────────────────────────────────────────────
-const user  = await requireAuth()
+
+function renderHeader(store) {
+  const storeName = store?.store_name || 'Your Store'
+
+  const avatar = document.getElementById('vendorAvatar')
+  if (store?.logo_url) {
+    avatar.innerHTML = `<img src="${store.logo_url}" alt="${storeName}">`
+  } else {
+    avatar.textContent = storeName.charAt(0).toUpperCase() || '?'
+  }
+}
+
+// Init
+const user = await requireAuth()
 const store = await fetchStore(user.id)
 renderBottomNav('products', null, store?.store_name, store?.logo_url)
+renderHeader(store)
 
-// ── Load Products ─────────────────────────────────────────────
+// Load Products
 let allProducts = []
 
 async function init() {
@@ -29,13 +38,13 @@ async function init() {
 
 init()
 
-// ── Render Products ───────────────────────────────────────────
+// Render Products
 function renderProducts(products) {
-  const list      = document.getElementById('productsList')
+  const list = document.getElementById('productsList')
   const emptyState = document.getElementById('emptyState')
   const emptySearch = document.getElementById('emptySearch')
 
-  emptyState.style.display  = 'none'
+  emptyState.style.display = 'none'
   emptySearch.style.display = 'none'
 
   const isSearching = document.getElementById('searchInput').value.trim() !== ''
@@ -58,15 +67,15 @@ function renderProducts(products) {
   list.innerHTML = products.map(p => `
     <div class="product-item" data-id="${p.id}">
       ${p.image_url
-        ? `<img class="product-item-image" src="${p.image_url}" alt="${p.name}" loading="lazy">`
-        : `<div class="product-item-image-placeholder">🛍️</div>`
-      }
+      ? `<img class="product-item-image" src="${p.image_url}" alt="${p.name}" loading="lazy">`
+      : `<div class="product-item-image-placeholder">🛍️</div>`
+    }
       <div class="product-item-info">
         <p class="product-item-name">${p.name}</p>
         <p class="product-item-price">${formatPrice(p.price)}</p>
         <div class="product-item-variants">
-          ${p.colors ? `<span class="product-item-variant-tag">🎨 ${p.colors}</span>` : ''}
-          ${p.sizes  ? `<span class="product-item-variant-tag">📐 ${p.sizes}</span>`  : ''}
+          ${p.colors ? `<span class="product-item-variant-tag">Colour: ${p.colors}</span>` : ''}
+          ${p.sizes ? `<span class="product-item-variant-tag">Size: ${p.sizes}</span>` : ''}
         </div>
       </div>
       <div class="product-item-actions">
@@ -103,13 +112,13 @@ function renderProducts(products) {
   })
 }
 
-// ── Update Subtitle ───────────────────────────────────────────
+// Update Subtitle
 function updateSubtitle(count) {
   document.getElementById('productsSubtitle').textContent =
     `${count} product${count !== 1 ? 's' : ''} in your store`
 }
 
-// ── Search ────────────────────────────────────────────────────
+// Search
 const searchInput = document.getElementById('searchInput')
 const searchClear = document.getElementById('searchClear')
 
@@ -135,12 +144,12 @@ searchClear.addEventListener('click', () => {
   searchInput.focus()
 })
 
-// ── Delete Modal ──────────────────────────────────────────────
-let deleteTargetId    = null
+// Delete Modal
+let deleteTargetId = null
 let deleteTargetImage = null
 
 function openDeleteModal(id, name, imageUrl) {
-  deleteTargetId    = id
+  deleteTargetId = id
   deleteTargetImage = imageUrl
   document.getElementById('deleteProductName').textContent = name
   document.getElementById('deleteModal').classList.add('open')
@@ -148,7 +157,7 @@ function openDeleteModal(id, name, imageUrl) {
 
 function closeDeleteModal() {
   document.getElementById('deleteModal').classList.remove('open')
-  deleteTargetId    = null
+  deleteTargetId = null
   deleteTargetImage = null
 }
 
@@ -168,7 +177,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async () =
   try {
     // Delete image from storage if exists
     if (deleteTargetImage) {
-      await deleteProductImage(deleteTargetImage).catch(() => {})
+      await deleteProductImage(deleteTargetImage).catch(() => { })
     }
 
     await deleteProduct(deleteTargetId)

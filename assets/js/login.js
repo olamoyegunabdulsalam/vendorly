@@ -1,10 +1,10 @@
 import { signIn, redirectIfLoggedIn } from './auth.js'
 
-/* ── REDIRECT IF ALREADY LOGGED IN ── */
+/* REDIRECT IF ALREADY LOGGED IN */
 await redirectIfLoggedIn()
 
 
-/* ── PASSWORD TOGGLE ── */
+/* PASSWORD TOGGLE */
 document.querySelectorAll('.toggle-password').forEach(function (button) {
   button.addEventListener('click', function () {
     const targetId = this.getAttribute('data-target')
@@ -29,7 +29,7 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
 })
 
 async function handleLogin() {
-  // ── Get inputs — using exact IDs from your HTML ──
+  // Get inputs — using exact IDs from your HTML
   const email = document.getElementById('emailAddress')   // ← login uses emailAddress not email
   const password = document.getElementById('password')
 
@@ -37,7 +37,7 @@ async function handleLogin() {
   const passwordError = document.getElementById('passwordError')
   const successBanner = document.getElementById('successBanner')
 
-  /* ── Reset all errors ── */
+  /* Reset all errors */
   emailError.style.display = 'none'
   passwordError.style.display = 'none'
   successBanner.style.display = 'none'
@@ -46,7 +46,7 @@ async function handleLogin() {
 
   let valid = true
 
-  /* ── Validate email format ── */
+  /* Validate email format */
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email.value.trim())) {
     emailError.textContent = 'Please enter a valid email address'
@@ -58,13 +58,13 @@ async function handleLogin() {
 
   if (!valid) return
 
-  /* ── Disable button to prevent double submit ── */
+  /* Disable button to prevent double submit */
   const submitBtn = document.querySelector('#loginForm button[type="submit"]')
   submitBtn.disabled = true
   submitBtn.textContent = 'Signing in...'
 
   try {
-    /* ── Call Supabase — replaces localStorage credential check ── */
+    /* Call Supabase — replaces localStorage credential check */
     await signIn(email.value.trim(), password.value)
 
     successBanner.style.display = 'block'
