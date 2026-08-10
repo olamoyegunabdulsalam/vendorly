@@ -1,23 +1,5 @@
 /* Brand Tokens */
 :root {
-<<<<<<< HEAD
-  --navy-primary:   #0B1F3A;
-  --navy-secondary: #12294F;
-  --blue-primary:   #1E4B8C;
-  --blue-light:     #4C7FD1;
-  --yellow:         #FFC93C;
-  --yellow-dark:    #E8A400;
-  --bg:             #F7F5EF;
-  --card:           #FFFFFF;
-  --text:           #101828;
-  --text-secondary: #5B6472;
-  --border:         #E4E0D6;
-  --whatsapp:       #25D366;
-  --radius-sm:  8px;
-  --radius-md:  12px;
-  --radius-lg:  16px;
-  --radius-xl:  24px;
-=======
   --primary: #5b3df5;
   --primary-hover: #4a2fe0;
   --primary-light: #eee9ff;
@@ -45,7 +27,6 @@
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-xl: 24px;
->>>>>>> 3b5c5875988b66ae5e11fa4ae50fbeda08507749
   --radius-full: 999px;
   --shadow-sm: 0 1px 4px rgba(17, 24, 39, 0.06);
   --shadow-md: 0 8px 24px rgba(17, 24, 39, 0.06);
