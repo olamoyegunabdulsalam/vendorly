@@ -394,62 +394,114 @@ nav {
   padding: 34px 0 44px;
 }
 
-.hero-device {
+.hero-mock {
   position: relative;
-  width: 260px;
-  aspect-ratio: 9 / 18.5;
-  background: var(--ink);
-  border-radius: 32px;
-  padding: 10px;
+  width: 320px;
+  max-width: 100%;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 16px;
   box-shadow: 0 30px 70px -18px rgba(11, 31, 58, 0.55);
-  transform: rotate(-7deg);
-  transition:
-    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.45s ease;
+  transform: rotate(-3deg);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.hero-device:hover {
-  transform: rotate(-3deg) translateY(-4px);
-  box-shadow: 0 40px 80px -18px rgba(11, 31, 58, 0.6);
+.hero-mock:hover {
+  transform: rotate(0deg) translateY(-4px);
 }
 
-.hero-device::before {
-  content: "";
-  position: absolute;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
+.mock-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.mock-dots span {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
-  z-index: 2;
+  background: var(--surface-secondary);
 }
 
-.hero-device::after {
-  content: "";
-  position: absolute;
-  right: -2px;
-  top: 22%;
-  width: 3px;
-  height: 11%;
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 2px 0 0 2px;
+.mock-dots span:first-child {
+  background: var(--yellow);
 }
 
-.hero-screen {
-  width: 100%;
-  height: 100%;
-  border-radius: 24px;
-  overflow: hidden;
-  background: var(--white);
+.mock-store {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 14px;
 }
 
-.hero-screen iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
+.mock-store-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.mock-store-name {
+  font-family: "Archivo Expanded", sans-serif;
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: var(--navy);
+}
+
+.mock-store-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.6rem;
+  color: var(--muted);
+}
+
+.mock-store-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.mock-product {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: linear-gradient(160deg, var(--blue-light), var(--surface-secondary));
+}
+
+.mock-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-row {
+  display: flex;
+}
+
+.chat-row.in {
+  justify-content: flex-start;
+}
+
+.chat-row.out {
+  justify-content: flex-end;
+}
+
+.chat-bubble {
+  max-width: 82%;
+  padding: 9px 12px;
+  border-radius: 14px;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.chat-bubble.in {
+  background: var(--surface-secondary);
+  color: var(--ink);
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble.out {
+  background: var(--whatsapp);
+  color: var(--white);
+  border-bottom-right-radius: 4px;
 }
 
 .float-card {
@@ -492,28 +544,18 @@ nav {
 }
 
 .float-1 {
-  top: 4%;
-  right: -14%;
+  top: 2%;
+  right: 2%;
 }
 
 .float-1 .f-icon {
-  background: rgba(255, 201, 60, 0.22);
-  color: var(--blue);
-}
-
-.float-2 {
-  top: 46%;
-  right: -18%;
-}
-
-.float-2 .f-icon {
-  background: rgba(30, 75, 140, 0.1);
-  color: var(--blue);
+  background: rgba(24, 181, 106, 0.16);
+  color: var(--success);
 }
 
 .float-3 {
-  bottom: 6%;
-  left: -16%;
+  bottom: 4%;
+  left: -6%;
 }
 
 .float-3 .f-icon {
@@ -700,203 +742,63 @@ nav {
   line-height: 1.5;
 }
 
-/* ---------- TEMPLATES ---------- */
-.templates {
+/* ---------- USE CASES ---------- */
+.usecases {
   padding: 90px 0;
 }
 
-.tpl-device {
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-  width: 100%;
-  aspect-ratio: 9/18;
-  background: #fff;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-}
-
-.template-frame {
-  width: 100%;
-  height: 100%;
-  border: none;
-
-  /* Scale the full page down */
-  transform: scale(0.32);
-  transform-origin: top left;
-
-  /* Compensate for scaling */
-  width: 312.5%;
-  height: 312.5%;
-
-  /* Hide scrollbars */
-  overflow: hidden;
-  pointer-events: none;
-
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE */
-}
-
-.template-frame::-webkit-scrollbar {
-  display: none;
-}
-.tpl-grid {
+.usecase-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 18px;
 }
 
-.tpl-card {
-  display: none;
-  border-radius: 16px;
-  overflow: hidden;
+.usecase-card {
+  padding: 26px 20px;
   border: 1px solid var(--line);
+  border-radius: var(--radius);
   background: var(--white);
-  box-shadow: 0 14px 30px -18px rgba(11, 31, 58, 0.25);
-  position: relative;
+  text-align: center;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
 }
 
-.tpl-card.show {
-  display: block;
+.usecase-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue-light);
+  box-shadow: 0 16px 30px -14px rgba(11, 31, 58, 0.16);
 }
 
-.tpl-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  z-index: 1;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--yellow),
-    var(--yellow) 8px,
-    var(--blue) 8px,
-    var(--blue) 16px
-  );
-}
-
-.tpl-preview {
-  aspect-ratio: 3/4;
+.usecase-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  color: var(--blue);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  padding: 18px;
-  background: var(--cream);
+  margin: 0 auto 16px;
 }
 
-.tpl-preview .tpl-badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 2;
-  background: rgba(255, 255, 255, 0.9);
+.usecase-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.usecase-card h3 {
+  font-size: 0.96rem;
   color: var(--navy);
-  font-size: 0.62rem;
+  margin-bottom: 6px;
   font-weight: 700;
-  padding: 4px 9px;
-  border-radius: 20px;
 }
 
-.tpl-device {
-  position: relative;
-  width: 62%;
-  aspect-ratio: 9/18;
-  background: var(--ink);
-  border-radius: 20px;
-  padding: 5px;
-  box-shadow: 0 18px 32px -14px rgba(11, 31, 58, 0.45);
-}
-
-.tpl-device::before {
-  content: "";
-  position: absolute;
-  top: 9px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
-  z-index: 2;
-}
-
-.tpl-device::after {
-  content: "";
-  position: absolute;
-  right: -2px;
-  top: 24%;
-  width: 2px;
-  height: 10%;
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 2px 0 0 2px;
-}
-
-.tpl-screen {
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-  overflow: hidden;
-  background: var(--white);
-  display: flex;
-  flex-direction: column;
-}
-
-.tpl-screen-banner {
-  flex: 0 0 42%;
-}
-
-.tpl-screen-body {
-  flex: 1;
-  padding: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.tpl-screen-row {
-  display: flex;
-  gap: 4px;
-  flex: 1;
-}
-
-.tpl-screen-block {
-  flex: 1;
-  border-radius: 4px;
-  background: var(--cream);
-}
-
-.tpl-1 .tpl-screen-banner {
-  background: linear-gradient(160deg, #5b6fe6, #2f3e9e);
-}
-
-.tpl-2 .tpl-screen-banner {
-  background: linear-gradient(160deg, #ff9f5b, #e4572e);
-}
-
-.tpl-3 .tpl-screen-banner {
-  background: linear-gradient(160deg, #f5a9c9, #d6336c);
-}
-
-.tpl-4 .tpl-screen-banner {
-  background: linear-gradient(160deg, #2c3e60, #0c2340);
-}
-
-.tpl-meta {
-  padding: 14px 16px 18px;
-}
-
-.tpl-meta .t-name {
-  font-weight: 700;
-  font-size: 0.94rem;
-  color: var(--navy);
-  margin-bottom: 3px;
-}
-
-.tpl-meta .t-cat {
-  font-size: 0.78rem;
+.usecase-card p {
+  font-size: 0.82rem;
   color: var(--slate);
+  line-height: 1.5;
 }
 
 /* ---------- FAQ ---------- */
@@ -1071,12 +973,12 @@ footer ul li a:hover {
   }
 
   .hero-visual {
-    max-width: 300px;
+    max-width: 320px;
     margin: 20px auto 0;
   }
 
-  .hero-device {
-    transform: rotate(-4deg);
+  .hero-mock {
+    transform: rotate(-2deg);
   }
 
   .how-grid {
@@ -1096,7 +998,7 @@ footer ul li a:hover {
     grid-template-columns: 1fr 1fr;
   }
 
-  .tpl-grid {
+  .usecase-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -1115,7 +1017,7 @@ footer ul li a:hover {
     padding: 20px 0 10px;
   }
 
-  .hero-device {
+  .hero-mock {
     transform: rotate(0deg);
   }
 
@@ -1131,7 +1033,7 @@ footer ul li a:hover {
     grid-template-columns: 1fr;
   }
 
-  .tpl-grid {
+  .usecase-grid {
     grid-template-columns: 1fr;
   }
 
