@@ -1,8 +1,39 @@
-/* ============================================================
-   add-product.css — Add / Edit product page
-   ============================================================ */
+:root {
+  --primary: #5b3df5;
+  --primary-hover: #4a2fe0;
+  --primary-light: #eee9ff;
+  --bg: #f7f8fc;
+  --surface: #ffffff;
+  --surface-secondary: #f1f3f9;
+  --border: #e6e8f0;
+  --heading: #111827;
+  --text: #475467;
+  --muted: #98a2b3;
+  --success: #18b56a;
+  --warning: #f6b91a;
+  --danger: #e5484d;
+  --whatsapp: #25d366;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+  --shadow-card: 0 8px 24px rgba(17, 24, 39, 0.06);
+  --gray-50: var(--surface-secondary);
+  --gray-100: var(--surface-secondary);
+  --gray-200: var(--border);
+  --gray-400: var(--muted);
+  --gray-500: var(--text);
+  --dark: var(--heading);
+  --mint: var(--success);
+  --mint-light: rgba(24, 181, 106, 0.12);
+  --coral: var(--danger);
+  --coral-light: rgba(229, 72, 77, 0.12);
+  --font-body: "Inter", sans-serif;
+  --font-display: "Archivo Expanded", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
 
-/* ── Image Upload Section ── */
+/* Image Upload Section */
 .image-upload-section {
   padding: 16px 16px 0;
   display: flex;
@@ -15,15 +46,17 @@
   width: 100%;
   height: 220px;
   border-radius: var(--radius-lg);
-  border: 2px dashed var(--gray-200);
-  background: var(--gray-50);
+  border: 2px dashed var(--border);
+  background: var(--surface-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
 
 .image-upload-area:hover {
@@ -57,18 +90,20 @@
   pointer-events: none;
 }
 
-.upload-icon { font-size: 36px; }
+.upload-icon {
+  font-size: 36px;
+}
 
 .upload-text {
   font-size: 14px;
   font-weight: 600;
-  color: var(--dark);
+  color: var(--heading);
   margin: 0;
 }
 
 .upload-hint {
   font-size: 12px;
-  color: var(--gray-400);
+  color: var(--muted);
   margin: 0;
 }
 
@@ -86,16 +121,23 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ── Product Form Section ── */
+/* Product Form Section */
 .product-form-section {
   padding: 20px 16px 24px;
 }
 
-/* ── Required / Optional Labels ── */
-.required { color: var(--coral); font-weight: 400; }
-.optional  { color: var(--gray-400); font-weight: 400; font-size: 12px; }
+/* Required / Optional Labels */
+.required {
+  color: var(--danger);
+  font-weight: 400;
+}
+.optional {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 12px;
+}
 
-/* ── Price Input ── */
+/* Price Input */
 .price-input-wrap {
   position: relative;
   display: flex;
@@ -112,9 +154,12 @@
   font-family: var(--font-mono);
 }
 
-.price-input { padding-left: 28px !important; font-family: var(--font-mono) !important; }
+.price-input {
+  padding-left: 28px !important;
+  font-family: var(--font-mono) !important;
+}
 
-/* ── Char Count ── */
+/* Char Count */
 .char-count {
   font-size: 11px;
   color: var(--gray-400);
@@ -122,12 +167,12 @@
   margin-top: 4px;
 }
 
-/* ── Tag Input ── */
+/* Tag Input */
 .tag-input-wrap {
   min-height: 46px;
   border-radius: var(--radius-md);
-  border: 1.5px solid var(--gray-200);
-  background: var(--white);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
   padding: 8px 12px;
   display: flex;
   flex-wrap: wrap;
@@ -137,7 +182,9 @@
   transition: border-color 0.15s;
 }
 
-.tag-input-wrap:focus-within { border-color: var(--primary); }
+.tag-input-wrap:focus-within {
+  border-color: var(--primary);
+}
 
 .tags-list {
   display: flex;
@@ -182,9 +229,11 @@
   height: 28px;
 }
 
-.tag-input::placeholder { color: var(--gray-400); }
+.tag-input::placeholder {
+  color: var(--gray-400);
+}
 
-/* ── Delete Product Button ── */
+/* Delete Product Button */
 .btn-delete-product {
   width: 100%;
   height: 48px;
@@ -201,4 +250,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.btn-delete-product:active { background: var(--coral-light); }
+.btn-delete-product:active {
+  background: var(--coral-light);
+}

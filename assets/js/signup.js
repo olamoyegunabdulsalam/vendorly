@@ -1,14 +1,14 @@
 import { signUp, redirectIfLoggedIn } from './auth.js'
 
-/* ── REDIRECT IF ALREADY LOGGED IN ── */
+/* REDIRECT IF ALREADY LOGGED IN */
 await redirectIfLoggedIn()
 
-/* ── NAVIGATION ── */
+/* NAVIGATION */
 document.getElementById("goToLogin").addEventListener("click", () => {
   window.location.href = "login.html";
 });
 
-/* ── PASSWORD TOGGLE ── */
+/* PASSWORD TOGGLE */
 document.querySelectorAll('.toggle-password').forEach(function (button) {
   button.addEventListener('click', function () {
     const targetId = this.getAttribute('data-target')
@@ -26,7 +26,7 @@ document.querySelectorAll('.toggle-password').forEach(function (button) {
   })
 })
 
-/* ── SIGNUP HANDLER ── */
+/* SIGNUP HANDLER */
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
 const nameRegex = /^[A-Za-z\s]+$/
 
@@ -36,7 +36,7 @@ document.getElementById('signupForm').addEventListener('submit', function (e) {
 })
 
 async function handleSignUp() {
-  // ── Get inputs — using exact IDs from your HTML ──
+  // Get inputs — using exact IDs from your HTML
   const name = document.getElementById('full_name') // ← was 'name', fixed
   const email = document.getElementById('email')
   const password = document.getElementById('password')
@@ -50,7 +50,7 @@ async function handleSignUp() {
   const termsError = document.getElementById('termsError')
   const successBanner = document.getElementById('successBanner')
 
-    /* ── Reset all errors ── */
+    /* Reset all errors */
     ;[ nameError, emailError, passwordError, confirmPasswordError, termsError ].forEach(function (el) {
       el.style.display = 'none'
     })
@@ -61,7 +61,7 @@ async function handleSignUp() {
 
   let valid = true
 
-  /* ── Validate name ── */
+  /* Validate name */
   if (name.value.trim() === '') {
     nameError.textContent = 'Name is required'
     nameError.style.display = 'block'
@@ -74,7 +74,7 @@ async function handleSignUp() {
     valid = false
   }
 
-  /* ── Validate email ── */
+  /* Validate email */
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email.value.trim())) {
     emailError.textContent = 'Please enter a valid email address'
@@ -83,21 +83,21 @@ async function handleSignUp() {
     valid = false
   }
 
-  /* ── Validate password ── */
+  /* Validate password */
   if (!passwordRegex.test(password.value)) {
     passwordError.style.display = 'block'
     password.classList.add('error')
     valid = false
   }
 
-  /* ── Validate confirm password — frontend only, never sent to Supabase ── */
+  /* Validate confirm password — frontend only, never sent to Supabase */
   if (confirmPassword.value !== password.value) {
     confirmPasswordError.style.display = 'block'
     confirmPassword.classList.add('error')
     valid = false
   }
 
-  /* ── Validate terms ── */
+  /* Validate terms */
   if (!terms.checked) {
     termsError.style.display = 'block'
     valid = false
@@ -105,13 +105,13 @@ async function handleSignUp() {
 
   if (!valid) return
 
-  /* ── Disable button to prevent double submit ── */
+  /* Disable button to prevent double submit */
   const submitBtn = document.querySelector('#signupForm button[type="submit"]')
   submitBtn.disabled = true
   submitBtn.textContent = 'Creating account...'
 
   try {
-    /* ── Call Supabase — sends full_name, email, password only ── */
+    /* Call Supabase — sends full_name, email, password only */
     await signUp(name.value.trim(), email.value.trim(), password.value)
 
     successBanner.style.display = 'block'

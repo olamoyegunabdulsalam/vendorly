@@ -1,9 +1,3 @@
-// ============================================================
-// bottomNav.js — Responsive nav component
-// Mobile: bottom tab bar
-// Desktop: sidebar with icons + labels (like X/Twitter)
-// ============================================================
-
 const tabs = [
   {
     id: 'home',
@@ -54,18 +48,31 @@ const tabs = [
   },
 ]
 
-// ── Detect desktop ────────────────────────────────────────────
+// Detect desktop
 function isDesktop() {
   return window.innerWidth >= 768
 }
 
-// ── Render Nav ────────────────────────────────────────────────
+// Sticky header scroll shadow─
+function initStickyHeader() {
+  const header = document.querySelector('.dash-header')
+  const scrollEl = document.querySelector('.page-content')
+  if (!header || !scrollEl) return
+
+  scrollEl.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', scrollEl.scrollTop > 4)
+  })
+}
+
+// Render Nav
 export function renderBottomNav(activeTab = 'home', onAddClick = null, storeName = '', logoUrl = '') {
   if (isDesktop()) {
     renderSidebar(activeTab, onAddClick, storeName, logoUrl)
   } else {
     renderMobileNav(activeTab, onAddClick)
   }
+
+  initStickyHeader()
 
   // Re-render on resize
   let resizeTimer
@@ -84,7 +91,7 @@ export function renderBottomNav(activeTab = 'home', onAddClick = null, storeName
   })
 }
 
-// ── Mobile Bottom Nav ─────────────────────────────────────────
+// Mobile Bottom Nav─
 function renderMobileNav(activeTab, onAddClick) {
   document.getElementById('bottom-nav')?.remove()
 
@@ -109,7 +116,7 @@ function renderMobileNav(activeTab, onAddClick) {
     `
   }).join('')
 
-  document.querySelector('.app-shell').appendChild(nav)
+  document.body.appendChild(nav)
 
   document.getElementById('nav-add-btn')?.addEventListener('click', () => {
     if (onAddClick) onAddClick()
@@ -117,7 +124,7 @@ function renderMobileNav(activeTab, onAddClick) {
   })
 }
 
-// ── Desktop Sidebar ───────────────────────────────────────────
+// Desktop Sidebar─
 function renderSidebar(activeTab, onAddClick, storeName, logoUrl) {
   document.getElementById('sidebar-nav')?.remove()
 
@@ -147,15 +154,25 @@ function renderSidebar(activeTab, onAddClick, storeName, logoUrl) {
 
   // Avatar initials or image
   const avatarContent = logoUrl
-    ? `<img src="${logoUrl}" alt="${storeName}">`
+    ? `<img src="${logoUrl}" alt="Vendorly logo">`
     : `<span>${storeName ? storeName.charAt(0).toUpperCase() : '?'}</span>`
 
   sidebar.innerHTML = `
     <!-- Logo -->
-    <a href="dashboard.html" class="sidebar-logo">
-      <div class="sidebar-logo-icon">🛍️</div>
-      <span class="sidebar-logo-text">Vendorly</span>
+<div class="sidebar-brand">
+    <a href="dashboard.html" class="sidebar-brand-link">
+        <img
+            src="assets/images/vendorly-logo.png"
+            alt="Vendorly"
+            class="sidebar-brand-logo"
+        />
+
+        <div class="sidebar-brand-text">
+            <h2>Vendorly</h2>
+            <p>Build • Share • Sell</p>
+        </div>
     </a>
+</div>
 
     <!-- Nav items -->
     <nav class="sidebar-nav">

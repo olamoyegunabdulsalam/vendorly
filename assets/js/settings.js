@@ -1,45 +1,47 @@
-// ============================================================
-// settings.js — Settings page logic
-// ============================================================
-
 import { requireAuth, signOut, updatePassword, updateEmail, getUser } from './auth.js'
 import { fetchStore, saveStore, uploadStoreLogo, uploadStoreBanner } from './store.js'
 import { showToast } from './utils.js'
 import { renderBottomNav } from '../components/bottomNav.js'
 
-// ── Init ─────────────────────────────────────────────────────
+//  Init ─
 const user = await requireAuth()
 
 // Load current user email + store data
-const [authUser, store] = await Promise.all([
+const [ authUser, store ] = await Promise.all([
   getUser(),
   fetchStore(user.id),
 ])
 
 
-renderBottomNav('settings', null, store.store_name, store.logo_url)
+renderBottomNav('settings', null, store?.store_name, store?.logo_url)
 
-// ── Populate fields ───────────────────────────────────────────
+//  Populate fields ─
 document.getElementById('currentEmail').textContent = authUser?.email || ''
 
-// Avatar initials
-const avatar = document.getElementById('vendorAvatar')
-if (store?.logo_url) {
-  avatar.innerHTML = `<img src="${store.logo_url}" alt="logo">`
-} else if (store?.store_name) {
-  avatar.textContent = store.store_name.charAt(0).toUpperCase()
+
+function renderHeader(store) {
+  const storeName = store?.store_name || 'Your Store'
+
+  const avatar = document.getElementById('vendorAvatar')
+  if (store?.logo_url) {
+    avatar.innerHTML = `<img src="${store.logo_url}" alt="${storeName}">`
+  } else {
+    avatar.textContent = storeName.charAt(0).toUpperCase() || '?'
+  }
 }
+
+renderHeader(store)
 
 // Store fields
 if (store) {
-  document.getElementById('storeName').value    = store.store_name    || ''
-  document.getElementById('whatsapp').value     = store.whatsapp      || ''
-  document.getElementById('location').value     = store.location      || ''
-  document.getElementById('description').value  = store.description   || ''
+  document.getElementById('storeName').value = store.store_name || ''
+  document.getElementById('whatsapp').value = store.whatsapp || ''
+  document.getElementById('location').value = store.location || ''
+  document.getElementById('description').value = store.description || ''
 
   // Banner
   if (store.banner_url) {
-    document.getElementById('bannerCurrent').src          = store.banner_url
+    document.getElementById('bannerCurrent').src = store.banner_url
     document.getElementById('bannerCurrent').style.display = 'block'
     document.getElementById('bannerPlaceholder').style.display = 'none'
   }
@@ -53,10 +55,10 @@ if (store) {
   }
 }
 
-// ── Banner file change ────────────────────────────────────────
+//  Banner file change 
 let newBannerFile = null
 document.getElementById('bannerFile').addEventListener('change', (e) => {
-  const file = e.target.files[0]
+  const file = e.target.files[ 0 ]
   if (!file) return
   newBannerFile = file
   const preview = document.getElementById('bannerCurrent')
@@ -65,60 +67,82 @@ document.getElementById('bannerFile').addEventListener('change', (e) => {
   document.getElementById('bannerPlaceholder').style.display = 'none'
 })
 
-// ── Logo file change ──────────────────────────────────────────
+//  Logo file change 
 let newLogoFile = null
 document.getElementById('logoFile').addEventListener('change', (e) => {
-  const file = e.target.files[0]
+  const file = e.target.files[ 0 ]
   if (!file) return
   newLogoFile = file
   const circle = document.getElementById('logoPreviewCircle')
   circle.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="logo">`
 })
 
-// ── Save Store Info ───────────────────────────────────────────
+// Populate slug field when store loads
+if (store?.slug) {
+  document.getElementById('storeSlug').value = store.slug
+}
+
+// Live preview as vendor types
+document.getElementById('storeSlug').addEventListener('input', (e) => {
+  const raw = e.target.value
+  const cleaned = raw
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '')  // only allow letters, numbers, hyphens
+    .replace(/-+/g, '-')          // no double hyphens
+
+  // Auto correct what they type
+  if (raw !== cleaned) {
+    e.target.value = cleaned
+  }
+
+  const preview = document.getElementById('slugPreview')
+  const hint = document.getElementById('slugHint')
+
+  if (cleaned) {
+    preview.textContent = `✓ vendorly.com/store/${cleaned}`
+    hint.style.color = 'var(--mint)'
+    hint.textContent = 'Looks good'
+  } else {
+    preview.textContent = ''
+    hint.style.color = 'var(--gray-400)'
+    hint.textContent = 'Only letters, numbers and hyphens'
+  }
+})
+
+//  Save Store Info ─
 document.getElementById('saveStoreBtn').addEventListener('click', async () => {
-  const storeName   = document.getElementById('storeName').value.trim()
-  const whatsapp    = document.getElementById('whatsapp').value.trim()
-  const location    = document.getElementById('location').value.trim()
+  const storeName = document.getElementById('storeName').value.trim()
+  const whatsapp = document.getElementById('whatsapp').value.trim()
+  const location = document.getElementById('location').value.trim()
   const description = document.getElementById('description').value.trim()
+  const newSlug = document.getElementById('storeSlug').value.trim()
 
-  if (!storeName) {
-    showToast('Store name is required', 'error')
-    return
-  }
-
-  if (!whatsapp) {
-    showToast('WhatsApp number is required', 'error')
-    return
-  }
+  if (!storeName) { showToast('Store name is required', 'error'); return }
+  if (!whatsapp) { showToast('WhatsApp number is required', 'error'); return }
+  if (!newSlug) { showToast('Store URL name is required', 'error'); return }
 
   const btn = document.getElementById('saveStoreBtn')
   btn.disabled = true
   btn.innerHTML = '<div class="spinner"></div>'
 
   try {
-    // Upload new banner if changed
     let bannerUrl = store?.banner_url || null
-    if (newBannerFile) {
-      bannerUrl = await uploadStoreBanner(user.id, newBannerFile)
-    }
+    if (newBannerFile) bannerUrl = await uploadStoreBanner(user.id, newBannerFile)
 
-    // Upload new logo if changed
     let logoUrl = store?.logo_url || null
-    if (newLogoFile) {
-      logoUrl = await uploadStoreLogo(user.id, newLogoFile)
-    }
+    if (newLogoFile) logoUrl = await uploadStoreLogo(user.id, newLogoFile)
 
     await saveStore(user.id, {
-      store_name:  storeName,
+      store_name: storeName,
       whatsapp,
       location,
       description,
+      slug: newSlug,   // ← pass slug explicitly so getUniqueSlug uses it
       ...(bannerUrl && { banner_url: bannerUrl }),
-      ...(logoUrl   && { logo_url:   logoUrl   }),
+      ...(logoUrl && { logo_url: logoUrl }),
     })
 
-    showToast('Store updated ✓')
+    showToast('Settings saved ✓')
 
   } catch (err) {
     showToast(err.message || 'Failed to save', 'error')
@@ -126,9 +150,10 @@ document.getElementById('saveStoreBtn').addEventListener('click', async () => {
     btn.disabled = false
     btn.textContent = 'Save Changes'
   }
+
 })
 
-// ── Update Email ──────────────────────────────────────────────
+//  Update Email 
 document.getElementById('updateEmailBtn').addEventListener('click', async () => {
   const newEmail = document.getElementById('newEmail').value.trim()
 
@@ -154,9 +179,9 @@ document.getElementById('updateEmailBtn').addEventListener('click', async () => 
   }
 })
 
-// ── Update Password ───────────────────────────────────────────
+//  Update Password ─
 document.getElementById('updatePasswordBtn').addEventListener('click', async () => {
-  const newPassword     = document.getElementById('newPassword').value
+  const newPassword = document.getElementById('newPassword').value
   const confirmPassword = document.getElementById('confirmPassword').value
 
   if (!newPassword) {
@@ -180,7 +205,7 @@ document.getElementById('updatePasswordBtn').addEventListener('click', async () 
 
   try {
     await updatePassword(newPassword)
-    document.getElementById('newPassword').value    = ''
+    document.getElementById('newPassword').value = ''
     document.getElementById('confirmPassword').value = ''
     showToast('Password updated ✓')
   } catch (err) {
@@ -191,7 +216,7 @@ document.getElementById('updatePasswordBtn').addEventListener('click', async () 
   }
 })
 
-// ── Logout ────────────────────────────────────────────────────
+//  Logout 
 document.getElementById('logoutBtn').addEventListener('click', async () => {
   const btn = document.getElementById('logoutBtn')
   btn.disabled = true

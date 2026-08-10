@@ -9,13 +9,13 @@ const user = await requireAuth()
 
 
 // Load vendor data
-const [store, products] = await Promise.all([
+const [ store, products ] = await Promise.all([
   fetchStore(user.id),
   fetchProducts(user.id),
 ])
 
 // Render bottom nav — 'home' is active tab
-renderBottomNav('home', null, store.store_name, store.logo_url)
+renderBottomNav('home', null, store?.store_name, store?.logo_url)
 
 if (!store) {
   // First time — show store setup modal
@@ -41,25 +41,32 @@ let logoFile = null
 let bannerFile = null
 
 document.getElementById('logoFile').addEventListener('change', (e) => {
-  const file = e.target.files[0]
+  const file = e.target.files[ 0 ]
   if (!file) return
   logoFile = file
+
   const preview = document.getElementById('logoPreview')
+  const overlay = document.getElementById('logoChangeOverlay')
+
   preview.src = URL.createObjectURL(file)
   preview.style.display = 'block'
+  overlay.style.display = 'flex'   // ← show overlay
   document.querySelector('.logo-upload-icon').style.display = 'none'
   document.querySelector('.logo-upload-text').style.display = 'none'
 })
+
 
 document.getElementById('bannerFile').addEventListener('change', (e) => {
   const file = e.target.files[ 0 ]
   if (!file) return
   bannerFile = file
 
-  // Show preview
   const preview = document.getElementById('bannerPreview')
+  const overlay = document.getElementById('bannerChangeOverlay')
+
   preview.src = URL.createObjectURL(file)
   preview.style.display = 'block'
+  overlay.style.display = 'flex'   // ← show overlay
   document.querySelector('.banner-upload-icon').style.display = 'none'
   document.querySelector('.banner-upload-text').style.display = 'none'
 })
@@ -67,16 +74,16 @@ document.getElementById('bannerFile').addEventListener('change', (e) => {
 // Create store submit
 document.getElementById('createStoreBtn').addEventListener('click', async () => {
   const storeName = document.getElementById('store_name').value.trim()
-  const whatsapp  = '+' + document.getElementById('whatsapp').value.trim()
+  const whatsapp = '+' + document.getElementById('whatsapp').value.trim()
   const description = document.getElementById('description').value.trim()
-  const location  = document.getElementById('location').value.trim()
+  const location = document.getElementById('location').value.trim()
 
   const storeNameError = document.getElementById('storeNameError')
-  const whatsappError  = document.getElementById('whatsappError')
+  const whatsappError = document.getElementById('whatsappError')
 
   // Reset errors
   storeNameError.style.display = 'none'
-  whatsappError.style.display  = 'none'
+  whatsappError.style.display = 'none'
   document.getElementById('store_name').classList.remove('error')
   document.getElementById('whatsapp').classList.remove('error')
 
@@ -107,7 +114,7 @@ document.getElementById('createStoreBtn').addEventListener('click', async () => 
       logoUrl = await uploadStoreLogo(user.id, logoFile)
     }
 
-    // ── upload banner
+    // upload banner
     let bannerUrl = null
     if (bannerFile) {
       bannerUrl = await uploadStoreBanner(user.id, bannerFile)
@@ -115,7 +122,7 @@ document.getElementById('createStoreBtn').addEventListener('click', async () => 
 
     // Save store to Supabase
     const newStore = await saveStore(user.id, {
-      store_name:  storeName,
+      store_name: storeName,
       whatsapp,
       description,
       location,
@@ -137,25 +144,36 @@ document.getElementById('createStoreBtn').addEventListener('click', async () => 
   }
 })
 
+function getGreeting() {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good Morning ☀️'
+  if (hour < 18) return 'Good Afternoon 🌤️'
+  return 'Good Evening 🌙'
+}
+
+function renderHeader(store) {
+  const storeName = store?.store_name || 'Your Store'
+  document.getElementById('headerGreeting').textContent = getGreeting()
+  document.getElementById('vendorName').textContent = storeName
+
+  const avatar = document.getElementById('vendorAvatar')
+  if (store?.logo_url) {
+    avatar.innerHTML = `<img src="${store.logo_url}" alt="${storeName}">`
+  } else {
+    avatar.textContent = storeName.charAt(0).toUpperCase() || '?'
+  }
+}
+
 // Render Dashboard
 function renderDashboard(store, products) {
   // Show page content
   document.getElementById('pageContent').style.display = 'flex'
   document.getElementById('pageContent').style.flexDirection = 'column'
 
-  // Vendor name + avatar
-  const storeName = store.store_name || 'Your Store'
-  document.getElementById('vendorName').textContent = storeName
-  const avatar = document.getElementById('vendorAvatar')
-
-  if (store.logo_url) {
-    avatar.innerHTML = `<img src="${store.logo_url}" alt="${storeName}">`
-  } else {
-    avatar.textContent = storeName.charAt(0).toUpperCase()
-  }
+  renderHeader(store)
 
   // Store link
-  const storeUrl = getStoreUrl(store.id)
+  const storeUrl = getStoreUrl(store.id, store.slug)
   document.getElementById('storeLinkUrl').textContent = storeUrl
 
   // Open store quick action link
@@ -219,9 +237,9 @@ function renderRecentProducts(products) {
   grid.innerHTML = recent.map(p => `
     <div class="recent-product-card" onclick="window.location.href='products.html'">
       ${p.image_url
-        ? `<img class="recent-product-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
-        : `<div class="recent-product-img-placeholder">🛍️</div>`
-      }
+      ? `<img class="recent-product-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
+      : `<div class="recent-product-img-placeholder">🛍️</div>`
+    }
       <div class="recent-product-info">
         <p class="recent-product-name">${p.name}</p>
         <p class="recent-product-price">${formatPrice(p.price)}</p>

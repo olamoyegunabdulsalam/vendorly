@@ -8,10 +8,28 @@ export function formatPrice(amount) {
   return `₦${Number(amount).toLocaleString()}`
 }
 
+export function generateSlug(storeName) {
+  return storeName
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '') // remove special characters
+    .replace(/\s+/g, '-')          // spaces to hyphens
+    .replace(/-+/g, '-')           // no double hyphens
+    .substring(0, 40)              // max 40 chars
+}
+
 //  Get Store URL 
 // Returns the full public URL for a vendor's store
-export function getStoreUrl(storeId) {
-  return `${window.location.origin}/store.html?id=${storeId}`
+export function getStoreUrl(storeId, slug = null) {
+  const base = window.location.origin
+  const isLocal = base.includes('127.0.0.1') || base.includes('localhost')
+
+  if (slug && !isLocal) {
+    return `${base}/store/${slug}`           // vendorly.com/store/amara-fashion
+  } else if (slug && isLocal) {
+    return `${base}/store.html?slug=${slug}` // localhost fallback
+  }
+  return `${base}/store.html?id=${storeId}` // UUID fallback
 }
 
 //  Get Store ID from URL 
