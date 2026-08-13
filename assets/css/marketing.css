@@ -289,6 +289,41 @@
   gap: 8px;
 }
 
+/* ── Usage Counter ── */
+.usage-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.usage-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.usage-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.usage-bar-fill.usage-bar-low { background: var(--danger); }
+
+.usage-counter {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+}
+
+.usage-counter.usage-mid { color: var(--warning); }
+.usage-counter.usage-low { color: var(--danger); }
+
 .generate-btn {
   width: 100%;
   height: 50px;
