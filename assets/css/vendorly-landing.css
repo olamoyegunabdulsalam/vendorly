@@ -38,6 +38,11 @@ html {
   scroll-behavior: smooth;
 }
 
+section[id],
+#top {
+  scroll-margin-top: 76px;
+}
+
 body {
   font-family: "Inter", sans-serif;
   color: var(--heading);
@@ -206,6 +211,13 @@ nav {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--blue);
+}
+
+/* The store CTA inside .nav-links is a mobile-only duplicate of the
+   "Create free store" button already in .nav-actions. Hidden by default;
+   revealed only inside the mobile dropdown (see max-width: 960px below). */
+.mobile-store-action {
+  display: none;
 }
 
 .hamburger {
@@ -938,10 +950,6 @@ footer {
   padding-bottom: 40px;
 }
 
-.footer-brand .logo {
-  color: var(--white);
-}
-
 .footer-brand p {
   font-size: 0.88rem;
   color: rgba(255, 255, 255, 0.5);
@@ -979,23 +987,267 @@ footer ul li a:hover {
   gap: 10px;
 }
 
+/* ---------- SCROLL ANIMATIONS ---------- */
+@keyframes scrollFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scrollSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-animate.visible {
+  animation: scrollFadeUp 0.6s ease forwards;
+}
+
+.section-head {
+  animation-delay: 0.1s;
+}
+
+.how-step,
+.feature-card,
+.usecase-card,
+.faq-item {
+  animation-delay: 0.2s;
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 960px) {
+  .wrap {
+    padding: 0 22px;
+  }
+
+  nav {
+    position: relative;
+    min-height: 76px;
+    padding: 12px 0;
+    flex-wrap: wrap;
+  }
+
+  /* ==============================
+     MOBILE DROPDOWN MENU
+     ============================== */
+
+  .nav-links {
+    display: flex;
+    width: calc(100% + 44px);
+    margin-left: -22px;
+    margin-right: -22px;
+
+    order: 3;
+    flex-direction: column;
+    gap: 0;
+
+    padding: 0;
+    margin-top: 0;
+
+    background: var(--white);
+
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+
+    overflow: hidden;
+
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+      max-height 0.3s ease,
+      opacity 0.2s ease,
+      padding 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+
+  /* OPEN MENU */
+  .nav-links.mobile-open {
+    max-height: 380px;
+
+    padding: 8px 0 16px;
+
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transition-delay: 0s;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+
+    width: 100%;
+
+    padding: 14px 22px;
+
+    color: var(--ink);
+
+    font-size: 0.98rem;
+    font-weight: 600;
+  }
+
+  /* Remove desktop underline animation */
+  .nav-links a::after {
+    display: none;
+  }
+
+  .nav-links a:hover,
+  .nav-links a:focus-visible {
+    color: var(--primary);
+  }
+
+
+  /* ==============================
+     CREATE FREE STORE
+     ============================== */
+
+  .mobile-store-action {
+    display: block;
+
+    margin-top: 6px;
+    padding-top: 10px;
+
+    border-top: 1px solid var(--line);
+  }
+
+  .mobile-store-action a.btn {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: calc(100% - 44px);
+
+    margin: 0 22px;
+
+    padding: 13px 18px;
+
+    color: var(--white);
+
+    background: var(--primary);
+
+    border-radius: 9px;
+  }
+
+  .mobile-store-action a.btn:hover {
+    color: var(--white);
+    background: var(--primary-hover);
+  }
+.hero-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.hero-mock {
+  order: 1;
+}
+
+.float-1 { order: 0; }
+.float-3 { order: 2; }
+
+.float-card {
+  position: static;
+  width: min(100%, 280px);
+  max-width: 280px;
+}
+
+  /* ==============================
+     HEADER BUTTONS
+     ============================== */
+
+  /* Hide desktop Create Free Store */
+  .nav-actions > .btn {
+    display: none;
+  }
+
+  .nav-actions .ghost-link {
+    display: none;
+  }
+
+
+  /* ==============================
+     HAMBURGER
+     ============================== */
+
+  .hamburger {
+    display: flex;
+  }
+
+  .hamburger span {
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  /* Hamburger becomes X */
+  .hamburger[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
   .hero-inner {
     grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero p.lede {
+    margin: 0 auto 32px;
+  }
+
+  .hero-ctas {
+    justify-content: center;
   }
 
   .hero-visual {
-    max-width: 320px;
-    margin: 20px auto 0;
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 20px 0 10px;
   }
 
   .hero-mock {
     transform: rotate(-2deg);
   }
 
+
+  /* ==============================
+     OTHER SECTIONS
+     ============================== */
+
   .how-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     row-gap: 34px;
   }
 
@@ -1003,61 +1255,55 @@ footer ul li a:hover {
     display: none;
   }
 
-  .feature-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .feature-grid,
+  .usecase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .usecase-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+/* =================================
+   SMALL MOBILE DEVICES
+   ================================= */
 
 @media (max-width: 640px) {
-  .nav-links,
-  .nav-actions .ghost-link {
-    display: none;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-
-  .hero-visual {
-    padding: 20px 0 10px;
-  }
-
-  .hero-mock {
-    transform: rotate(0deg);
-  }
-
-  .how-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .feature-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .usecase-grid {
-    grid-template-columns: 1fr;
-  }
 
   .wrap {
-    padding: 0 20px;
+    padding: 0 18px;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-    scroll-behavior: auto !important;
+  nav {
+    height: auto;
+    min-height: 68px;
+  }
+
+  /* Compensate for the 18px mobile .wrap padding */
+  .nav-links {
+    width: calc(100% + 36px);
+
+    margin-left: -18px;
+    margin-right: -18px;
+  }
+
+  .nav-links a {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .mobile-store-action a.btn {
+    width: calc(100% - 36px);
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+
+  .how-grid,
+  .feature-grid,
+  .usecase-grid,
+  .footer-grid {
+    grid-template-columns: 1fr;
   }
 }
