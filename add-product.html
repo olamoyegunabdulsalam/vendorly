@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Add Product — Vendorly</title>
   <link rel="icon" href="data:,">
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/images/vendorly-logo.png">
+  <link rel="apple-touch-icon" href="assets/images/vendorly-logo.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="assets/components/dashboard-shared.css">
   <link rel="stylesheet" href="assets/css/add-product.css">
 </head>
+
 <body>
 
   <div class="app-shell">
@@ -16,8 +22,9 @@
     <!-- HEADER -->
     <div class="page-header">
       <button class="back-btn" onclick="history.back()" aria-label="Go back">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 5l-7 7 7 7" />
         </svg>
       </button>
       <div class="page-header-text">
@@ -58,8 +65,8 @@
           <label class="form-label" for="productPrice">Price (₦) <span class="required">*</span></label>
           <div class="price-input-wrap">
             <span class="price-prefix">₦</span>
-            <input class="form-input price-input" id="productPrice" type="text"
-              inputmode="numeric" placeholder="0" maxlength="10">
+            <input class="form-input price-input" id="productPrice" type="text" inputmode="numeric" placeholder="0"
+              maxlength="10">
           </div>
           <p class="form-error" id="priceError">Enter a valid price</p>
         </div>
@@ -67,8 +74,7 @@
         <div class="form-group">
           <label class="form-label" for="productDescription">Description <span class="optional">Optional</span></label>
           <textarea class="form-textarea" id="productDescription"
-            placeholder="Describe your product — material, fit, what makes it special..."
-            maxlength="500"></textarea>
+            placeholder="Describe your product — material, fit, what makes it special..." maxlength="500"></textarea>
           <p class="char-count" id="descCount">0 / 500</p>
         </div>
 
@@ -110,6 +116,7 @@
   </div>
   <!-- end app-shell -->
 
-<script type="module" src="assets/js/add-product.js"></script>
+  <script type="module" src="assets/js/add-product.js"></script>
 </body>
+
 </html>
