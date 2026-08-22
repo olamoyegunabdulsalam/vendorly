@@ -116,7 +116,7 @@
 /* Product Select */
 .product-select-box {
   position: relative;
-  background: var(--surface);
+  background: whitesmoke;
   border: 1.5px solid var(--border-strong);
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -161,7 +161,6 @@
   cursor: pointer;
   font-family: var(--font-body);
   font-size: 14px;
-  border: none;
   background: transparent;
 }
 
@@ -231,7 +230,7 @@
   width: 100%;
   min-height: 90px;
   resize: none;
-  background: var(--bg-soft);
+  background: whitesmoke;
   border: 1.5px solid var(--border-strong);
   border-radius: var(--radius-md);
   padding: 14px 14px 28px;
@@ -509,7 +508,6 @@
 .btn-outline:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .btn-whatsapp { background: var(--whatsapp); color: #fff; }
-.btn-whatsapp:hover { background: var(--whatsapp-dark); }
 .btn-whatsapp:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ══════════════════════════════════════════
