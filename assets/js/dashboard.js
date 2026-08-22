@@ -14,6 +14,21 @@ let currentCanvasBlob = null
 
 const user = await requireAuth()
 
+// After requireAuth() — check if profile exists, create if not
+const { data: profile } = await supabase
+  .from('profiles')
+  .select('id')
+  .eq('id', user.id)
+  .maybeSingle()
+
+if (!profile) {
+  // New Google user — create profile row
+  await supabase.from('profiles').insert({
+    id: user.id,
+    full_name: user.user_metadata?.full_name || user.email?.split('@')[ 0 ] || 'Vendor'
+  })
+}
+
 
 // Load vendor data
 const [ store, products ] = await Promise.all([

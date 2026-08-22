@@ -466,7 +466,8 @@ button {
 
 .auth-box h1 {
   font-family: "Archivo Expanded", sans-serif;
-  font-size: clamp(1.5rem, 2.2vw, 1.85rem);
+  font-size: 22px;
+  text-align: center;
   font-weight: 800;
   color: var(--navy);
   letter-spacing: -0.02em;
@@ -694,11 +695,14 @@ button {
 /* SOCIAL BUTTON */
 .btn-social {
   width: 100%;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   padding: 13px;
   border: 1px solid rgba(30, 75, 140, 0.2);
   border-radius: 10px;
   background: var(--white);
-  font-size: 14px;
   font-weight: 600;
   color: var(--blue);
   transition:
@@ -709,6 +713,12 @@ button {
 .btn-social:hover {
   background: rgba(255, 201, 60, 0.12);
   border-color: var(--blue-light);
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 /* SWITCH LINK */

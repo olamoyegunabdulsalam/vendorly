@@ -1,8 +1,18 @@
-import { signIn, redirectIfLoggedIn } from './auth.js'
+import { signIn, redirectIfLoggedIn, signInWithGoogle } from './auth.js'
 
 /* REDIRECT IF ALREADY LOGGED IN */
 await redirectIfLoggedIn()
 
+// Wire up the Google button
+document.querySelector('.btn-social').addEventListener('click', async () => {
+  try {
+    await signInWithGoogle()
+    // No redirect needed here — Supabase handles it automatically
+  } catch (err) {
+    emailError.textContent = err.message || 'Google sign in failed'
+    emailError.style.display = 'block'
+  }
+})
 
 /* PASSWORD TOGGLE */
 document.querySelectorAll('.toggle-password').forEach(function (button) {

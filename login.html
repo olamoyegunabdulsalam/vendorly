@@ -4,11 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Log in — Vendorly</title>
-  <!--
-  <link rel="icon" type="image/png" href="assets/images/vendorly-logo.png">
-  <link rel="apple-touch-icon" href="assets/images/vendorly-logo.png">
--->
+  <title>Log in | Vendorly</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
   <link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg">
   <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
@@ -29,7 +25,6 @@
     <!-- LEFT PANEL -->
     <div class="auth-left">
       <div class="auth-left-content">
-        <h2>Welcome back to your store</h2>
         <p>Sign in to manage your storefront, update your products, and keep receiving orders on WhatsApp.</p>
         <div class="trust-list">
           <div class="trust-item">
@@ -65,7 +60,14 @@
           <img src="assets/images/vendorly-logo-name.png" alt="Vendorly logo">
         </a>
 
+        <h1>Welcome back to store</h1>
+
         <div class="success-banner" id="successBanner">Logged in successfully!</div>
+
+        <button class="btn-social"><img src="assets/images/google-icon.svg" alt="google-icon" class="google-icon">
+          <span>Continue with Google</span>
+        </button>
+        <div class="divider"><span>or</span></div>
 
         <form id="loginForm">
           <div class="input-box">
@@ -101,9 +103,6 @@
           </div>
           <button type="submit" class="btn-submit">Log in</button>
         </form>
-
-        <div class="divider"><span>or</span></div>
-        <button class="btn-social">Continue with Google</button>
 
         <p class="switch-link">No account? <span onclick="window.location.href='signup.html'">Sign up free</span></p>
       </div>

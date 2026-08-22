@@ -130,16 +130,6 @@ button {
   max-width: 420px;
 }
 
-.auth-left-content h2 {
-  font-family: "Archivo Expanded", sans-serif;
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--white);
-  line-height: 1.16;
-  letter-spacing: -0.02em;
-  margin-bottom: 16px;
-}
-
 .auth-left-content > p {
   font-size: 16px;
   color: rgba(247, 245, 239, 0.78);
@@ -245,7 +235,8 @@ button {
 
 .auth-box h1 {
   font-family: "Archivo Expanded", sans-serif;
-  font-size: clamp(1.5rem, 2.2vw, 1.85rem);
+  font-size: 22px;
+  text-align: center;
   font-weight: 800;
   color: var(--navy);
   letter-spacing: -0.02em;
@@ -453,7 +444,11 @@ button {
 /* SOCIAL BUTTON */
 .btn-social {
   width: 100%;
+    display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 13px;
+  gap: 10px;
   border: 1px solid rgba(30, 75, 140, 0.2);
   border-radius: 10px;
   background: var(--white);
@@ -468,6 +463,12 @@ button {
 .btn-social:hover {
   background: rgba(255, 201, 60, 0.12);
   border-color: var(--blue-light);
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 /* SWITCH LINK */
