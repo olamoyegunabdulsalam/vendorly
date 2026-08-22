@@ -4,11 +4,14 @@
 
 const header = document.getElementById('site-header');
 
-window.addEventListener('scroll', () => {
+const updateHeaderScrolled = () => {
     if (header) {
         header.classList.toggle('scrolled', window.scrollY > 8);
     }
-});
+};
+
+updateHeaderScrolled();
+window.addEventListener('scroll', updateHeaderScrolled);
 
 
 // ==========================================
@@ -20,6 +23,15 @@ const navLinks = document.querySelector('.nav-links');
 
 if (hamburger && navLinks) {
 
+    // Scroll-close is only "armed" a short moment after the menu
+    // opens, and openScrollY is sampled at that later point too —
+    // this skips the layout shift caused by the mobile browser's
+    // toolbar collapsing as the dropdown expands, which otherwise
+    // reads as a big, instant scroll and closes the menu right away.
+    let openScrollY = 0;
+    let scrollCloseArmed = false;
+    let armTimer = null;
+
     // Open / close the mobile menu
     const setMenuState = (isOpen) => {
         navLinks.classList.toggle('mobile-open', isOpen);
@@ -28,6 +40,16 @@ if (hamburger && navLinks) {
             'aria-expanded',
             String(isOpen)
         );
+
+        clearTimeout(armTimer);
+        scrollCloseArmed = false;
+
+        if (isOpen) {
+            armTimer = setTimeout(() => {
+                openScrollY = window.scrollY;
+                scrollCloseArmed = true;
+            }, 350);
+        }
     };
 
 
@@ -83,14 +105,19 @@ if (hamburger && navLinks) {
     });
 
 
-    let scrollCloseArmed = false;
-
-    navLinks.addEventListener('transitionend', () => {
-        scrollCloseArmed = navLinks.classList.contains('mobile-open');
-    });
+    // ==========================================
+    // CLOSE MENU ON SCROLL
+    // Only closes once the page has actually moved a
+    // meaningful distance from where the menu was opened —
+    // avoids false triggers from toolbar-collapse jitter.
+    // ==========================================
 
     window.addEventListener('scroll', () => {
-        if (scrollCloseArmed && navLinks.classList.contains('mobile-open')) {
+        if (
+            scrollCloseArmed &&
+            navLinks.classList.contains('mobile-open') &&
+            Math.abs(window.scrollY - openScrollY) > 10
+        ) {
             setMenuState(false);
         }
     });
