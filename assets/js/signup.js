@@ -1,7 +1,18 @@
-import { signUp, redirectIfLoggedIn } from './auth.js'
+import { signUp, redirectIfLoggedIn, signInWithGoogle } from './auth.js'
 
 /* REDIRECT IF ALREADY LOGGED IN */
 await redirectIfLoggedIn()
+
+// Wire up the Google button
+document.querySelector('.btn-social').addEventListener('click', async () => {
+  try {
+    await signInWithGoogle()
+    // Supabase redirects automatically to dashboard.html
+  } catch (err) {
+    emailError.textContent = err.message || 'Google sign in failed'
+    emailError.style.display = 'block'
+  }
+})
 
 /* NAVIGATION */
 document.getElementById("goToLogin").addEventListener("click", () => {

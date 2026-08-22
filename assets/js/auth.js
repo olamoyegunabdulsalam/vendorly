@@ -3,6 +3,18 @@
 
 import { supabase } from './supabase.js'
 
+// Signin Google
+export async function signInWithGoogle() {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${window.location.origin}/dashboard.html`
+    }
+  })
+  if (error) throw error
+  return data
+}
+
 // Sign Up
 // Creates auth user + inserts profile row manually (no DB trigger)
 export async function signUp(fullName, email, password) {
