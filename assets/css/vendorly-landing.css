@@ -157,7 +157,13 @@ nav {
   flex-direction: column;
   line-height: 0.92;
 }
-
+.logo-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  color: var(--blue);
+  margin-top: 2px;
+}
 .logo-name {
   font-family: "Archivo Expanded", sans-serif;
   font-weight: 800;
@@ -941,6 +947,12 @@ footer {
   background: var(--navy);
   padding: 56px 0 30px;
   color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-brand .logo img {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 4px;
 }
 
 .footer-grid {
