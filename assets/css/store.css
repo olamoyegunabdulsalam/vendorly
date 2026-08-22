@@ -365,6 +365,7 @@ body {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
+  object-position: center top;
   display: block;
   background: var(--border);
 }
@@ -591,6 +592,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   display: none;
 }
 
@@ -781,10 +783,12 @@ body {
 }
 
 .cart-item-image {
+  display: block;
   width: 56px;
   height: 56px;
   border-radius: var(--radius-md);
   object-fit: cover;
+  object-position: center top;
   background: var(--bg);
   flex-shrink: 0;
 }

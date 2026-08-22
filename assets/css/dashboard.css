@@ -72,3 +72,109 @@
   color: var(--surface);
   border-color: var(--success);
 }
+
+/* Share Store Card Modal */
+.share-modal-sheet .modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-close-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: var(--gray-100);
+  color: var(--gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.share-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Preview canvas */
+.share-preview-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.share-preview-canvas {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  display: block;
+  object-fit: contain;
+}
+
+.share-preview-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gray-100);
+}
+
+/* Action buttons */
+.share-modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.share-action-btn {
+  flex: 1;
+  height: 48px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body, "Inter", sans-serif);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.share-action-btn.download {
+  border: 1.5px solid var(--gray-200);
+  background: var(--surface);
+  color: var(--text, var(--gray-500));
+}
+
+.share-action-btn.download:active {
+  background: var(--gray-100);
+}
+
+.share-action-btn.share {
+  border: none;
+  background: var(--primary);
+  color: var(--surface);
+}
+
+.share-action-btn.share:active {
+  background: var(--primary-hover, var(--primary-dark));
+}
+
+.share-action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

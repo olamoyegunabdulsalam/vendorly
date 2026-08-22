@@ -5,6 +5,13 @@ import { fetchProducts } from './products.js'
 import { formatPrice, getStoreUrl, copyToClipboard, showToast, isValidWhatsApp } from './utils.js'
 import { renderBottomNav } from '../components/bottomNav.js'
 
+// Share-store-card state — declared up front since renderDashboard (called
+// during initial module load below) assigns to these on first paint.
+let currentStoreRef = null
+let currentProductsRef = null
+const shareFormat = 'square'
+let currentCanvasBlob = null
+
 const user = await requireAuth()
 
 
@@ -166,6 +173,10 @@ function renderHeader(store) {
 
 // Render Dashboard
 function renderDashboard(store, products) {
+  // Keep refs so the share modal can redraw the card without re-fetching
+  currentStoreRef = store
+  currentProductsRef = products
+
   // Show page content
   document.getElementById('pageContent').style.display = 'flex'
   document.getElementById('pageContent').style.flexDirection = 'column'
@@ -200,15 +211,8 @@ function renderDashboard(store, products) {
     window.open(storeUrl, '_blank')
   })
 
-  // Share store
-  document.getElementById('shareStoreBtn').addEventListener('click', async () => {
-    if (navigator.share) {
-      await navigator.share({ title: storeName, url: storeUrl })
-    } else {
-      await copyToClipboard(storeUrl)
-      showToast('Link copied — share it anywhere!')
-    }
-  })
+  // Share store — opens the store card image modal
+  document.getElementById('shareStoreBtn').addEventListener('click', openShareModal)
 
   // Recent products
   renderRecentProducts(products)
@@ -247,3 +251,316 @@ function renderRecentProducts(products) {
     </div>
   `).join('')
 }
+
+// ============================================
+// SHARE STORE CARD — generates a shareable image
+// ============================================
+// (currentStoreRef, currentProductsRef, shareFormat, currentCanvasBlob
+// are declared near the top of the file — see note there. Square is the
+// only supported format now, so shareFormat is a fixed constant.)
+
+const SHARE_FORMATS = {
+  square: { w: 1080, h: 1080 },
+}
+
+// Loads an image for canvas use. Resolves null (instead of throwing) on any
+// failure — including CORS — so the card always falls back gracefully to a
+// plain gradient instead of leaving a broken/tainted canvas.
+function loadImageSafe(url) {
+  return new Promise((resolve) => {
+    if (!url) { resolve(null); return }
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => resolve(img)
+    img.onerror = () => resolve(null)
+    img.src = url
+  })
+}
+
+// Wraps text to a max width/line count, drawing each line. Returns line count.
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 2) {
+  const words = text.split(' ')
+  let line = ''
+  let lines = []
+
+  for (let i = 0; i < words.length; i++) {
+    const testLine = line + words[i] + ' '
+    if (ctx.measureText(testLine).width > maxWidth && line !== '') {
+      lines.push(line.trim())
+      line = words[i] + ' '
+    } else {
+      line = testLine
+    }
+  }
+  lines.push(line.trim())
+
+  if (lines.length > maxLines) {
+    lines = lines.slice(0, maxLines)
+    lines[maxLines - 1] = lines[maxLines - 1].replace(/\s*$/, '') + '…'
+  }
+
+  lines.forEach((l, i) => ctx.fillText(l, x, y + i * lineHeight))
+  return lines.length
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath()
+  ctx.moveTo(x + r, y)
+  ctx.arcTo(x + w, y, x + w, y + h, r)
+  ctx.arcTo(x + w, y + h, x, y + h, r)
+  ctx.arcTo(x, y + h, x, y, r)
+  ctx.arcTo(x, y, x + w, y, r)
+  ctx.closePath()
+}
+
+// Draws the store card onto #shareCanvas for the given format, then caches
+// a PNG blob (currentCanvasBlob) for the download/share buttons.
+async function drawStoreCard(store, products, format) {
+  if (!store) return
+
+  const canvas = document.getElementById('shareCanvas')
+  const loading = document.getElementById('sharePreviewLoading')
+  loading.style.display = 'flex'
+
+  await document.fonts.ready.catch(() => {})
+
+  const { w, h } = SHARE_FORMATS[format]
+  canvas.width = w
+  canvas.height = h
+  const ctx = canvas.getContext('2d')
+
+  const storeName = store.store_name || 'Your Store'
+  const productCount = products?.length || 0
+  const storeUrl = getStoreUrl(store.id, store.slug).replace(/^https?:\/\//, '')
+
+  // Background — banner image (cover-fit) or brand gradient fallback
+  const bannerImg = await loadImageSafe(store.banner_url)
+
+  if (bannerImg) {
+    const imgRatio = bannerImg.width / bannerImg.height
+    const canvasRatio = w / h
+    let drawW, drawH, dx, dy
+    if (imgRatio > canvasRatio) {
+      drawH = h
+      drawW = h * imgRatio
+      dx = (w - drawW) / 2
+      dy = 0
+    } else {
+      drawW = w
+      drawH = w / imgRatio
+      dx = 0
+      dy = (h - drawH) / 2
+    }
+    ctx.drawImage(bannerImg, dx, dy, drawW, drawH)
+  } else {
+    const grad = ctx.createLinearGradient(0, 0, w, h)
+    grad.addColorStop(0, '#3525cd')
+    grad.addColorStop(1, '#1b1450')
+    ctx.fillStyle = grad
+    ctx.fillRect(0, 0, w, h)
+  }
+
+  // Dark gradient overlay so text stays legible over any banner
+  const overlay = ctx.createLinearGradient(0, 0, 0, h)
+  overlay.addColorStop(0, 'rgba(11,15,35,0.15)')
+  overlay.addColorStop(0.55, 'rgba(11,15,35,0.55)')
+  overlay.addColorStop(1, 'rgba(11,15,35,0.92)')
+  ctx.fillStyle = overlay
+  ctx.fillRect(0, 0, w, h)
+
+  const pad = w * 0.08
+
+  // Logo circle (top-left)
+  const logoImg = await loadImageSafe(store.logo_url)
+  const logoR = w * 0.09
+  const logoCx = pad + logoR
+  const logoCy = pad + logoR
+
+  ctx.beginPath()
+  ctx.arc(logoCx, logoCy, logoR, 0, Math.PI * 2)
+  ctx.fillStyle = '#ffffff'
+  ctx.fill()
+
+  if (logoImg) {
+    ctx.save()
+    ctx.beginPath()
+    ctx.arc(logoCx, logoCy, logoR - w * 0.006, 0, Math.PI * 2)
+    ctx.clip()
+    ctx.drawImage(logoImg, logoCx - logoR, logoCy - logoR, logoR * 2, logoR * 2)
+    ctx.restore()
+  } else {
+    ctx.fillStyle = '#3525cd'
+    ctx.font = `800 ${logoR}px 'Archivo Expanded', sans-serif`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(storeName.charAt(0).toUpperCase(), logoCx, logoCy + logoR * 0.05)
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'alphabetic'
+  }
+
+  // "VENDORLY STORE" eyebrow
+  ctx.fillStyle = 'rgba(255,255,255,0.85)'
+  ctx.font = `700 ${w * 0.022}px 'Inter', sans-serif`
+  ctx.fillText('VENDORLY STORE', pad, pad + logoR * 2 + w * 0.045)
+
+  // Store name
+  ctx.fillStyle = '#ffffff'
+  ctx.font = `800 ${w * 0.065}px 'Archivo Expanded', sans-serif`
+  const nameY = pad + logoR * 2 + w * 0.11
+  const lineCount = wrapCanvasText(ctx, storeName, pad, nameY, w - pad * 2, w * 0.075, 2)
+
+  let cursorY = nameY + (lineCount - 1) * (w * 0.075) + w * 0.06
+
+  // Location
+  if (store.location) {
+    ctx.font = `500 ${w * 0.026}px 'Inter', sans-serif`
+    ctx.fillStyle = 'rgba(255,255,255,0.8)'
+    ctx.fillText(`📍 ${store.location}`, pad, cursorY)
+    cursorY += w * 0.05
+  }
+
+  // Product thumbnails — up to 4 products that have a photo, fitted into
+  // whatever vertical space is left between the store info and the bottom CTA.
+  const bottomY = h - pad
+  const thumbAreaTop = cursorY + w * 0.02
+  const thumbAreaBottom = bottomY - w * 0.095
+
+  const thumbProducts = (products || []).filter((p) => p.image_url).slice(0, 4)
+
+  if (thumbProducts.length > 0 && thumbAreaBottom - thumbAreaTop > w * 0.12) {
+    const thumbGap = w * 0.025
+    const thumbCount = thumbProducts.length
+    const maxThumbW = (w - pad * 2 - thumbGap * (thumbCount - 1)) / thumbCount
+    const maxThumbH = thumbAreaBottom - thumbAreaTop
+    const thumbSize = Math.min(maxThumbW, maxThumbH, w * 0.22)
+    const thumbR = w * 0.02
+    const thumbY = thumbAreaTop + (maxThumbH - thumbSize) / 2
+
+    const thumbImages = await Promise.all(
+      thumbProducts.map((p) => loadImageSafe(p.image_url))
+    )
+
+    thumbImages.forEach((img, i) => {
+      const tx = pad + i * (thumbSize + thumbGap)
+      const ty = thumbY
+
+      // Backing fill (shows through if an image fails to load)
+      ctx.fillStyle = 'rgba(255,255,255,0.12)'
+      roundRect(ctx, tx, ty, thumbSize, thumbSize, thumbR)
+      ctx.fill()
+
+      if (img) {
+        ctx.save()
+        roundRect(ctx, tx, ty, thumbSize, thumbSize, thumbR)
+        ctx.clip()
+
+        // Cover-fit crop into the square slot
+        const ir = img.width / img.height
+        let dw, dh, ddx, ddy
+        if (ir > 1) {
+          dh = thumbSize
+          dw = thumbSize * ir
+          ddx = tx - (dw - thumbSize) / 2
+          ddy = ty
+        } else {
+          dw = thumbSize
+          dh = thumbSize / ir
+          ddx = tx
+          ddy = ty - (dh - thumbSize) / 2
+        }
+        ctx.drawImage(img, ddx, ddy, dw, dh)
+        ctx.restore()
+      }
+
+      // Thin border for definition against the banner
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)'
+      ctx.lineWidth = 2
+      roundRect(ctx, tx, ty, thumbSize, thumbSize, thumbR)
+      ctx.stroke()
+
+      // "+N" overlay on the last thumbnail if more products exist than shown
+      if (i === thumbCount - 1 && productCount > thumbCount) {
+        const extra = productCount - thumbCount
+        ctx.fillStyle = 'rgba(11,15,35,0.6)'
+        roundRect(ctx, tx, ty, thumbSize, thumbSize, thumbR)
+        ctx.fill()
+        ctx.fillStyle = '#ffffff'
+        ctx.font = `800 ${thumbSize * 0.26}px 'Inter', sans-serif`
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(`+${extra}`, tx + thumbSize / 2, ty + thumbSize / 2)
+        ctx.textAlign = 'left'
+        ctx.textBaseline = 'alphabetic'
+      }
+    })
+  }
+
+  // Bottom — WhatsApp CTA + store link
+  ctx.font = `700 ${w * 0.03}px 'Inter', sans-serif`
+  ctx.fillStyle = '#25d366'
+  ctx.fillText('💬 Order on WhatsApp', pad, bottomY - w * 0.05)
+
+  ctx.font = `600 ${w * 0.026}px 'IBM Plex Mono', monospace`
+  ctx.fillStyle = 'rgba(255,255,255,0.9)'
+  ctx.fillText(storeUrl, pad, bottomY)
+
+  loading.style.display = 'none'
+
+  currentCanvasBlob = await new Promise((resolve) =>
+    canvas.toBlob(resolve, 'image/png', 0.95)
+  )
+}
+
+function openShareModal() {
+  if (!currentStoreRef) return
+  document.getElementById('shareImageModal').classList.add('open')
+  drawStoreCard(currentStoreRef, currentProductsRef, shareFormat)
+}
+
+function closeShareModal() {
+  document.getElementById('shareImageModal').classList.remove('open')
+}
+
+document.getElementById('shareModalCloseBtn').addEventListener('click', closeShareModal)
+document.getElementById('shareImageModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeShareModal()
+})
+
+document.getElementById('downloadCardBtn').addEventListener('click', () => {
+  if (!currentCanvasBlob) return
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(currentCanvasBlob)
+  link.download = `${currentStoreRef?.slug || 'store'}-card.png`
+  link.click()
+  setTimeout(() => URL.revokeObjectURL(link.href), 2000)
+})
+
+document.getElementById('shareCardBtn').addEventListener('click', async () => {
+  if (!currentCanvasBlob) return
+
+  const storeName = currentStoreRef?.store_name || 'my store'
+  const file = new File([currentCanvasBlob], 'store-card.png', { type: 'image/png' })
+
+  try {
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: storeName,
+        text: `Check out ${storeName} on Vendorly!`,
+      })
+    } else {
+      // Web Share API (files) unsupported — download instead so the person
+      // can share the image manually from their gallery/files app.
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(currentCanvasBlob)
+      link.download = `${currentStoreRef?.slug || 'store'}-card.png`
+      link.click()
+      setTimeout(() => URL.revokeObjectURL(link.href), 2000)
+      showToast('Image downloaded — share it from your gallery')
+    }
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      showToast('Could not share image', 'error')
+    }
+  }
+})
