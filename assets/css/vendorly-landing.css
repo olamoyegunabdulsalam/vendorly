@@ -105,13 +105,11 @@ ul {
 /* Signature motif — the diagonal navy/yellow stripe shared with the auth page */
 .hazard {
   height: 8px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--yellow),
-    var(--yellow) 14px,
-    var(--blue) 14px,
-    var(--blue) 28px
-  );
+  background: repeating-linear-gradient(-45deg,
+      var(--yellow),
+      var(--yellow) 14px,
+      var(--blue) 14px,
+      var(--blue) 28px);
 }
 
 /* ---------- NAV ---------- */
@@ -156,6 +154,14 @@ nav {
   display: flex;
   flex-direction: column;
   line-height: 0.92;
+}
+
+.logo-tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  color: var(--blue);
+  margin-top: 2px;
 }
 
 .logo-name {
@@ -295,11 +301,9 @@ nav {
 /* ---------- HERO ---------- */
 .hero {
   background:
-    radial-gradient(
-      1100px 500px at 15% -10%,
+    radial-gradient(1100px 500px at 15% -10%,
       rgba(255, 201, 60, 0.2) 0%,
-      transparent 60%
-    ),
+      transparent 60%),
     linear-gradient(160deg, var(--blue) 0%, var(--navy-2) 55%, var(--navy) 100%);
   padding: 64px 0 90px;
   position: relative;
@@ -311,6 +315,7 @@ nav {
     opacity: 0;
     transform: translateY(14px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -327,15 +332,19 @@ nav {
 .hero-badge {
   animation-delay: 0.02s;
 }
+
 .hero h1 {
   animation-delay: 0.08s;
 }
+
 .hero p.lede {
   animation-delay: 0.16s;
 }
+
 .hero .hero-ctas {
   animation-delay: 0.24s;
 }
+
 .hero-visual {
   animation: fadeUp 0.7s ease 0.2s both;
 }
@@ -347,13 +356,11 @@ nav {
   right: 0;
   bottom: 0;
   height: 8px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--yellow),
-    var(--yellow) 14px,
-    var(--blue-light) 14px,
-    var(--blue-light) 28px
-  );
+  background: repeating-linear-gradient(-45deg,
+      var(--yellow),
+      var(--yellow) 14px,
+      var(--blue-light) 14px,
+      var(--blue-light) 28px);
 }
 
 .hero-badge {
@@ -881,11 +888,34 @@ nav {
 }
 
 .faq-item p {
-  padding: 0 4px 20px;
+  display: grid;
+  grid-template-rows: 0fr;
+  padding: 0 4px;
   color: var(--slate);
   font-size: 0.9rem;
   line-height: 1.6;
   max-width: 600px;
+  overflow: hidden;
+  opacity: 0;
+  transition: grid-template-rows 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+}
+
+.faq-item p>* {
+  min-height: 0;
+}
+
+.faq-item[open] p {
+  grid-template-rows: 1fr;
+  padding: 0 4px 20px;
+  opacity: 1;
+}
+
+.faq-item p {
+  transition: grid-template-rows 0.35s ease, opacity 0.2s ease, padding 0.35s ease;
+}
+
+.faq-item:not([open]) p {
+  transition: grid-template-rows 0.2s ease, opacity 0.15s ease, padding 0.2s ease;
 }
 
 /* ---------- CTA ---------- */
@@ -903,13 +933,11 @@ nav {
   left: 0;
   right: 0;
   height: 8px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--yellow),
-    var(--yellow) 14px,
-    var(--navy-2) 14px,
-    var(--navy-2) 28px
-  );
+  background: repeating-linear-gradient(-45deg,
+      var(--yellow),
+      var(--yellow) 14px,
+      var(--navy-2) 14px,
+      var(--navy-2) 28px);
 }
 
 .cta-banner h2 {
@@ -941,6 +969,12 @@ footer {
   background: var(--navy);
   padding: 56px 0 30px;
   color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-brand .logo img {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 4px;
 }
 
 .footer-grid {
@@ -993,6 +1027,7 @@ footer ul li a:hover {
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1004,6 +1039,7 @@ footer ul li a:hover {
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -1157,32 +1193,38 @@ footer ul li a:hover {
     color: var(--white);
     background: var(--primary-hover);
   }
-.hero-visual {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
 
-.hero-mock {
-  order: 1;
-}
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
 
-.float-1 { order: 0; }
-.float-3 { order: 2; }
+  .hero-mock {
+    order: 1;
+  }
 
-.float-card {
-  position: static;
-  width: min(100%, 280px);
-  max-width: 280px;
-}
+  .float-1 {
+    order: 0;
+  }
+
+  .float-3 {
+    order: 2;
+  }
+
+  .float-card {
+    position: static;
+    width: min(100%, 280px);
+    max-width: 280px;
+  }
 
   /* ==============================
      HEADER BUTTONS
      ============================== */
 
   /* Hide desktop Create Free Store */
-  .nav-actions > .btn {
+  .nav-actions>.btn {
     display: none;
   }
 
