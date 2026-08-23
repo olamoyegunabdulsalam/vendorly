@@ -1,9 +1,39 @@
-// utils.js — Shared helper functions
-// Import wherever needed across all pages
+// compress image upload
+export function compressImage(file, maxSizeMB = 1, quality = 0.8) {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = (e) => {
+      const img = new Image()
+      img.src = e.target.result
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        const maxWidth = 1200
+        let { width, height } = img
+
+        // Scale down if too large
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width)
+          width = maxWidth
+        }
+
+        canvas.width = width
+        canvas.height = height
+
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0, width, height)
+
+        canvas.toBlob(
+          (blob) => resolve(new File([ blob ], file.name, { type: 'image/jpeg' })),
+          'image/jpeg',
+          quality
+        )
+      }
+    }
+  })
+}
 
 //  Format Price 
-// Price stored as integer in DB format for display
-// e.g. 15000 → ₦15,000
 export function formatPrice(amount) {
   return `₦${Number(amount).toLocaleString()}`
 }

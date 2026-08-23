@@ -65,6 +65,14 @@ let bannerFile = null
 document.getElementById('logoFile').addEventListener('change', (e) => {
   const file = e.target.files[ 0 ]
   if (!file) return
+
+  // ── Validate size before uploading ──
+  if (file.size > 2 * 1024 * 1024) { // 2MB
+    showToast('Logo must be under 2MB. Please choose a smaller image.', 'error')
+    e.target.value = '' // reset input
+    return
+  }
+  
   logoFile = file
 
   const preview = document.getElementById('logoPreview')
@@ -81,6 +89,14 @@ document.getElementById('logoFile').addEventListener('change', (e) => {
 document.getElementById('bannerFile').addEventListener('change', (e) => {
   const file = e.target.files[ 0 ]
   if (!file) return
+
+  // ── Validate size before uploading ──
+  if (file.size > 5 * 1024 * 1024) { // 5MB
+    showToast('Banner must be under 5MB. Please choose a smaller image.', 'error')
+    e.target.value = '' // reset input
+    return
+  }
+
   bannerFile = file
 
   const preview = document.getElementById('bannerPreview')

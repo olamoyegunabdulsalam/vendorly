@@ -60,6 +60,13 @@ let newBannerFile = null
 document.getElementById('bannerFile').addEventListener('change', (e) => {
   const file = e.target.files[ 0 ]
   if (!file) return
+
+  // ── Validate size before uploading ──
+  if (file.size > 5 * 1024 * 1024) { // 5MB
+    showToast('Banner must be under 5MB. Please choose a smaller image.', 'error')
+    e.target.value = '' // reset input
+    return
+  }
   newBannerFile = file
   const preview = document.getElementById('bannerCurrent')
   preview.src = URL.createObjectURL(file)
@@ -72,6 +79,14 @@ let newLogoFile = null
 document.getElementById('logoFile').addEventListener('change', (e) => {
   const file = e.target.files[ 0 ]
   if (!file) return
+
+  // ── Validate size before uploading ──
+  if (file.size > 2 * 1024 * 1024) { // 2MB
+    showToast('Logo must be under 2MB. Please choose a smaller image.', 'error')
+    e.target.value = '' // reset input
+    return
+  }
+
   newLogoFile = file
   const circle = document.getElementById('logoPreviewCircle')
   circle.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="logo">`

@@ -1,5 +1,6 @@
 import { supabase } from './supabase.js'
-import {generateSlug} from './utils.js'
+import { generateSlug, compressImage } from './utils.js'
+
 
 // Fetch Store by Vendor ID 
 // Uses maybeSingle() returns null if no store exists yet (no error)
@@ -89,14 +90,17 @@ async function getUniqueSlug(baseslug, vendorId) {
 // Upload Store Logo
 // File path: store-logos/{userId}/logo.{ext}
 export async function uploadStoreLogo(userId, file) {
-    const ext = file.name.split('.').pop()
+    // Compress before uploading
+    const compressed = await compressImage(file, 1, 0.85)
+
+    const ext = 'jpg' // always jpg after compression
     const path = `${userId}/logo.${ext}`
 
-    const { error: uploadError } = await supabase.storage
+    const { error } = await supabase.storage
         .from('store-logos')
-        .upload(path, file, { upsert: true })
+        .upload(path, compressed, { upsert: true })
 
-    if (uploadError) throw uploadError
+    if (error) throw error
 
     const { data } = supabase.storage.from('store-logos').getPublicUrl(path)
     return data.publicUrl
@@ -104,18 +108,17 @@ export async function uploadStoreLogo(userId, file) {
 
 // Upload Store Banner
 export async function uploadStoreBanner(userId, file) {
-    const ext = file.name.split('.').pop()
+    const compressed = await compressImage(file, 2, 0.82)
+
+    const ext = 'jpg'
     const path = `${userId}/banner.${ext}`
 
     const { error } = await supabase.storage
         .from('store-banners')
-        .upload(path, file, { upsert: true })
+        .upload(path, compressed, { upsert: true })
 
     if (error) throw error
 
-    const { data } = supabase.storage
-        .from('store-banners')
-        .getPublicUrl(path)
-
+    const { data } = supabase.storage.from('store-banners').getPublicUrl(path)
     return data.publicUrl
 }

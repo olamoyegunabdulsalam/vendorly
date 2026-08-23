@@ -262,12 +262,6 @@ function updateFlyerPreview() {
 
     document.getElementById('flyerBrandName').textContent = name
 
-    const flyerLink = document.querySelector('.flyer-canvas .flyer-link')
-    if (flyerLink) flyerLink.textContent = storeUrl
-
-    const storeLinkEl = document.getElementById('flyerStoreLink')
-    if (storeLinkEl) storeLinkEl.textContent = storeUrl
-
     const badge = document.querySelector('.flyer-canvas .badge')
     if (badge) {
         if (store?.logo_url) {
@@ -436,10 +430,43 @@ document.getElementById('downloadFlyerBtn').addEventListener('click', async () =
 })
 
 //  Share / Copy / Send 
-document.getElementById('shareFlyerBtn').addEventListener('click', () => {
-    const message = encodeURIComponent(`${store?.store_name || 'My Store'}\n\nCheck out our store: ${storeUrl}`)
-    const phone = store?.whatsapp?.replace(/[^0-9]/g, '') || ''
-    window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
+document.getElementById('shareFlyerBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('shareFlyerBtn')
+    btn.disabled = true
+    btn.textContent = 'Preparing...'
+
+    try {
+        // Step 1 — download flyer first
+        if (!window.html2canvas) {
+            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
+        }
+
+        const canvas = await window.html2canvas(document.getElementById('flyerCanvas'), {
+            scale: 2, useCORS: true, allowTaint: true, backgroundColor: null,
+        })
+
+        const link = document.createElement('a')
+        link.download = `${store?.store_name || 'vendorly'}-flyer.png`
+        link.href = canvas.toDataURL('image/png')
+        link.click()
+
+        // Step 2 — open WhatsApp with caption after short delay
+        setTimeout(() => {
+            const caption = generatedCaption || `Check out ${store?.store_name} on Vendorly`
+            const message = encodeURIComponent(caption)
+            const phone = store?.whatsapp?.replace(/[^0-9]/g, '') || ''
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
+        }, 1000)
+
+        showToast('Flyer saved — now attach it in WhatsApp 📎')
+
+    } catch (err) {
+        showToast('Failed. Try downloading first.', 'error')
+        console.error(err)
+    } finally {
+        btn.disabled = false
+        btn.textContent = 'Share on WhatsApp'
+    }
 })
 
 document.getElementById('copyCaptionBtn').addEventListener('click', async () => {

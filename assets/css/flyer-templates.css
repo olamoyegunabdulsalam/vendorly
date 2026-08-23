@@ -177,42 +177,29 @@
   font-family: var(--font-body);
 }
 
-.cta-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 10px;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.footer-row {
+/* ── Vendorly Credit ── */
+.flyer-credit {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 8px;
-}
-
-.flyer-link {
-  font-size: 9.5px;
-  font-family: "IBM Plex Mono", monospace;
-  max-width: 70%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  opacity: 0.75;
-}
-
-.store-pill {
-  padding: 5px 9px;
-  border-radius: 999px;
-  font-size: 9.5px;
+  justify-content: center;
+  gap: 5px;
+  font-size: 8.5px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  opacity: 0.55;
+  color: #fff;
+  margin-top: 6px;
 }
+
+.flyer-credit-dot {
+  font-size: 7px;
+  opacity: 0.8;
+}
+
+/* Override per template for light themes */
+.template-clean-minimal .flyer-credit { color: var(--navy); }
+.template-cream .flyer-credit         { color: #3f2d11; }
 
 /* decorative shapes */
 .flyer-shape {
@@ -247,9 +234,6 @@
 .template-luxury-fashion .title      { color: #F5F0E8; font-size: clamp(22px, 2.6vw, 32px); }
 .template-luxury-fashion .sub        { color: rgba(212,175,55,0.7); letter-spacing: 0.18em; }
 .template-luxury-fashion .price-pill { background: linear-gradient(135deg, #D4AF37, #F0D060); color: #0a0a08; box-shadow: 0 4px 16px rgba(212,175,55,0.35); }
-.template-luxury-fashion .cta-pill   { background: transparent; border: 1px solid rgba(212,175,55,0.4); color: #D4AF37; }
-.template-luxury-fashion .flyer-link { color: rgba(212,175,55,0.6); }
-.template-luxury-fashion .store-pill { background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.25); color: #D4AF37; }
 
 .template-luxury-fashion .flyer-shape.shape-a {
   width: 200px; height: 200px;
@@ -290,9 +274,6 @@
 .template-naija-market .title       { color: #ffffff; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.03em; }
 .template-naija-market .sub         { color: rgba(255,255,255,0.82); }
 .template-naija-market .price-pill  { background: #1A1A1A; color: #FF9A3C; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
-.template-naija-market .cta-pill    { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: #fff; }
-.template-naija-market .flyer-link  { color: rgba(255,255,255,0.7); }
-.template-naija-market .store-pill  { background: rgba(255,255,255,0.18); color: #fff; }
 
 .template-naija-market .flyer-shape.shape-a {
   width: 220px; height: 220px;
@@ -330,9 +311,6 @@
 .template-clean-minimal .title       { color: #0D1B2A; font-size: clamp(22px, 2.5vw, 30px); }
 .template-clean-minimal .sub         { color: rgba(13,27,42,0.5); }
 .template-clean-minimal .price-pill  { background: #0066FF; color: #fff; box-shadow: 0 4px 16px rgba(0,102,255,0.3); }
-.template-clean-minimal .cta-pill    { background: #0D1B2A; color: #F8F7F4; }
-.template-clean-minimal .flyer-link  { color: rgba(13,27,42,0.45); }
-.template-clean-minimal .store-pill  { background: rgba(13,27,42,0.07); border: 1px solid rgba(13,27,42,0.12); color: #0D1B2A; }
 
 .template-clean-minimal .flyer-shape.shape-a {
   width: 180px; height: 180px;
@@ -372,9 +350,6 @@
 .template-beauty .title       { color: #FFF0F3; font-size: clamp(21px, 2.4vw, 28px); }
 .template-beauty .sub         { color: rgba(242,196,206,0.7); letter-spacing: 0.12em; }
 .template-beauty .price-pill  { background: linear-gradient(135deg, #F2C4CE, #FADADD); color: #2C1020; box-shadow: 0 4px 16px rgba(242,196,206,0.3); }
-.template-beauty .cta-pill    { background: rgba(242,196,206,0.15); border: 1px solid rgba(242,196,206,0.3); color: #F2C4CE; }
-.template-beauty .flyer-link  { color: rgba(242,196,206,0.55); }
-.template-beauty .store-pill  { background: rgba(242,196,206,0.12); border: 1px solid rgba(242,196,206,0.2); color: #F2C4CE; }
 
 .template-beauty .flyer-shape.shape-a {
   width: 180px; height: 180px;
@@ -412,9 +387,6 @@
 .template-streetwear .title       { color: #FFFFFF; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.02em; }
 .template-streetwear .sub         { color: rgba(255,255,255,0.45); letter-spacing: 0.12em; }
 .template-streetwear .price-pill  { background: #00FF80; color: #080808; font-weight: 900; box-shadow: 0 4px 20px rgba(0,255,128,0.3); }
-.template-streetwear .cta-pill    { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); }
-.template-streetwear .flyer-link  { color: rgba(0,255,128,0.45); }
-.template-streetwear .store-pill  { background: rgba(0,255,128,0.1); border: 1px solid rgba(0,255,128,0.2); color: #00FF80; }
 
 .template-streetwear .flyer-shape.shape-a {
   width: 200px; height: 200px;
@@ -454,9 +426,6 @@
 .template-food .title       { color: #FFF8EE; font-size: clamp(21px, 2.3vw, 28px); }
 .template-food .sub         { color: rgba(255,185,80,0.65); letter-spacing: 0.1em; }
 .template-food .price-pill  { background: linear-gradient(135deg, #FFB950, #FFD080); color: #1A0A04; box-shadow: 0 4px 16px rgba(255,185,80,0.3); font-weight: 900; }
-.template-food .cta-pill    { background: rgba(255,185,80,0.15); border: 1px solid rgba(255,185,80,0.3); color: #FFB950; }
-.template-food .flyer-link  { color: rgba(255,185,80,0.5); }
-.template-food .store-pill  { background: rgba(255,185,80,0.12); border: 1px solid rgba(255,185,80,0.22); color: #FFB950; }
 
 .template-food .flyer-shape.shape-a {
   width: 200px; height: 200px;
@@ -496,9 +465,6 @@
 .template-tech-purple .title       { color: #F5EEFF; font-size: clamp(21px, 2.4vw, 30px); }
 .template-tech-purple .sub         { color: rgba(192,132,252,0.65); letter-spacing: 0.1em; }
 .template-tech-purple .price-pill  { background: linear-gradient(135deg, #A050FF, #C084FC); color: #fff; box-shadow: 0 4px 18px rgba(160,80,255,0.35); }
-.template-tech-purple .cta-pill    { background: rgba(160,80,255,0.15); border: 1px solid rgba(160,80,255,0.3); color: #C084FC; }
-.template-tech-purple .flyer-link  { color: rgba(192,132,252,0.5); }
-.template-tech-purple .store-pill  { background: rgba(160,80,255,0.12); border: 1px solid rgba(160,80,255,0.22); color: #C084FC; }
 
 .template-tech-purple .flyer-shape.shape-a {
   width: 220px; height: 220px;
@@ -538,9 +504,6 @@
 .template-emerald .title       { color: #F0FDF4; font-size: clamp(21px, 2.4vw, 30px); }
 .template-emerald .sub         { color: rgba(52,211,153,0.65); letter-spacing: 0.1em; }
 .template-emerald .price-pill  { background: linear-gradient(135deg, #34D399, #6EE7B7); color: #022C22; box-shadow: 0 4px 16px rgba(52,211,153,0.3); font-weight: 900; }
-.template-emerald .cta-pill    { background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.25); color: #34D399; }
-.template-emerald .flyer-link  { color: rgba(52,211,153,0.5); }
-.template-emerald .store-pill  { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2); color: #34D399; }
 
 .template-emerald .flyer-shape.shape-a {
   width: 200px; height: 200px;
