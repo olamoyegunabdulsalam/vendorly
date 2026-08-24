@@ -14,19 +14,30 @@ let currentCanvasBlob = null
 
 const user = await requireAuth()
 
-// After requireAuth() — check if profile exists, create if not
-const { data: profile } = await supabase
-  .from('profiles')
-  .select('id')
-  .eq('id', user.id)
-  .maybeSingle()
+// ── Handle Google OAuth users who have no profile yet ──
+try {
+  const { data: existingProfile } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', user.id)
+    .maybeSingle()
 
-if (!profile) {
-  // New Google user — create profile row
-  await supabase.from('profiles').insert({
-    id: user.id,
-    full_name: user.user_metadata?.full_name || user.email?.split('@')[ 0 ] || 'Vendor'
-  })
+  if (!existingProfile) {
+    // New Google user — create profile
+    const { error } = await supabase
+      .from('profiles')
+      .insert({
+        id:        user.id,
+        full_name: user.user_metadata?.full_name ||
+                   user.user_metadata?.name ||
+                   user.email?.split('@')[0] ||
+                   'Vendor'
+      })
+
+    if (error) console.error('Profile creation error:', error)
+  }
+} catch (err) {
+  console.error('Profile check error:', err)
 }
 
 
@@ -72,7 +83,7 @@ document.getElementById('logoFile').addEventListener('change', (e) => {
     e.target.value = '' // reset input
     return
   }
-  
+
   logoFile = file
 
   const preview = document.getElementById('logoPreview')
