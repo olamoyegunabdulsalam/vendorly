@@ -14,6 +14,7 @@
   --warning: #f6b91a;
   --danger: #e5484d;
   --whatsapp: #25d366;
+  --whatsapp-dark: #1da851;
   --mint: var(--success);
   --mint-light: rgba(24, 181, 106, 0.12);
   --coral: var(--danger);
@@ -510,8 +511,6 @@ margin: 0;
   color: var(--white);
   position: sticky;
   top: 0;
-  /* right: 0;
-  left: 0; */
   z-index: 40;
   transition: box-shadow 0.2s ease;
 }
