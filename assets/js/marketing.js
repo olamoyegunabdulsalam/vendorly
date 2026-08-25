@@ -28,6 +28,34 @@ let generatedHashtags = []
 let selectedHashtags = new Set()
 let currentTemplate = null
 
+// Can this browser actually attach a file via the Web Share API?
+// (Most desktop browsers can't — mobile Chrome/Safari generally can.)
+// Used to decide which flyer action button gets visual priority.
+const canShareFiles = (() => {
+    try {
+        if (!navigator.canShare) return false
+        const testFile = new File([''], 'test.png', { type: 'image/png' })
+        return navigator.canShare({ files: [testFile] })
+    } catch {
+        return false
+    }
+})()
+
+// On browsers that can't share files directly, Download is the reliable
+// path — make it the visually primary button and de-emphasize Share,
+// since Share will fall back to a manual download-then-attach flow.
+if (!canShareFiles) {
+    const downloadBtn = document.getElementById('downloadFlyerBtn')
+    const shareBtn = document.getElementById('shareFlyerBtn')
+    const hint = document.getElementById('flyerActionsHint')
+
+    downloadBtn.classList.remove('btn-outline')
+    downloadBtn.classList.add('btn-primary')
+    shareBtn.classList.remove('btn-whatsapp')
+    shareBtn.classList.add('btn-outline')
+    if (hint) hint.style.display = 'block'
+}
+
 const storeUrl = getStoreUrl(store?.id, store?.slug)
 const DAILY_LIMIT = 10
 
@@ -262,6 +290,12 @@ function updateFlyerPreview() {
 
     document.getElementById('flyerBrandName').textContent = name
 
+    const flyerLink = document.querySelector('.flyer-canvas .flyer-link')
+    if (flyerLink) flyerLink.textContent = storeUrl
+
+    const storeLinkEl = document.getElementById('flyerStoreLink')
+    if (storeLinkEl) storeLinkEl.textContent = storeUrl
+
     const badge = document.querySelector('.flyer-canvas .badge')
     if (badge) {
         if (store?.logo_url) {
@@ -399,6 +433,23 @@ function enableButtons() {
     })
 }
 
+//  Generate Flyer Image 
+// Renders #flyerCanvas to a PNG blob via html2canvas. Shared by the
+// download and share-on-WhatsApp handlers so both stay in sync.
+async function generateFlyerBlob() {
+    if (!window.html2canvas) {
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
+    }
+
+    const canvas = await window.html2canvas(document.getElementById('flyerCanvas'), {
+        scale: 2, useCORS: true, backgroundColor: null,
+    })
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.95))
+    if (!blob) throw new Error('Canvas produced an empty image')
+    return blob
+}
+
 //  Download Flyer 
 document.getElementById('downloadFlyerBtn').addEventListener('click', async () => {
     const btn = document.getElementById('downloadFlyerBtn')
@@ -406,22 +457,20 @@ document.getElementById('downloadFlyerBtn').addEventListener('click', async () =
     btn.textContent = 'Preparing...'
 
     try {
-        if (!window.html2canvas) {
-            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
-        }
-
-        const canvas = await window.html2canvas(document.getElementById('flyerCanvas'), {
-            scale: 2, useCORS: true, allowTaint: true, backgroundColor: null,
-        })
-
+        const blob = await generateFlyerBlob()
         const link = document.createElement('a')
         link.download = `${store?.store_name || 'vendorly'}-flyer.png`
-        link.href = canvas.toDataURL('image/png')
+        link.href = URL.createObjectURL(blob)
         link.click()
+        setTimeout(() => URL.revokeObjectURL(link.href), 2000)
         showToast('Flyer downloaded ✓')
 
     } catch (err) {
-        showToast('Download failed. Try again.', 'error')
+        if (err.name === 'SecurityError') {
+            showToast('Image blocked by browser security — try re-uploading the product photo', 'error')
+        } else {
+            showToast('Download failed. Try again.', 'error')
+        }
         console.error(err)
     } finally {
         btn.disabled = false
@@ -429,43 +478,53 @@ document.getElementById('downloadFlyerBtn').addEventListener('click', async () =
     }
 })
 
-//  Share / Copy / Send 
+//  Share Flyer on WhatsApp 
+// wa.me links can only pre-fill text — they can't attach an image. To
+// actually share the flyer picture, we generate it and hand it to the
+// native Web Share API (files), which lets the person pick WhatsApp from
+// their share sheet with the image attached. Falls back to a text-only
+// wa.me link (with a heads-up) on browsers that can't share files.
 document.getElementById('shareFlyerBtn').addEventListener('click', async () => {
     const btn = document.getElementById('shareFlyerBtn')
+    const storeNameForShare = store?.store_name || 'My Store'
+    const shareText = `${storeNameForShare}\n\nCheck out our store: ${storeUrl}`
+
     btn.disabled = true
     btn.textContent = 'Preparing...'
 
     try {
-        // Step 1 — download flyer first
-        if (!window.html2canvas) {
-            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
-        }
+        const blob = await generateFlyerBlob()
+        const file = new File([blob], `${storeNameForShare}-flyer.png`, { type: 'image/png' })
 
-        const canvas = await window.html2canvas(document.getElementById('flyerCanvas'), {
-            scale: 2, useCORS: true, allowTaint: true, backgroundColor: null,
-        })
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: storeNameForShare,
+                text: shareText,
+            })
+        } else {
+            // Can't attach a file here — download the flyer so it's ready
+            // to attach manually, then open WhatsApp with the caption text.
+            const link = document.createElement('a')
+            link.download = `${storeNameForShare}-flyer.png`
+            link.href = URL.createObjectURL(blob)
+            link.click()
+            setTimeout(() => URL.revokeObjectURL(link.href), 2000)
 
-        const link = document.createElement('a')
-        link.download = `${store?.store_name || 'vendorly'}-flyer.png`
-        link.href = canvas.toDataURL('image/png')
-        link.click()
+            showToast('Flyer downloaded — attach it in WhatsApp, opening chat now')
 
-        // Step 2 — open WhatsApp with caption after short delay
-        setTimeout(() => {
-            const caption = generatedCaption || `Check out ${store?.store_name} on Vendorly`
-            const message = encodeURIComponent(caption)
             const phone = store?.whatsapp?.replace(/[^0-9]/g, '') || ''
+            const message = encodeURIComponent(shareText)
             window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
-        }, 1000)
-
-        showToast('Flyer saved — now attach it in WhatsApp 📎')
-
+        }
     } catch (err) {
-        showToast('Failed. Try downloading first.', 'error')
-        console.error(err)
+        if (err.name !== 'AbortError') {
+            showToast('Could not share flyer image', 'error')
+            console.error(err)
+        }
     } finally {
         btn.disabled = false
-        btn.textContent = 'Share on WhatsApp'
+        btn.textContent = '📤 Share'
     }
 })
 
