@@ -487,7 +487,7 @@ document.getElementById('downloadFlyerBtn').addEventListener('click', async () =
 document.getElementById('shareFlyerBtn').addEventListener('click', async () => {
     const btn = document.getElementById('shareFlyerBtn')
     const storeNameForShare = store?.store_name || 'My Store'
-    const shareText = `${generatedCaption}\n\nCheck out our store: ${storeUrl}`
+    const shareText = `${generatedCaption}`
 
     btn.disabled = true
     btn.textContent = 'Preparing...'
