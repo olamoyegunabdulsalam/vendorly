@@ -1020,11 +1020,14 @@ color: transparent;
   border-color: var(--primary);
   background: var(--primary-light);
 }
-.logo-upload input[type="file"] {
+
+.logo-upload input[type="file"],
+.banner-upload input[type="file"] {
   position: absolute;
   inset: 0;
   opacity: 0;
   cursor: pointer;
+  z-index: 10; 
 }
 .logo-upload-icon {
   font-size: 22px;
@@ -1107,7 +1110,7 @@ color: transparent;
   display: none;
 }
 
-/* Upload Change Overlay */
+/* ── Upload Change Overlay ── */
 .upload-change-overlay {
   position: absolute;
   inset: 0;
@@ -1119,12 +1122,12 @@ color: transparent;
   z-index: 3;
   opacity: 0;
   transition: opacity 0.2s ease;
-  pointer-events: none;
+  pointer-events: none; 
 }
 
-/* Show overlay on hover when image is uploaded */
-.banner-upload:hover .upload-change-overlay,
-.logo-upload:hover .upload-change-overlay {
+/* Show overlay on hover */
+.logo-upload:hover .upload-change-overlay,
+.banner-upload:hover .upload-change-overlay {
   opacity: 1;
 }
 
@@ -1136,7 +1139,7 @@ color: transparent;
   padding: 8px 14px;
   border-radius: var(--radius-full);
   font-family: var(--font-body);
-  pointer-events: none;
+  pointer-events: none; 
   box-shadow: var(--shadow-md);
 }
 

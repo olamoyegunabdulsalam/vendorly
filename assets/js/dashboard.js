@@ -80,7 +80,7 @@ document.getElementById('logoFile').addEventListener('change', (e) => {
   // ── Validate size before uploading ──
   if (file.size > 2 * 1024 * 1024) { // 2MB
     showToast('Logo must be under 2MB. Please choose a smaller image.', 'error')
-    e.target.value = '' // reset input
+    e.target.value = '' 
     return
   }
 
@@ -91,9 +91,9 @@ document.getElementById('logoFile').addEventListener('change', (e) => {
 
   preview.src = URL.createObjectURL(file)
   preview.style.display = 'block'
-  overlay.style.display = 'flex'   // ← show overlay
-  document.querySelector('.logo-upload-icon').style.display = 'none'
-  document.querySelector('.logo-upload-text').style.display = 'none'
+  overlay.style.display = 'flex'   
+  document.querySelector('#logoUploadArea .logo-upload-icon').style.display = 'none'
+  document.querySelector('#logoUploadArea .logo-upload-text').style.display = 'none'
 })
 
 
@@ -104,7 +104,7 @@ document.getElementById('bannerFile').addEventListener('change', (e) => {
   // ── Validate size before uploading ──
   if (file.size > 5 * 1024 * 1024) { // 5MB
     showToast('Banner must be under 5MB. Please choose a smaller image.', 'error')
-    e.target.value = '' // reset input
+    e.target.value = '' 
     return
   }
 
@@ -115,9 +115,9 @@ document.getElementById('bannerFile').addEventListener('change', (e) => {
 
   preview.src = URL.createObjectURL(file)
   preview.style.display = 'block'
-  overlay.style.display = 'flex'   // ← show overlay
-  document.querySelector('.banner-upload-icon').style.display = 'none'
-  document.querySelector('.banner-upload-text').style.display = 'none'
+  overlay.style.display = 'flex'   
+  document.querySelector('#bannerUploadArea .banner-upload-icon').style.display = 'none'
+  document.querySelector('#bannerUploadArea .banner-upload-text').style.display = 'none'
 })
 
 // Create store submit
