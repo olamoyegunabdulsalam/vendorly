@@ -16,13 +16,8 @@
   transition: all 0.4s ease;
 }
 
-.flyer-canvas.filled {
-  display: flex;
-}
-
-.flyer-canvas.loading {
-  display: flex;
-}
+.flyer-canvas.filled { display: flex; }
+.flyer-canvas.loading { display: flex; }
 
 /* Shared inner layers */
 .flyer-visual {
@@ -39,14 +34,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+  object-position: center 20%;
   z-index: 1;
   transform: scale(1.04);
 }
 
-.flyer-canvas:not(.has-image) .bg {
-  display: none;
-}
+.flyer-canvas:not(.has-image) .bg { display: none; }
 
 .hero-glow {
   position: absolute;
@@ -132,10 +125,7 @@
   gap: 8px;
 }
 
-.eyebrow-row {
-  display: flex;
-  align-items: center;
-}
+.eyebrow-row { display: flex; align-items: center; }
 
 .mini-pill {
   padding: 3px 8px;
@@ -187,42 +177,29 @@
   font-family: var(--font-body);
 }
 
-.cta-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 10px;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.footer-row {
+/* ── Vendorly Credit ── */
+.flyer-credit {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 8px;
-}
-
-.flyer-link {
-  font-size: 9.5px;
-  font-family: "IBM Plex Mono", monospace;
-  max-width: 70%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  opacity: 0.75;
-}
-
-.store-pill {
-  padding: 5px 9px;
-  border-radius: 999px;
-  font-size: 9.5px;
+  justify-content: center;
+  gap: 5px;
+  font-size: 8.5px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  opacity: 0.55;
+  color: #fff;
+  margin-top: 6px;
 }
+
+.flyer-credit-dot {
+  font-size: 7px;
+  opacity: 0.8;
+}
+
+/* Override per template for light themes */
+.template-clean-minimal .flyer-credit { color: var(--navy); }
+.template-cream .flyer-credit         { color: #3f2d11; }
 
 /* decorative shapes */
 .flyer-shape {
@@ -245,85 +222,30 @@
 
 .template-luxury-fashion .hero-glow {
   background:
-    linear-gradient(0deg, rgba(10, 10, 8, 0.92) 0%, rgba(10, 10, 8, 0.4) 40%, transparent 70%),
-    linear-gradient(90deg, rgba(10, 10, 8, 0.7) 0%, transparent 60%);
+    linear-gradient(0deg, rgba(10,10,8,0.92) 0%, rgba(10,10,8,0.4) 40%, transparent 70%),
+    linear-gradient(90deg, rgba(10,10,8,0.7) 0%, transparent 60%);
 }
 
-.template-luxury-fashion .brand-name {
-  color: #D4AF37;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-}
-
-.template-luxury-fashion .tagline {
-  color: rgba(212, 175, 55, 0.65);
-  letter-spacing: 0.2em;
-}
-
-.template-luxury-fashion .badge {
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  color: #D4AF37;
-}
-
-.template-luxury-fashion .flyer-badge {
-  background: #D4AF37;
-  color: #0a0a08;
-}
-
-.template-luxury-fashion .mini-pill {
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  color: #D4AF37;
-}
-
-.template-luxury-fashion .title {
-  color: #F5F0E8;
-  font-size: clamp(22px, 2.6vw, 32px);
-}
-
-.template-luxury-fashion .sub {
-  color: rgba(212, 175, 55, 0.7);
-  letter-spacing: 0.18em;
-}
-
-.template-luxury-fashion .price-pill {
-  background: linear-gradient(135deg, #D4AF37, #F0D060);
-  color: #0a0a08;
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
-}
-
-.template-luxury-fashion .cta-pill {
-  background: transparent;
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  color: #D4AF37;
-}
-
-.template-luxury-fashion .flyer-link {
-  color: rgba(212, 175, 55, 0.6);
-}
-
-.template-luxury-fashion .store-pill {
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  color: #D4AF37;
-}
+.template-luxury-fashion .brand-name { color: #D4AF37; font-size: 12px; letter-spacing: 0.12em; }
+.template-luxury-fashion .tagline    { color: rgba(212,175,55,0.65); letter-spacing: 0.2em; }
+.template-luxury-fashion .badge      { background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.4); color: #D4AF37; }
+.template-luxury-fashion .flyer-badge { background: #D4AF37; color: #0a0a08; }
+.template-luxury-fashion .mini-pill  { background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.25); color: #D4AF37; }
+.template-luxury-fashion .title      { color: #F5F0E8; font-size: clamp(22px, 2.6vw, 32px); }
+.template-luxury-fashion .sub        { color: rgba(212,175,55,0.7); letter-spacing: 0.18em; }
+.template-luxury-fashion .price-pill { background: linear-gradient(135deg, #D4AF37, #F0D060); color: #0a0a08; box-shadow: 0 4px 16px rgba(212,175,55,0.35); }
 
 .template-luxury-fashion .flyer-shape.shape-a {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.12), transparent 70%);
-  top: -60px;
-  right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%);
+  top: -60px; right: -40px;
   border-radius: 50%;
 }
 
 .template-luxury-fashion .flyer-shape.shape-b {
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.08), transparent 70%);
-  bottom: 60px;
-  left: -20px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%);
+  bottom: 60px; left: -20px;
   border-radius: 50%;
 }
 
@@ -340,82 +262,29 @@
 
 .template-naija-market .hero-glow {
   background:
-    linear-gradient(0deg, rgba(200, 50, 10, 0.85) 0%, rgba(200, 50, 10, 0.3) 35%, transparent 65%),
-    linear-gradient(90deg, rgba(200, 50, 10, 0.6) 0%, transparent 50%);
+    linear-gradient(0deg, rgba(200,50,10,0.85) 0%, rgba(200,50,10,0.3) 35%, transparent 65%),
+    linear-gradient(90deg, rgba(200,50,10,0.6) 0%, transparent 50%);
 }
 
-.template-naija-market .brand-name {
-  color: #FFF8F0;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-}
-
-.template-naija-market .tagline {
-  color: rgba(255, 248, 240, 0.75);
-}
-
-.template-naija-market .badge {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
-}
-
-.template-naija-market .flyer-badge {
-  background: #1A1A1A;
-  color: #FF7A2F;
-}
-
-.template-naija-market .mini-pill {
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #fff;
-}
-
-.template-naija-market .title {
-  color: #ffffff;
-  font-size: clamp(24px, 2.8vw, 34px);
-  letter-spacing: -0.03em;
-}
-
-.template-naija-market .sub {
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.template-naija-market .price-pill {
-  background: #1A1A1A;
-  color: #FF9A3C;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-.template-naija-market .cta-pill {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
-}
-
-.template-naija-market .flyer-link {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.template-naija-market .store-pill {
-  background: rgba(255, 255, 255, 0.18);
-  color: #fff;
-}
+.template-naija-market .brand-name  { color: #FFF8F0; font-size: 11px; letter-spacing: 0.08em; }
+.template-naija-market .tagline     { color: rgba(255,248,240,0.75); }
+.template-naija-market .badge       { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: #fff; }
+.template-naija-market .flyer-badge { background: #1A1A1A; color: #FF7A2F; }
+.template-naija-market .mini-pill   { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.25); color: #fff; }
+.template-naija-market .title       { color: #ffffff; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.03em; }
+.template-naija-market .sub         { color: rgba(255,255,255,0.82); }
+.template-naija-market .price-pill  { background: #1A1A1A; color: #FF9A3C; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
 
 .template-naija-market .flyer-shape.shape-a {
-  width: 220px;
-  height: 220px;
-  background: rgba(255, 255, 255, 0.08);
-  top: -80px;
-  right: -60px;
+  width: 220px; height: 220px;
+  background: rgba(255,255,255,0.08);
+  top: -80px; right: -60px;
 }
 
 .template-naija-market .flyer-shape.shape-b {
-  width: 160px;
-  height: 160px;
-  background: rgba(255, 255, 255, 0.06);
-  bottom: -50px;
-  left: -30px;
+  width: 160px; height: 160px;
+  background: rgba(255,255,255,0.06);
+  bottom: -50px; left: -30px;
 }
 
 /* ============================================================
@@ -426,85 +295,33 @@
 .template-clean-minimal {
   background: #F8F7F4;
   color: #0D1B2A;
-  border: 1px solid rgba(13, 27, 42, 0.08);
+  border: 1px solid rgba(13,27,42,0.08);
 }
 
 .template-clean-minimal .hero-glow {
   background:
-    linear-gradient(0deg, rgba(248, 247, 244, 0.97) 0%, rgba(248, 247, 244, 0.65) 35%, rgba(248, 247, 244, 0.1) 65%);
+    linear-gradient(0deg, rgba(248,247,244,0.97) 0%, rgba(248,247,244,0.65) 35%, rgba(248,247,244,0.1) 65%);
 }
 
-.template-clean-minimal .brand-name {
-  color: #0D1B2A;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-}
-
-.template-clean-minimal .tagline {
-  color: rgba(13, 27, 42, 0.5);
-  letter-spacing: 0.15em;
-}
-
-.template-clean-minimal .badge {
-  background: #0D1B2A;
-  color: #F8F7F4;
-}
-
-.template-clean-minimal .flyer-badge {
-  background: #0066FF;
-  color: #fff;
-}
-
-.template-clean-minimal .mini-pill {
-  background: rgba(13, 27, 42, 0.07);
-  border: 1px solid rgba(13, 27, 42, 0.12);
-  color: #0D1B2A;
-}
-
-.template-clean-minimal .title {
-  color: #0D1B2A;
-  font-size: clamp(22px, 2.5vw, 30px);
-}
-
-.template-clean-minimal .sub {
-  color: rgba(13, 27, 42, 0.5);
-}
-
-.template-clean-minimal .price-pill {
-  background: #0066FF;
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(0, 102, 255, 0.3);
-}
-
-.template-clean-minimal .cta-pill {
-  background: #0D1B2A;
-  color: #F8F7F4;
-}
-
-.template-clean-minimal .flyer-link {
-  color: rgba(13, 27, 42, 0.45);
-}
-
-.template-clean-minimal .store-pill {
-  background: rgba(13, 27, 42, 0.07);
-  border: 1px solid rgba(13, 27, 42, 0.12);
-  color: #0D1B2A;
-}
+.template-clean-minimal .brand-name  { color: #0D1B2A; font-size: 11px; letter-spacing: 0.1em; }
+.template-clean-minimal .tagline     { color: rgba(13,27,42,0.5); letter-spacing: 0.15em; }
+.template-clean-minimal .badge       { background: #0D1B2A; color: #F8F7F4; }
+.template-clean-minimal .flyer-badge { background: #0066FF; color: #fff; }
+.template-clean-minimal .mini-pill   { background: rgba(13,27,42,0.07); border: 1px solid rgba(13,27,42,0.12); color: #0D1B2A; }
+.template-clean-minimal .title       { color: #0D1B2A; font-size: clamp(22px, 2.5vw, 30px); }
+.template-clean-minimal .sub         { color: rgba(13,27,42,0.5); }
+.template-clean-minimal .price-pill  { background: #0066FF; color: #fff; box-shadow: 0 4px 16px rgba(0,102,255,0.3); }
 
 .template-clean-minimal .flyer-shape.shape-a {
-  width: 180px;
-  height: 180px;
-  background: rgba(0, 102, 255, 0.06);
-  top: -50px;
-  right: -30px;
+  width: 180px; height: 180px;
+  background: rgba(0,102,255,0.06);
+  top: -50px; right: -30px;
 }
 
 .template-clean-minimal .flyer-shape.shape-b {
-  width: 120px;
-  height: 120px;
-  background: rgba(0, 102, 255, 0.04);
-  bottom: 80px;
-  left: -20px;
+  width: 120px; height: 120px;
+  background: rgba(0,102,255,0.04);
+  bottom: 80px; left: -20px;
 }
 
 /* ============================================================
@@ -516,89 +333,34 @@
   background:
     radial-gradient(ellipse 100% 80% at 20% 100%, #8B3A52 0%, transparent 55%),
     linear-gradient(145deg, #2C1020 0%, #5C2438 40%, #8B3A52 100%);
-  border: 1px solid rgba(235, 180, 195, 0.15);
+  border: 1px solid rgba(235,180,195,0.15);
 }
 
 .template-beauty .hero-glow {
   background:
-    linear-gradient(0deg, rgba(30, 8, 20, 0.9) 0%, rgba(30, 8, 20, 0.4) 40%, transparent 65%),
-    linear-gradient(90deg, rgba(30, 8, 20, 0.5) 0%, transparent 55%);
+    linear-gradient(0deg, rgba(30,8,20,0.9) 0%, rgba(30,8,20,0.4) 40%, transparent 65%),
+    linear-gradient(90deg, rgba(30,8,20,0.5) 0%, transparent 55%);
 }
 
-.template-beauty .brand-name {
-  color: #F2C4CE;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-}
-
-.template-beauty .tagline {
-  color: rgba(242, 196, 206, 0.6);
-  letter-spacing: 0.18em;
-}
-
-.template-beauty .badge {
-  background: rgba(242, 196, 206, 0.15);
-  border: 1px solid rgba(242, 196, 206, 0.3);
-  color: #F2C4CE;
-}
-
-.template-beauty .flyer-badge {
-  background: linear-gradient(135deg, #F2C4CE, #E8A0B0);
-  color: #2C1020;
-}
-
-.template-beauty .mini-pill {
-  background: rgba(242, 196, 206, 0.12);
-  border: 1px solid rgba(242, 196, 206, 0.2);
-  color: #F2C4CE;
-}
-
-.template-beauty .title {
-  color: #FFF0F3;
-  font-size: clamp(21px, 2.4vw, 28px);
-}
-
-.template-beauty .sub {
-  color: rgba(242, 196, 206, 0.7);
-  letter-spacing: 0.12em;
-}
-
-.template-beauty .price-pill {
-  background: linear-gradient(135deg, #F2C4CE, #FADADD);
-  color: #2C1020;
-  box-shadow: 0 4px 16px rgba(242, 196, 206, 0.3);
-}
-
-.template-beauty .cta-pill {
-  background: rgba(242, 196, 206, 0.15);
-  border: 1px solid rgba(242, 196, 206, 0.3);
-  color: #F2C4CE;
-}
-
-.template-beauty .flyer-link {
-  color: rgba(242, 196, 206, 0.55);
-}
-
-.template-beauty .store-pill {
-  background: rgba(242, 196, 206, 0.12);
-  border: 1px solid rgba(242, 196, 206, 0.2);
-  color: #F2C4CE;
-}
+.template-beauty .brand-name  { color: #F2C4CE; font-size: 12px; letter-spacing: 0.12em; }
+.template-beauty .tagline     { color: rgba(242,196,206,0.6); letter-spacing: 0.18em; }
+.template-beauty .badge       { background: rgba(242,196,206,0.15); border: 1px solid rgba(242,196,206,0.3); color: #F2C4CE; }
+.template-beauty .flyer-badge { background: linear-gradient(135deg, #F2C4CE, #E8A0B0); color: #2C1020; }
+.template-beauty .mini-pill   { background: rgba(242,196,206,0.12); border: 1px solid rgba(242,196,206,0.2); color: #F2C4CE; }
+.template-beauty .title       { color: #FFF0F3; font-size: clamp(21px, 2.4vw, 28px); }
+.template-beauty .sub         { color: rgba(242,196,206,0.7); letter-spacing: 0.12em; }
+.template-beauty .price-pill  { background: linear-gradient(135deg, #F2C4CE, #FADADD); color: #2C1020; box-shadow: 0 4px 16px rgba(242,196,206,0.3); }
 
 .template-beauty .flyer-shape.shape-a {
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(242, 196, 206, 0.15), transparent 70%);
-  top: -40px;
-  right: -30px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(242,196,206,0.15), transparent 70%);
+  top: -40px; right: -30px;
 }
 
 .template-beauty .flyer-shape.shape-b {
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(circle, rgba(139, 58, 82, 0.4), transparent 70%);
-  bottom: 40px;
-  left: -30px;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, rgba(139,58,82,0.4), transparent 70%);
+  bottom: 40px; left: -30px;
 }
 
 /* ============================================================
@@ -608,93 +370,34 @@
    ============================================================ */
 .template-streetwear {
   background: #080808;
-  border: 1px solid rgba(0, 255, 128, 0.15);
+  border: 1px solid rgba(0,255,128,0.15);
 }
 
 .template-streetwear .hero-glow {
   background:
-    linear-gradient(0deg, rgba(8, 8, 8, 0.95) 0%, rgba(8, 8, 8, 0.5) 35%, rgba(8, 8, 8, 0.1) 65%),
-    linear-gradient(90deg, rgba(8, 8, 8, 0.8) 0%, transparent 50%);
+    linear-gradient(0deg, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.5) 35%, rgba(8,8,8,0.1) 65%),
+    linear-gradient(90deg, rgba(8,8,8,0.8) 0%, transparent 50%);
 }
 
-.template-streetwear .brand-name {
-  color: #00FF80;
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
-.template-streetwear .tagline {
-  color: rgba(0, 255, 128, 0.5);
-  letter-spacing: 0.25em;
-}
-
-.template-streetwear .badge {
-  background: rgba(0, 255, 128, 0.1);
-  border: 1px solid rgba(0, 255, 128, 0.3);
-  color: #00FF80;
-}
-
-.template-streetwear .flyer-badge {
-  background: #00FF80;
-  color: #080808;
-  font-weight: 900;
-}
-
-.template-streetwear .mini-pill {
-  background: rgba(0, 255, 128, 0.1);
-  border: 1px solid rgba(0, 255, 128, 0.2);
-  color: #00FF80;
-}
-
-.template-streetwear .title {
-  color: #FFFFFF;
-  font-size: clamp(24px, 2.8vw, 34px);
-  letter-spacing: -0.02em;
-}
-
-.template-streetwear .sub {
-  color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 0.12em;
-}
-
-.template-streetwear .price-pill {
-  background: #00FF80;
-  color: #080808;
-  font-weight: 900;
-  box-shadow: 0 4px 20px rgba(0, 255, 128, 0.3);
-}
-
-.template-streetwear .cta-pill {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.template-streetwear .flyer-link {
-  color: rgba(0, 255, 128, 0.45);
-}
-
-.template-streetwear .store-pill {
-  background: rgba(0, 255, 128, 0.1);
-  border: 1px solid rgba(0, 255, 128, 0.2);
-  color: #00FF80;
-}
+.template-streetwear .brand-name  { color: #00FF80; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; }
+.template-streetwear .tagline     { color: rgba(0,255,128,0.5); letter-spacing: 0.25em; }
+.template-streetwear .badge       { background: rgba(0,255,128,0.1); border: 1px solid rgba(0,255,128,0.3); color: #00FF80; }
+.template-streetwear .flyer-badge { background: #00FF80; color: #080808; font-weight: 900; }
+.template-streetwear .mini-pill   { background: rgba(0,255,128,0.1); border: 1px solid rgba(0,255,128,0.2); color: #00FF80; }
+.template-streetwear .title       { color: #FFFFFF; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.02em; }
+.template-streetwear .sub         { color: rgba(255,255,255,0.45); letter-spacing: 0.12em; }
+.template-streetwear .price-pill  { background: #00FF80; color: #080808; font-weight: 900; box-shadow: 0 4px 20px rgba(0,255,128,0.3); }
 
 .template-streetwear .flyer-shape.shape-a {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(0, 255, 128, 0.08), transparent 65%);
-  top: -60px;
-  right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,255,128,0.08), transparent 65%);
+  top: -60px; right: -40px;
 }
 
 .template-streetwear .flyer-shape.shape-b {
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(circle, rgba(0, 255, 128, 0.05), transparent 65%);
-  bottom: 30px;
-  left: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(0,255,128,0.05), transparent 65%);
+  bottom: 30px; left: -40px;
 }
 
 /* ============================================================
@@ -706,91 +409,34 @@
   background:
     radial-gradient(ellipse 100% 60% at 50% 100%, #6B2D0E 0%, transparent 60%),
     linear-gradient(160deg, #1A0A04 0%, #3D1508 45%, #6B2D0E 100%);
-  border: 1px solid rgba(255, 185, 80, 0.1);
+  border: 1px solid rgba(255,185,80,0.1);
 }
 
 .template-food .hero-glow {
   background:
-    linear-gradient(0deg, rgba(20, 8, 2, 0.92) 0%, rgba(20, 8, 2, 0.45) 38%, transparent 62%),
-    linear-gradient(90deg, rgba(20, 8, 2, 0.65) 0%, transparent 52%);
+    linear-gradient(0deg, rgba(20,8,2,0.92) 0%, rgba(20,8,2,0.45) 38%, transparent 62%),
+    linear-gradient(90deg, rgba(20,8,2,0.65) 0%, transparent 52%);
 }
 
-.template-food .brand-name {
-  color: #FFB950;
-  font-size: 12px;
-  letter-spacing: 0.1em;
-}
-
-.template-food .tagline {
-  color: rgba(255, 185, 80, 0.6);
-  letter-spacing: 0.16em;
-}
-
-.template-food .badge {
-  background: rgba(255, 185, 80, 0.15);
-  border: 1px solid rgba(255, 185, 80, 0.3);
-  color: #FFB950;
-}
-
-.template-food .flyer-badge {
-  background: #FFB950;
-  color: #1A0A04;
-  font-weight: 900;
-}
-
-.template-food .mini-pill {
-  background: rgba(255, 185, 80, 0.12);
-  border: 1px solid rgba(255, 185, 80, 0.22);
-  color: #FFB950;
-}
-
-.template-food .title {
-  color: #FFF8EE;
-  font-size: clamp(21px, 2.3vw, 28px);
-}
-
-.template-food .sub {
-  color: rgba(255, 185, 80, 0.65);
-  letter-spacing: 0.1em;
-}
-
-.template-food .price-pill {
-  background: linear-gradient(135deg, #FFB950, #FFD080);
-  color: #1A0A04;
-  box-shadow: 0 4px 16px rgba(255, 185, 80, 0.3);
-  font-weight: 900;
-}
-
-.template-food .cta-pill {
-  background: rgba(255, 185, 80, 0.15);
-  border: 1px solid rgba(255, 185, 80, 0.3);
-  color: #FFB950;
-}
-
-.template-food .flyer-link {
-  color: rgba(255, 185, 80, 0.5);
-}
-
-.template-food .store-pill {
-  background: rgba(255, 185, 80, 0.12);
-  border: 1px solid rgba(255, 185, 80, 0.22);
-  color: #FFB950;
-}
+.template-food .brand-name  { color: #FFB950; font-size: 12px; letter-spacing: 0.1em; }
+.template-food .tagline     { color: rgba(255,185,80,0.6); letter-spacing: 0.16em; }
+.template-food .badge       { background: rgba(255,185,80,0.15); border: 1px solid rgba(255,185,80,0.3); color: #FFB950; }
+.template-food .flyer-badge { background: #FFB950; color: #1A0A04; font-weight: 900; }
+.template-food .mini-pill   { background: rgba(255,185,80,0.12); border: 1px solid rgba(255,185,80,0.22); color: #FFB950; }
+.template-food .title       { color: #FFF8EE; font-size: clamp(21px, 2.3vw, 28px); }
+.template-food .sub         { color: rgba(255,185,80,0.65); letter-spacing: 0.1em; }
+.template-food .price-pill  { background: linear-gradient(135deg, #FFB950, #FFD080); color: #1A0A04; box-shadow: 0 4px 16px rgba(255,185,80,0.3); font-weight: 900; }
 
 .template-food .flyer-shape.shape-a {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255, 185, 80, 0.1), transparent 68%);
-  top: -60px;
-  right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255,185,80,0.1), transparent 68%);
+  top: -60px; right: -40px;
 }
 
 .template-food .flyer-shape.shape-b {
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, rgba(107, 45, 14, 0.6), transparent 68%);
-  bottom: 30px;
-  left: -30px;
+  width: 150px; height: 150px;
+  background: radial-gradient(circle, rgba(107,45,14,0.6), transparent 68%);
+  bottom: 30px; left: -30px;
 }
 
 /* ============================================================
@@ -802,89 +448,34 @@
   background:
     radial-gradient(ellipse 120% 60% at 100% 0%, #4A1080 0%, transparent 55%),
     linear-gradient(150deg, #0D0520 0%, #1E0A40 45%, #3B1070 100%);
-  border: 1px solid rgba(160, 80, 255, 0.2);
+  border: 1px solid rgba(160,80,255,0.2);
 }
 
 .template-tech-purple .hero-glow {
   background:
-    linear-gradient(0deg, rgba(10, 3, 25, 0.93) 0%, rgba(10, 3, 25, 0.45) 38%, transparent 62%),
-    linear-gradient(90deg, rgba(10, 3, 25, 0.7) 0%, transparent 52%);
+    linear-gradient(0deg, rgba(10,3,25,0.93) 0%, rgba(10,3,25,0.45) 38%, transparent 62%),
+    linear-gradient(90deg, rgba(10,3,25,0.7) 0%, transparent 52%);
 }
 
-.template-tech-purple .brand-name {
-  color: #C084FC;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-}
-
-.template-tech-purple .tagline {
-  color: rgba(192, 132, 252, 0.55);
-  letter-spacing: 0.18em;
-}
-
-.template-tech-purple .badge {
-  background: rgba(160, 80, 255, 0.18);
-  border: 1px solid rgba(160, 80, 255, 0.35);
-  color: #C084FC;
-}
-
-.template-tech-purple .flyer-badge {
-  background: linear-gradient(135deg, #A050FF, #C084FC);
-  color: #fff;
-}
-
-.template-tech-purple .mini-pill {
-  background: rgba(160, 80, 255, 0.12);
-  border: 1px solid rgba(160, 80, 255, 0.25);
-  color: #C084FC;
-}
-
-.template-tech-purple .title {
-  color: #F5EEFF;
-  font-size: clamp(21px, 2.4vw, 30px);
-}
-
-.template-tech-purple .sub {
-  color: rgba(192, 132, 252, 0.65);
-  letter-spacing: 0.1em;
-}
-
-.template-tech-purple .price-pill {
-  background: linear-gradient(135deg, #A050FF, #C084FC);
-  color: #fff;
-  box-shadow: 0 4px 18px rgba(160, 80, 255, 0.35);
-}
-
-.template-tech-purple .cta-pill {
-  background: rgba(160, 80, 255, 0.15);
-  border: 1px solid rgba(160, 80, 255, 0.3);
-  color: #C084FC;
-}
-
-.template-tech-purple .flyer-link {
-  color: rgba(192, 132, 252, 0.5);
-}
-
-.template-tech-purple .store-pill {
-  background: rgba(160, 80, 255, 0.12);
-  border: 1px solid rgba(160, 80, 255, 0.22);
-  color: #C084FC;
-}
+.template-tech-purple .brand-name  { color: #C084FC; font-size: 11px; letter-spacing: 0.1em; }
+.template-tech-purple .tagline     { color: rgba(192,132,252,0.55); letter-spacing: 0.18em; }
+.template-tech-purple .badge       { background: rgba(160,80,255,0.18); border: 1px solid rgba(160,80,255,0.35); color: #C084FC; }
+.template-tech-purple .flyer-badge { background: linear-gradient(135deg, #A050FF, #C084FC); color: #fff; }
+.template-tech-purple .mini-pill   { background: rgba(160,80,255,0.12); border: 1px solid rgba(160,80,255,0.25); color: #C084FC; }
+.template-tech-purple .title       { color: #F5EEFF; font-size: clamp(21px, 2.4vw, 30px); }
+.template-tech-purple .sub         { color: rgba(192,132,252,0.65); letter-spacing: 0.1em; }
+.template-tech-purple .price-pill  { background: linear-gradient(135deg, #A050FF, #C084FC); color: #fff; box-shadow: 0 4px 18px rgba(160,80,255,0.35); }
 
 .template-tech-purple .flyer-shape.shape-a {
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(160, 80, 255, 0.15), transparent 65%);
-  top: -70px;
-  right: -50px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(160,80,255,0.15), transparent 65%);
+  top: -70px; right: -50px;
 }
 
 .template-tech-purple .flyer-shape.shape-b {
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(circle, rgba(74, 16, 128, 0.6), transparent 65%);
-  bottom: 20px;
-  left: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(74,16,128,0.6), transparent 65%);
+  bottom: 20px; left: -40px;
 }
 
 /* ============================================================
@@ -896,91 +487,34 @@
   background:
     radial-gradient(ellipse 100% 70% at 0% 100%, #064E3B 0%, transparent 55%),
     linear-gradient(145deg, #022C22 0%, #064E3B 45%, #0D7054 100%);
-  border: 1px solid rgba(52, 211, 153, 0.15);
+  border: 1px solid rgba(52,211,153,0.15);
 }
 
 .template-emerald .hero-glow {
   background:
-    linear-gradient(0deg, rgba(2, 20, 15, 0.93) 0%, rgba(2, 20, 15, 0.45) 38%, transparent 62%),
-    linear-gradient(90deg, rgba(2, 20, 15, 0.7) 0%, transparent 52%);
+    linear-gradient(0deg, rgba(2,20,15,0.93) 0%, rgba(2,20,15,0.45) 38%, transparent 62%),
+    linear-gradient(90deg, rgba(2,20,15,0.7) 0%, transparent 52%);
 }
 
-.template-emerald .brand-name {
-  color: #34D399;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-}
-
-.template-emerald .tagline {
-  color: rgba(52, 211, 153, 0.55);
-  letter-spacing: 0.18em;
-}
-
-.template-emerald .badge {
-  background: rgba(52, 211, 153, 0.15);
-  border: 1px solid rgba(52, 211, 153, 0.3);
-  color: #34D399;
-}
-
-.template-emerald .flyer-badge {
-  background: #34D399;
-  color: #022C22;
-  font-weight: 900;
-}
-
-.template-emerald .mini-pill {
-  background: rgba(52, 211, 153, 0.1);
-  border: 1px solid rgba(52, 211, 153, 0.2);
-  color: #34D399;
-}
-
-.template-emerald .title {
-  color: #F0FDF4;
-  font-size: clamp(21px, 2.4vw, 30px);
-}
-
-.template-emerald .sub {
-  color: rgba(52, 211, 153, 0.65);
-  letter-spacing: 0.1em;
-}
-
-.template-emerald .price-pill {
-  background: linear-gradient(135deg, #34D399, #6EE7B7);
-  color: #022C22;
-  box-shadow: 0 4px 16px rgba(52, 211, 153, 0.3);
-  font-weight: 900;
-}
-
-.template-emerald .cta-pill {
-  background: rgba(52, 211, 153, 0.12);
-  border: 1px solid rgba(52, 211, 153, 0.25);
-  color: #34D399;
-}
-
-.template-emerald .flyer-link {
-  color: rgba(52, 211, 153, 0.5);
-}
-
-.template-emerald .store-pill {
-  background: rgba(52, 211, 153, 0.1);
-  border: 1px solid rgba(52, 211, 153, 0.2);
-  color: #34D399;
-}
+.template-emerald .brand-name  { color: #34D399; font-size: 11px; letter-spacing: 0.1em; }
+.template-emerald .tagline     { color: rgba(52,211,153,0.55); letter-spacing: 0.18em; }
+.template-emerald .badge       { background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.3); color: #34D399; }
+.template-emerald .flyer-badge { background: #34D399; color: #022C22; font-weight: 900; }
+.template-emerald .mini-pill   { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2); color: #34D399; }
+.template-emerald .title       { color: #F0FDF4; font-size: clamp(21px, 2.4vw, 30px); }
+.template-emerald .sub         { color: rgba(52,211,153,0.65); letter-spacing: 0.1em; }
+.template-emerald .price-pill  { background: linear-gradient(135deg, #34D399, #6EE7B7); color: #022C22; box-shadow: 0 4px 16px rgba(52,211,153,0.3); font-weight: 900; }
 
 .template-emerald .flyer-shape.shape-a {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.1), transparent 65%);
-  top: -60px;
-  right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(52,211,153,0.1), transparent 65%);
+  top: -60px; right: -40px;
 }
 
 .template-emerald .flyer-shape.shape-b {
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, rgba(6, 78, 59, 0.7), transparent 65%);
-  bottom: 30px;
-  left: -30px;
+  width: 150px; height: 150px;
+  background: radial-gradient(circle, rgba(6,78,59,0.7), transparent 65%);
+  bottom: 30px; left: -30px;
 }
 
 /* ============================================================
@@ -996,59 +530,29 @@
   display: flex;
   flex-direction: column;
   gap: 11px;
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.2);
 }
 
 .skeleton-hero {
   flex: 1;
   border-radius: 16px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1), rgba(255,255,255,0.05));
   background-size: 200% 100%;
   animation: shimmer 1.2s infinite linear;
 }
 
-.skeleton-line {
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
-}
+.skeleton-line { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.07); }
+.skeleton-line.line-lg { width: 75%; }
+.skeleton-line.line-md { width: 55%; }
+.skeleton-line.line-sm { width: 38%; }
 
-.skeleton-line.line-lg {
-  width: 75%;
-}
-
-.skeleton-line.line-md {
-  width: 55%;
-}
-
-.skeleton-line.line-sm {
-  width: 38%;
-}
-
-.skeleton-row {
-  display: flex;
-  gap: 8px;
-}
-
-.skeleton-pill {
-  height: 26px;
-  flex: 1;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.skeleton-pill.small {
-  flex: 0.6;
-}
+.skeleton-row { display: flex; gap: 8px; }
+.skeleton-pill { height: 26px; flex: 1; border-radius: 999px; background: rgba(255,255,255,0.07); }
+.skeleton-pill.small { flex: 0.6; }
 
 @keyframes shimmer {
-  from {
-    background-position: 200% 0;
-  }
-
-  to {
-    background-position: -200% 0;
-  }
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
 }
 
 /* Flyer enter animation */
@@ -1057,13 +561,6 @@
 }
 
 @keyframes flyerReveal {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+  from { opacity: 0; transform: scale(0.95) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }

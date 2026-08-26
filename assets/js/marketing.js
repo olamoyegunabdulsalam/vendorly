@@ -236,12 +236,12 @@ async function callGeminiAPI(prompt, product, store) {
     if (!response.ok) {
         if (data.code === 'LIMIT_REACHED') {
             throw new Error(
-                `You've used all ${DAILY_LIMIT} free campaigns for today. Come back tomorrow for more! 🙌`
+                `You've used all ${DAILY_LIMIT} free campaigns for today!`
             )
         }
         if (data.code === 'API_QUOTA' || data.code === 'UNKNOWN') {
             throw new Error(
-                `Our AI is a bit busy right now. Please try again in a moment.`
+                `Too much request. Please try again in a moment.`
             )
         }
         if (data.code === 'NO_AUTH' || data.code === 'INVALID_AUTH') {
@@ -467,7 +467,7 @@ document.getElementById('downloadFlyerBtn').addEventListener('click', async () =
 
     } catch (err) {
         if (err.name === 'SecurityError') {
-            showToast('Image blocked by browser security — try re-uploading the product photo', 'error')
+            showToast('Image blocked by browser security, try re-uploading the product photo', 'error')
         } else {
             showToast('Download failed. Try again.', 'error')
         }
@@ -487,7 +487,7 @@ document.getElementById('downloadFlyerBtn').addEventListener('click', async () =
 document.getElementById('shareFlyerBtn').addEventListener('click', async () => {
     const btn = document.getElementById('shareFlyerBtn')
     const storeNameForShare = store?.store_name || 'My Store'
-    const shareText = `${storeNameForShare}\n\nCheck out our store: ${storeUrl}`
+    const shareText = `${generatedCaption}\n\nCheck out our store: ${storeUrl}`
 
     btn.disabled = true
     btn.textContent = 'Preparing...'
@@ -511,7 +511,7 @@ document.getElementById('shareFlyerBtn').addEventListener('click', async () => {
             link.click()
             setTimeout(() => URL.revokeObjectURL(link.href), 2000)
 
-            showToast('Flyer downloaded — attach it in WhatsApp, opening chat now')
+            showToast('Flyer downloaded. Attach it in WhatsApp, opening chat now')
 
             const phone = store?.whatsapp?.replace(/[^0-9]/g, '') || ''
             const message = encodeURIComponent(shareText)
@@ -524,7 +524,7 @@ document.getElementById('shareFlyerBtn').addEventListener('click', async () => {
         }
     } finally {
         btn.disabled = false
-        btn.textContent = '📤 Share'
+        btn.innerHTML = '<i class="fa-solid fa-share-nodes"></i> Share'
     }
 })
 

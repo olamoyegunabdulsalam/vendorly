@@ -1,3 +1,49 @@
+/* Brand Tokens */
+:root {
+  --primary: #5b3df5;
+  --primary-hover: #4a2fe0;
+  --primary-light: #eee9ff;
+  --bg: #f7f8fc;
+  --surface: #ffffff;
+  --surface-secondary: #f1f3f9;
+  --border: #e6e8f0;
+  --heading: #111827;
+  --text: #475467;
+  --muted: #98a2b3;
+  --success: #18b56a;
+  --warning: #f6b91a;
+  --danger: #e5484d;
+  --whatsapp: #25d366;
+  --mint: var(--success);
+  --mint-light: rgba(24, 181, 106, 0.12);
+  --coral: var(--danger);
+  --coral-light: rgba(229, 72, 77, 0.12);
+  --dark: var(--heading);
+  --gray-700: var(--text);
+  --gray-500: var(--text);
+  --gray-400: var(--muted);
+  --gray-200: var(--border);
+  --gray-100: var(--surface-secondary);
+  --gray-50: var(--bg);
+  --white: var(--surface);
+  --error: var(--danger);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 3px rgba(17, 24, 39, 0.06);
+  --shadow-md: 0 8px 24px rgba(17, 24, 39, 0.06);
+  --shadow-lg: 0 16px 40px rgba(17, 24, 39, 0.08);
+  --font-display: "Archivo Expanded", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --nav-height: 68px;
+  --sidebar-width-collapsed: 80px;
+  --sidebar-width-expanded: 240px;
+  --content-max-width: 680px;
+}
+
 /* Studio Layout */
 .studio-layout {
   display: grid;
@@ -116,7 +162,7 @@
 /* Product Select */
 .product-select-box {
   position: relative;
-  background: var(--surface);
+  background: whitesmoke;
   border: 1.5px solid var(--border-strong);
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -231,7 +277,7 @@
   width: 100%;
   min-height: 90px;
   resize: none;
-  background: var(--bg-soft);
+  background: whitesmoke;
   border: 1.5px solid var(--border-strong);
   border-radius: var(--radius-md);
   padding: 14px 14px 28px;
@@ -244,7 +290,7 @@
 }
 
 .studio-textarea::placeholder { color: var(--muted); }
-.studio-textarea:focus { border-color: var(--primary); background: var(--surface); }
+.studio-textarea:focus { border-color: var(--primary); }
 
 .char-count {
   position: absolute;
@@ -264,8 +310,8 @@
 
 .chip {
   border: 1.5px solid var(--border-strong);
-  background: var(--surface);
-  color: var(--slate);
+  color: var(--primary);
+  background: var(--primary-light);
   border-radius: 999px;
   padding: 6px 12px;
   font-size: 12px;
@@ -276,10 +322,21 @@
   white-space: nowrap;
 }
 
-.chip:hover {
+.chip:active {
   border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-light);
+  background: var(--surface);
+  color: var(--slate);
+}
+
+.chip svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
 }
 
 /* Generate Button */
@@ -402,7 +459,13 @@
   color: var(--heading);
 }
 
-.output-icon { font-size: 15px; }
+.output-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+    color: var(--primary-hover);
+}
+
 
 .refine-btn {
   background: none;
@@ -513,7 +576,6 @@
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .btn-whatsapp { background: var(--whatsapp); color: #fff; }
-.btn-whatsapp:hover { background: var(--whatsapp-dark); }
 .btn-whatsapp:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .flyer-actions-hint {
