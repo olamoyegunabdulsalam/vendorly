@@ -1349,3 +1349,35 @@ footer ul li a:hover {
     grid-template-columns: 1fr;
   }
 }
+
+/* Base CSS: Hide mobile login link on desktop */
+.mobile-login-action {
+  display: none;
+}
+
+/* Responsive CSS: Mobile Dropdown (Inside @media max-width: 960px) */
+@media (max-width: 960px) {
+  .mobile-login-action {
+    display: block;
+    border-top: 1px solid var(--line);
+    margin-top: 6px;
+    padding-top: 4px;
+  }
+
+  .mobile-login-action a {
+    color: var(--primary);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .mobile-login-action a:hover {
+    color: var(--primary-hover);
+  }
+  
+  /* Remove top border from store action so borders don't double up */
+  .mobile-store-action {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 4px;
+  }
+}
