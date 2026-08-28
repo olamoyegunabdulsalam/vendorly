@@ -34,8 +34,8 @@ let currentTemplate = null
 const canShareFiles = (() => {
     try {
         if (!navigator.canShare) return false
-        const testFile = new File([''], 'test.png', { type: 'image/png' })
-        return navigator.canShare({ files: [testFile] })
+        const testFile = new File([ '' ], 'test.png', { type: 'image/png' })
+        return navigator.canShare({ files: [ testFile ] })
     } catch {
         return false
     }
@@ -281,6 +281,50 @@ function renderResults(result, prompt) {
     enableButtons()
     showTemplateIndicator(currentTemplate)
     showOutputActions()
+    showFlyerReadyPill()
+    document.querySelector('.studio-right').scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// Add this function
+function showFlyerReadyPill() {
+    const existing = document.getElementById('flyerReadyPill')
+    if (existing) existing.remove()
+
+    const pill = document.createElement('button')
+    pill.id = 'flyerReadyPill'
+    pill.innerHTML = `<i class="fa-solid fa-image"></i> Your flyer is read!`
+    pill.style.cssText = `
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 20px rgba(91,61,245,0.4);
+    white-space: nowrap;
+    animation: slideDown 0.3s ease forwards;
+  `
+
+    pill.addEventListener('click', () => {
+        document.getElementById('flyerCanvas').scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        })
+        pill.remove()
+    })
+
+    document.body.appendChild(pill)
+
+    // Auto remove after 5 seconds
+    setTimeout(() => pill?.remove(), 5000)
 }
 
 //  Update Flyer Preview 
@@ -494,11 +538,11 @@ document.getElementById('shareFlyerBtn').addEventListener('click', async () => {
 
     try {
         const blob = await generateFlyerBlob()
-        const file = new File([blob], `${storeNameForShare}-flyer.png`, { type: 'image/png' })
+        const file = new File([ blob ], `${storeNameForShare}-flyer.png`, { type: 'image/png' })
 
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        if (navigator.canShare && navigator.canShare({ files: [ file ] })) {
             await navigator.share({
-                files: [file],
+                files: [ file ],
                 title: storeNameForShare,
                 text: shareText,
             })
