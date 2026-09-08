@@ -102,7 +102,6 @@ ul {
   outline-offset: 2px;
 }
 
-/* Signature motif — the diagonal navy/yellow stripe shared with the auth page */
 .hazard {
   height: 8px;
   background: repeating-linear-gradient(-45deg,
@@ -171,14 +170,6 @@ nav {
   letter-spacing: 0.01em;
 }
 
-.logo-tag {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.24em;
-  color: var(--blue);
-  margin-top: 2px;
-}
-
 .nav-links {
   display: flex;
   gap: 36px;
@@ -219,10 +210,11 @@ nav {
   color: var(--blue);
 }
 
-/* The store CTA inside .nav-links is a mobile-only duplicate of the
-   "Create free store" button already in .nav-actions. Hidden by default;
-   revealed only inside the mobile dropdown (see max-width: 960px below). */
 .mobile-store-action {
+  display: none;
+}
+
+.mobile-login-action {
   display: none;
 }
 
@@ -302,9 +294,9 @@ nav {
 .hero {
   background:
     radial-gradient(1100px 500px at 15% -10%,
-      rgba(255, 201, 60, 0.2) 0%,
+      rgba(91, 61, 245, 0.15) 0%,
       transparent 60%),
-    linear-gradient(160deg, var(--blue) 0%, var(--navy-2) 55%, var(--navy) 100%);
+    linear-gradient(160deg, #4f33d6 0%, #222d4f 55%, var(--navy) 100%);
   padding: 64px 0 90px;
   position: relative;
   overflow: hidden;
@@ -350,29 +342,20 @@ nav {
 }
 
 .hero::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 8px;
-  background: repeating-linear-gradient(-45deg,
-      var(--yellow),
-      var(--yellow) 14px,
-      var(--blue-light) 14px,
-      var(--blue-light) 28px);
+  display: none;
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 201, 60, 0.16);
-  border: 1px solid rgba(255, 201, 60, 0.32);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 7px 14px;
   border-radius: 30px;
   font-size: 0.8rem;
   color: var(--white);
+  backdrop-filter: blur(6px);
   margin-bottom: 22px;
 }
 
@@ -400,12 +383,12 @@ nav {
 
 .hero h1 em {
   font-style: normal;
-  color: var(--yellow);
+  color: #ffd257;
 }
 
 .hero p.lede {
   font-size: 1.06rem;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.78);
   max-width: 480px;
   margin-bottom: 32px;
 }
@@ -433,7 +416,7 @@ nav {
   background: var(--white);
   border-radius: 20px;
   padding: 16px;
-  box-shadow: 0 30px 70px -18px rgba(11, 31, 58, 0.55);
+  box-shadow: 0 30px 70px -18px rgba(11, 31, 58, 0.4);
   transform: rotate(-3deg);
   transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -541,7 +524,7 @@ nav {
   background: var(--white);
   border-radius: 12px;
   padding: 10px 14px;
-  box-shadow: 0 14px 30px -10px rgba(11, 31, 58, 0.35);
+  box-shadow: 0 14px 30px -10px rgba(11, 31, 58, 0.25);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -703,7 +686,7 @@ nav {
 .feature-card:hover {
   transform: translateY(-4px);
   border-color: var(--blue-light);
-  box-shadow: 0 16px 30px -14px rgba(11, 31, 58, 0.16);
+  box-shadow: 0 16px 30px -14px rgba(11, 31, 58, 0.12);
 }
 
 .feature-icon {
@@ -722,42 +705,42 @@ nav {
 }
 
 .feature-card:nth-child(8n + 1) .feature-icon {
-  background: rgba(30, 75, 140, 0.1);
+  background: rgba(91, 61, 245, 0.08);
   color: var(--blue);
 }
 
 .feature-card:nth-child(8n + 2) .feature-icon {
-  background: rgba(255, 201, 60, 0.22);
+  background: rgba(246, 185, 26, 0.15);
   color: var(--yellow-deep);
 }
 
 .feature-card:nth-child(8n + 3) .feature-icon {
-  background: rgba(30, 75, 140, 0.1);
+  background: rgba(91, 61, 245, 0.08);
   color: var(--blue);
 }
 
 .feature-card:nth-child(8n + 4) .feature-icon {
-  background: rgba(255, 201, 60, 0.22);
+  background: rgba(246, 185, 26, 0.15);
   color: var(--yellow-deep);
 }
 
 .feature-card:nth-child(8n + 5) .feature-icon {
-  background: rgba(30, 75, 140, 0.1);
+  background: rgba(91, 61, 245, 0.08);
   color: var(--blue);
 }
 
 .feature-card:nth-child(8n + 6) .feature-icon {
-  background: rgba(255, 201, 60, 0.22);
+  background: rgba(246, 185, 26, 0.15);
   color: var(--yellow-deep);
 }
 
 .feature-card:nth-child(8n + 7) .feature-icon {
-  background: rgba(30, 75, 140, 0.1);
+  background: rgba(91, 61, 245, 0.08);
   color: var(--blue);
 }
 
 .feature-card:nth-child(8n + 8) .feature-icon {
-  background: rgba(255, 201, 60, 0.22);
+  background: rgba(246, 185, 26, 0.15);
   color: var(--yellow-deep);
 }
 
@@ -800,7 +783,7 @@ nav {
 .usecase-card:hover {
   transform: translateY(-4px);
   border-color: var(--blue-light);
-  box-shadow: 0 16px 30px -14px rgba(11, 31, 58, 0.16);
+  box-shadow: 0 16px 30px -14px rgba(11, 31, 58, 0.12);
 }
 
 .usecase-icon {
@@ -910,34 +893,17 @@ nav {
   opacity: 1;
 }
 
-.faq-item p {
-  transition: grid-template-rows 0.35s ease, opacity 0.2s ease, padding 0.35s ease;
-}
-
-.faq-item:not([open]) p {
-  transition: grid-template-rows 0.2s ease, opacity 0.15s ease, padding 0.2s ease;
-}
-
 /* ---------- CTA ---------- */
 .cta-banner {
-  background: linear-gradient(160deg, var(--blue) 0%, var(--navy) 100%);
+  background: linear-gradient(160deg, #4f33d6 0%, var(--navy) 100%);
   padding: 76px 0;
   text-align: center;
   position: relative;
 }
 
+/* Removed top hazard line from CTA */
 .cta-banner::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background: repeating-linear-gradient(-45deg,
-      var(--yellow),
-      var(--yellow) 14px,
-      var(--navy-2) 14px,
-      var(--navy-2) 28px);
+  display: none;
 }
 
 .cta-banner h2 {
@@ -947,7 +913,7 @@ nav {
 }
 
 .cta-banner p {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.78);
   margin-bottom: 28px;
   font-size: 1rem;
 }
@@ -961,7 +927,7 @@ nav {
   margin-top: 16px;
   font-family: "IBM Plex Mono";
   font-size: 0.76rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.45);
 }
 
 /* ---------- FOOTER ---------- */
@@ -969,6 +935,7 @@ footer {
   background: var(--navy);
   padding: 56px 0 30px;
   color: rgba(255, 255, 255, 0.7);
+  border-top: none;
 }
 
 .footer-brand .logo img {
@@ -1014,57 +981,11 @@ footer ul li a:hover {
   justify-content: space-between;
   align-items: center;
   padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.4);
   flex-wrap: wrap;
   gap: 10px;
-}
-
-/* ---------- SCROLL ANIMATIONS ---------- */
-@keyframes scrollFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scrollSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.scroll-animate {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.scroll-animate.visible {
-  animation: scrollFadeUp 0.6s ease forwards;
-}
-
-.section-head {
-  animation-delay: 0.1s;
-}
-
-.how-step,
-.feature-card,
-.usecase-card,
-.faq-item {
-  animation-delay: 0.2s;
 }
 
 /* ---------- RESPONSIVE ---------- */
@@ -1074,58 +995,37 @@ footer ul li a:hover {
   }
 
   nav {
-    position: relative;
-    min-height: 76px;
-    padding: 12px 0;
-    flex-wrap: wrap;
+    height: 76px;
   }
 
-  /* ==============================
-     MOBILE DROPDOWN MENU
-     ============================== */
-
+  /* --- DROPDOWN MENU FIX --- */
   .nav-links {
+    position: absolute;
+    top: 76px; /* Starts exactly below the header */
+    left: 0;
+    width: 100vw;
     display: flex;
-    width: calc(100% + 44px);
-    margin-left: -22px;
-    margin-right: -22px;
-
-    order: 3;
     flex-direction: column;
     gap: 0;
-
     padding: 0;
-    margin-top: 0;
-
     background: var(--white);
-
-    border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-
+    box-shadow: 0 10px 20px rgba(11, 31, 58, 0.08); /* Adds depth over the page */
     overflow: hidden;
-
     max-height: 0;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-
-    transition:
-      max-height 0.3s ease,
-      opacity 0.2s ease,
-      padding 0.3s ease,
-      visibility 0s linear 0.3s;
+    transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease, visibility 0s linear 0.35s;
+    z-index: 99;
   }
 
-  /* OPEN MENU */
   .nav-links.mobile-open {
-    max-height: 380px;
-
-    padding: 8px 0 16px;
-
+    max-height: 400px;
+    padding: 12px 0 24px;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-
     transition-delay: 0s;
   }
 
@@ -1135,119 +1035,57 @@ footer ul li a:hover {
 
   .nav-links a {
     display: block;
-
     width: 100%;
-
     padding: 14px 22px;
-
     color: var(--ink);
-
-    font-size: 0.98rem;
+    font-size: 1rem;
     font-weight: 600;
   }
 
-  /* Remove desktop underline animation */
   .nav-links a::after {
     display: none;
   }
 
-  .nav-links a:hover,
-  .nav-links a:focus-visible {
-    color: var(--primary);
+  .mobile-login-action {
+    display: block;
+    border-top: 1px solid var(--line);
+    margin-top: 8px;
+    padding-top: 8px;
   }
 
-
-  /* ==============================
-     CREATE FREE STORE
-     ============================== */
+  .mobile-login-action a {
+    color: var(--primary);
+    text-align: center;
+  }
 
   .mobile-store-action {
     display: block;
-
-    margin-top: 6px;
-    padding-top: 10px;
-
-    border-top: 1px solid var(--line);
+    margin-top: 4px;
   }
 
   .mobile-store-action a.btn {
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     width: calc(100% - 44px);
-
-    margin: 0 22px;
-
+    margin: 8px auto 0;
     padding: 13px 18px;
-
     color: var(--white);
-
     background: var(--primary);
-
     border-radius: 9px;
   }
 
-  .mobile-store-action a.btn:hover {
-    color: var(--white);
-    background: var(--primary-hover);
-  }
-
-  .hero-visual {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .hero-mock {
-    order: 1;
-  }
-
-  .float-1 {
-    order: 0;
-  }
-
-  .float-3 {
-    order: 2;
-  }
-
-  .float-card {
-    position: static;
-    width: min(100%, 280px);
-    max-width: 280px;
-  }
-
-  /* ==============================
-     HEADER BUTTONS
-     ============================== */
-
-  /* Hide desktop Create Free Store */
-  .nav-actions>.btn {
-    display: none;
-  }
-
+  /* Hide desktop buttons */
+  .nav-actions > .btn,
   .nav-actions .ghost-link {
     display: none;
   }
-
-
-  /* ==============================
-     HAMBURGER
-     ============================== */
 
   .hamburger {
     display: flex;
   }
 
-  .hamburger span {
-    transition:
-      transform 0.2s ease,
-      opacity 0.2s ease;
-  }
-
-  /* Hamburger becomes X */
+  /* Hamburger Animation */
   .hamburger[aria-expanded="true"] span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
@@ -1260,6 +1098,7 @@ footer ul li a:hover {
     transform: translateY(-7px) rotate(-45deg);
   }
 
+  /* --- OTHER MOBILE FIXES --- */
   .hero-inner {
     grid-template-columns: 1fr;
     text-align: center;
@@ -1276,17 +1115,8 @@ footer ul li a:hover {
   .hero-visual {
     max-width: 360px;
     margin: 0 auto;
-    padding: 20px 0 10px;
+    padding: 46px 18px 56px;
   }
-
-  .hero-mock {
-    transform: rotate(-2deg);
-  }
-
-
-  /* ==============================
-     OTHER SECTIONS
-     ============================== */
 
   .how-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1307,77 +1137,53 @@ footer ul li a:hover {
   }
 }
 
-
-/* =================================
-   SMALL MOBILE DEVICES
-   ================================= */
-
 @media (max-width: 640px) {
-
-  .wrap {
-    padding: 0 18px;
-  }
-
-  nav {
-    height: auto;
-    min-height: 68px;
-  }
-
-  /* Compensate for the 18px mobile .wrap padding */
-  .nav-links {
-    width: calc(100% + 36px);
-
-    margin-left: -18px;
-    margin-right: -18px;
-  }
-
-  .nav-links a {
-    padding-left: 18px;
-    padding-right: 18px;
-  }
-
-  .mobile-store-action a.btn {
-    width: calc(100% - 36px);
-    margin-left: 18px;
-    margin-right: 18px;
-  }
-
   .how-grid,
   .feature-grid,
   .usecase-grid,
   .footer-grid {
     grid-template-columns: 1fr;
   }
-}
 
-/* Base CSS: Hide mobile login link on desktop */
-.mobile-login-action {
-  display: none;
-}
-
-/* Responsive CSS: Mobile Dropdown (Inside @media max-width: 960px) */
-@media (max-width: 960px) {
-  .mobile-login-action {
-    display: block;
-    border-top: 1px solid var(--line);
-    margin-top: 6px;
-    padding-top: 4px;
+  /* --- HERO MOCK RESPONSIVE FIX ---
+     Shrinks the mock and pulls the floating cards fully
+     outside its edges so they stop covering the store tag
+     and the chat bubble text. */
+  .hero-mock {
+    width: 240px;
   }
 
-  .mobile-login-action a {
-    color: var(--primary);
-    font-weight: 600;
-    text-align: center;
+  .float-card {
+    max-width: 148px;
+    padding: 8px 10px;
+    gap: 8px;
   }
 
-  .mobile-login-action a:hover {
-    color: var(--primary-hover);
+  .float-card .f-icon {
+    width: 24px;
+    height: 24px;
   }
-  
-  /* Remove top border from store action so borders don't double up */
-  .mobile-store-action {
-    border-top: none;
-    margin-top: 0;
-    padding-top: 4px;
+
+  .float-card .f-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .float-card .f-label {
+    font-size: 0.6rem;
+  }
+
+  .float-card .f-value {
+    font-size: 0.68rem;
+  }
+
+  .float-1 {
+    top: -8%;
+    right: -4%;
+  }
+
+  .float-3 {
+    bottom: -8%;
+    left: -4%;
   }
 }
