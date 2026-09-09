@@ -136,38 +136,12 @@ nav {
   height: 76px;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
 
 .logo img {
-  width: 34px;
-  height: 34px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   flex-shrink: 0;
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 0.92;
-}
-
-.logo-tag {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.24em;
-  color: var(--blue);
-  margin-top: 2px;
-}
-
-.logo-name {
-  font-family: "Archivo Expanded", sans-serif;
-  font-weight: 800;
-  font-size: 1.28rem;
-  letter-spacing: 0.01em;
 }
 
 .nav-links {
@@ -941,7 +915,7 @@ footer {
 .footer-brand .logo img {
   background: #ffffff;
   border-radius: 8px;
-  padding: 4px;
+  padding: 2px;
 }
 
 .footer-grid {

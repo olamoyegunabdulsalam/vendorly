@@ -793,11 +793,8 @@ button {
     min-height: 100vh;
   }
 
-  /* Left panel shows on mobile as a compact hero */
   .auth-left {
-    flex: none;
-    padding: 28px 24px 40px;
-    min-height: auto;
+    display: none;
   }
 
   /* Hide trust list on mobile — too long */
