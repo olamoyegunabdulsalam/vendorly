@@ -159,20 +159,13 @@ function renderSidebar(activeTab, onAddClick, storeName, logoUrl) {
 
   sidebar.innerHTML = `
     <!-- Logo -->
-<div class="sidebar-brand">
     <a href="dashboard.html" class="sidebar-brand-link">
         <img
-            src="assets/images/vendorly-logo.png"
+            src="assets/images/vendorly-logo-name.png"
             alt="Vendorly"
             class="sidebar-brand-logo"
         />
-
-        <div class="sidebar-brand-text">
-            <h2>Vendorly</h2>
-            <p>Build • Share • Sell</p>
-        </div>
     </a>
-</div>
 
     <!-- Nav items -->
     <nav class="sidebar-nav">
