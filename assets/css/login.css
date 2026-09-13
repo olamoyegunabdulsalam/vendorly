@@ -95,22 +95,6 @@ button {
   pointer-events: none;
 }
 
-.auth-left::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 8px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--yellow),
-    var(--yellow) 14px,
-    var(--blue) 14px,
-    var(--blue) 28px
-  );
-}
-
 .auth-left-bg {
   position: absolute;
   inset: 0;
@@ -215,22 +199,6 @@ button {
   animation: fadeUp 0.5s ease;
   position: relative;
   overflow: hidden;
-}
-
-.auth-box::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--yellow),
-    var(--yellow) 10px,
-    var(--blue) 10px,
-    var(--blue) 20px
-  );
 }
 
 .auth-box h1 {

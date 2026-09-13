@@ -37,6 +37,51 @@ document.querySelectorAll('.toggle-password').forEach(function (button) {
   })
 })
 
+/* TERMS & CONDITIONS MODAL */
+const termsModal = document.getElementById('termsModal')
+const openTermsLink = document.getElementById('openTerms')
+const closeTermsBtn = document.getElementById('closeTerms')
+const acceptTermsBtn = document.getElementById('acceptTerms')
+const termsCheckbox = document.getElementById('terms')
+
+function openTermsModal() {
+  termsModal.classList.add('is-open')
+}
+
+function closeTermsModal() {
+  termsModal.classList.remove('is-open')
+}
+
+openTermsLink.addEventListener('click', function (e) {
+  e.preventDefault()
+  openTermsModal()
+})
+
+// Open automatically as soon as the signup page loads
+openTermsModal()
+
+closeTermsBtn.addEventListener('click', closeTermsModal)
+
+// Close when clicking outside the modal box
+termsModal.addEventListener('click', function (e) {
+  if (e.target === termsModal) closeTermsModal()
+})
+
+// Close on Escape key
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && termsModal.classList.contains('is-open')) {
+    closeTermsModal()
+  }
+})
+
+// "I Agree" checks the box and closes
+acceptTermsBtn.addEventListener('click', function () {
+  termsCheckbox.checked = true
+  const termsError = document.getElementById('termsError')
+  termsError.style.display = 'none'
+  closeTermsModal()
+})
+
 /* SIGNUP HANDLER */
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
 const nameRegex = /^[A-Za-z\s]+$/

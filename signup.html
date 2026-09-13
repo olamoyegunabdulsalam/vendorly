@@ -155,7 +155,7 @@
             <label class="checkbox-label">
               <input type="checkbox" id="terms">
               <span class="checkbox-box"></span>
-              I agree to the<a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>
+              I agree to the<a href="#" id="openTerms">Terms & Conditions</a>
             </label>
             <span class="error-msg" id="termsError">You must agree to continue</span>
           </div>
@@ -168,6 +168,51 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- TERMS & CONDITIONS MODAL -->
+  <div class="modal-overlay" id="termsModal">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="termsModalTitle">
+      <div class="modal-header">
+        <h2 id="termsModalTitle">Vendorly Terms & Conditions</h2>
+        <button type="button" class="modal-close" id="closeTerms" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-updated">Last Updated: September 13, 2026</p>
+        <p>Welcome to Vendorly. By using our website and services, you agree to the following terms.</p>
+
+        <h3>1. Use of Vendorly</h3>
+        <p>Vendorly helps users create online stores, showcase products, and connect with customers. You agree to use the platform responsibly and for lawful purposes.</p>
+
+        <h3>2. User Accounts</h3>
+        <p>You are responsible for providing accurate information when creating an account and keeping your login details secure. You must not use another person's account without permission.</p>
+
+        <h3>3. Store Content</h3>
+        <p>You are responsible for the information, images, and products you add to your store. You must ensure that your content is accurate and does not violate the rights of others.</p>
+
+        <h3>4. Cookies</h3>
+        <p>Vendorly may use cookies and similar technologies to maintain essential website functionality, keep users signed in, remember preferences, and improve the user experience. You can manage cookies through your browser settings.</p>
+
+        <h3>5. Third-Party Links</h3>
+        <p>Vendorly may contain links to third-party websites and services, including WhatsApp and social media platforms. We are not responsible for the content, security, or policies of those external services.</p>
+
+        <h3>6. Intellectual Property</h3>
+        <p>The Vendorly name, logo, design, and original website content belong to Vendorly unless otherwise stated. You may not copy or use them without permission.</p>
+
+        <h3>7. Changes to These Terms</h3>
+        <p>We may update these Terms & Conditions from time to time. Changes will be posted on this page with an updated date.</p>
+
+        <h3>8. Contact Us</h3>
+        <p>If you have questions about these Terms, please contact us through the contact information provided on the Vendorly website.</p>
+
+        <p class="modal-copyright">© 2026 Vendorly. All rights reserved.</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-submit" id="acceptTerms">I Agree</button>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="assets/js/signup.js"></script>
