@@ -39,129 +39,33 @@
             <!-- STUDIO LAYOUT -->
             <div class="studio-layout">
 
-                <!---LEFT PANE CONTROLS -->
-                <div class="studio-left">
-
-                    <!-- Page intro -->
-                    <div class="studio-intro">
-                        <div class="studio-eyebrow">
-                            <span class="eyebrow-dot"></span>
-                            AI Marketing Studio
-                        </div>
-                        <h1 class="studio-title">Create your <span class="accent">campaign</span></h1>
-                        <p class="studio-lede">Pick a product, describe what you want get a flyer, caption and hashtags
-                            in seconds.</p>
-                    </div>
-
-                    <!-- Step 1 Product -->
-                    <div class="studio-step">
-                        <div class="step-label">
-                            <span class="step-number">1</span>
-                            <span class="step-title">Select a product</span>
-                            <span class="step-optional">Optional</span>
-                        </div>
-
-                        <div class="product-select-box" id="productSelectBox">
-                            <div class="product-select-preview" id="productSelectPreview">
-                                <span class="product-select-icon">📦</span>
-                                <span class="product-select-placeholder">Choose a product to feature</span>
-                            </div>
-                            <select class="product-select" id="productSelect">
-                                <option value="">No product promote my store</option>
-                            </select>
-                        </div>
-
-                        <!-- Selected product card -->
-                        <div class="selected-product-card" id="selectedProductCard" style="display:none">
-                            <img class="selected-product-img" id="selectedProductImg" src="" alt="">
-                            <div class="selected-product-info">
-                                <p class="selected-product-name" id="selectedProductName"></p>
-                                <p class="selected-product-price" id="selectedProductPrice"></p>
-                            </div>
-                            <button class="selected-product-clear" id="clearProductBtn"
-                                aria-label="Remove product">✕</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2 Prompt -->
-                    <div class="studio-step">
-                        <div class="step-label">
-                            <span class="step-number">2</span>
-                            <span class="step-title">Describe your promotion</span>
-                        </div>
-
-                        <div class="composer-wrap">
-                            <textarea id="mainPrompt" class="studio-textarea" maxlength="160"
-                                placeholder="e.g. New stock of oversized hoodies just arrived limited sizes, don't miss out"></textarea>
-                            <span class="char-count" id="mainPromptCount">0 / 160</span>
-                        </div>
-
-                        <!-- Quick chips -->
-                        <div class="chip-row">
-                            <button class="chip" data-fill="New arrival just landed in store">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"></path>
-                                </svg>
-                                New arrival
-                            </button>
-
-                            <button class="chip" data-fill="Weekend flash sale, limited stock">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path>
-                                </svg>
-                                Flash sale
-                            </button>
-
-                            <button class="chip" data-fill="Back in stock customers have been asking">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M20 7l-8-4-8 4v10l8 4 8-4V7z"></path>
-                                    <path d="M4 7l8 4 8-4"></path>
-                                    <path d="M12 11v10"></path>
-                                </svg>
-                                Restock
-                            </button>
-
-                            <button class="chip" data-fill="Price drop for the next 48 hours">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <circle cx="12" cy="12" r="9"></circle>
-                                    <path d="M15 9a3 3 0 1 0-3 6"></path>
-                                    <path d="M12 7v10"></path>
-                                </svg>
-                                Price drop
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Generate CTA -->
-                    <div class="generate-wrap">
-                        <!-- Usage counter shows on page load -->
-                        <div class="usage-wrap">
-                            <div class="usage-bar">
-                                <div class="usage-bar-fill" id="usageBarFill"></div>
-                            </div>
-                            <span class="usage-counter" id="usageCounter">10 of 10 campaigns left today</span>
-                        </div>
-                        <button class="generate-btn" id="generateCampaignBtn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5" stroke-linecap="round">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                            </svg>
-                            Generate Campaign
-                        </button>
-                    </div>
-
-                    <!-- Error -->
-                    <div class="error-msg" id="errorMsg" style="display:none"></div>
-
-
-                </div>
-                <!-- end studio-left -->
-
-
-                <!-- 
-           RIGHT PANE LIVE PREVIEW
-       -->
+                <!--CONVERSATION COLUMN -->
                 <div class="studio-right">
+
+                    <!--  intro state hidden once chat-started -->
+                    <div class="ai-composer-intro" id="chatEmptyState">
+                        <div class="studio-eyebrow"><span class="eyebrow-dot"></span>AI Marketing Studio</div>
+                        <h1 class="studio-title">What do you want to <span class="accent">create?</span></h1>
+                        <p class="studio-lede">Tell Vendorly what you want to promote and let AI create the campaign for you.</p>
+                        <div class="chip-row ai-quick-actions">
+                            <button class="chip" data-fill="New arrival just landed in store"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"></path></svg>New arrival</button>
+                            <button class="chip" data-fill="Weekend flash sale, limited stock"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path></svg>Flash sale</button>
+                            <button class="chip" data-fill="Back in stock customers have been asking"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7l-8-4-8 4v10l8 4 8-4V7z"></path><path d="M4 7l8 4 8-4"></path><path d="M12 11v10"></path></svg>Restock</button>
+                            <button class="chip" data-fill="Price drop for the next 48 hours"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M15 9a3 3 0 1 0-3 6"></path><path d="M12 7v10"></path></svg>Price drop</button>
+                        </div>
+                    </div>
+                    <!-- end chatEmptyState -->
+
+                    <!-- Chat thread hidden until the first send -->
+                    <div class="chat-thread" id="chatThread">
+
+                        <div class="chat-turn chat-turn-user">
+                            <span class="chat-turn-label">You</span>
+                            <p class="chat-turn-text" id="chatUserPrompt"></p>
+                        </div>
+
+                        <div class="chat-turn chat-turn-ai">
+                            <span class="chat-turn-label">Vendorly AI</span>
 
                     <div class="preview-panel">
 
@@ -344,9 +248,37 @@
                         </div>
                     </div>
 
+                        </div>
+                        <!-- end chat-turn-ai -->
+
+                    </div>
+                    <!-- end chatThread -->
 
                 </div>
                 <!-- end studio-right -->
+
+                <!--PERSISTENT COMPOSER BAR-->
+                <div class="ai-composer-panel">
+                    <div class="ai-composer" id="aiComposer">
+                        <select class="product-select" id="productSelect" aria-label="Choose a product"><option value="">No product promote my store</option></select>
+                        <div class="selected-product-card" id="selectedProductCard" style="display:none">
+                            <img class="selected-product-img" id="selectedProductImg" src="" alt="">
+                            <div class="selected-product-info"><p class="selected-product-name" id="selectedProductName"></p><p class="selected-product-price" id="selectedProductPrice"></p></div>
+                            <button class="selected-product-clear" id="clearProductBtn" aria-label="Remove product">✕</button>
+                        </div>
+                        <textarea id="mainPrompt" class="studio-textarea" maxlength="160" placeholder="Tell AI what you want to create..."></textarea>
+                        <div class="composer-bottom">
+                            <button type="button" class="composer-tool" id="chooseProductBtn" aria-label="Choose product" title="Choose product"><i class="fa-solid fa-plus"></i></button>
+                            <div class="composer-meta"><span class="usage-dot"></span><span class="usage-inline" id="usageInline">10 free campaigns left today</span></div>
+                            <span class="char-count" id="mainPromptCount">0 / 160</span>
+                            <button class="composer-send" id="generateCampaignBtn" aria-label="Generate campaign" title="Generate campaign"><i class="fa-solid fa-arrow-up"></i></button>
+                        </div>
+                    </div>
+                    <div class="usage-wrap ai-usage-wrap"><div class="usage-bar"><div class="usage-bar-fill" id="usageBarFill"></div></div><span class="usage-counter" id="usageCounter">10 of 10 campaigns left today</span></div>
+                    <p class="generate-hint">AI will create a flyer, caption and hashtags from your prompt.</p>
+                    <div class="error-msg" id="errorMsg" style="display:none"></div>
+                </div>
+                <!-- end ai-composer-panel -->
 
             </div>
             <!-- end studio-layout -->

@@ -27,6 +27,8 @@ let generatedCaption = ''
 let generatedHashtags = []
 let selectedHashtags = new Set()
 let currentTemplate = null
+let hasStartedChat = false
+let lastSentPrompt = ''
 
 // Can this browser actually attach a file via the Web Share API?
 // (Most desktop browsers can't — mobile Chrome/Safari generally can.)
@@ -85,6 +87,11 @@ function updateUsageDisplay(used, limit) {
     if (!counter) return
 
     counter.textContent = `${remaining} of ${limit} campaigns left today`
+
+    const inlineCounter = document.getElementById('usageInline')
+    if (inlineCounter) {
+        inlineCounter.textContent = `${remaining} free campaign${remaining === 1 ? '' : 's'} left today`
+    }
     counter.className = remaining <= 2
         ? 'usage-counter usage-low'
         : remaining <= 5
@@ -103,7 +110,7 @@ function updateUsageDisplay(used, limit) {
     const btn = document.getElementById('generateCampaignBtn')
     if (btn && remaining <= 0) {
         btn.disabled = true
-        btn.textContent = '✦ Daily limit reached'
+        btn.innerHTML = '<i class="fa-solid fa-lock"></i>'
     }
 }
 
@@ -111,6 +118,11 @@ loadUsageCount()
 
 //  Populate Product Selector 
 const productSelect = document.getElementById('productSelect')
+
+document.getElementById('chooseProductBtn')?.addEventListener('click', () => {
+    productSelect.focus()
+    try { productSelect.showPicker?.() } catch {}
+})
 
 if (products && products.length > 0) {
     products.forEach(p => {
@@ -183,6 +195,21 @@ document.getElementById('generateCampaignBtn').addEventListener('click', async (
     }
 
     hideError()
+
+    // Transition from the empty state into the chat thread. This only
+    // ever adds the class (idempotent on later sends) — the intro is
+    // hidden and the thread revealed purely in CSS via .chat-started.
+    if (!hasStartedChat) {
+        hasStartedChat = true
+        document.querySelector('.studio-layout').classList.add('chat-started')
+    }
+    document.getElementById('chatUserPrompt').textContent =
+        prompt || (selectedProduct ? `Promote ${selectedProduct.name}` : 'Create a campaign')
+
+    lastSentPrompt = prompt
+    mainPrompt.value = ''
+    mainPrompt.dispatchEvent(new Event('input'))
+
     setGenerating(true)
 
     try {
@@ -282,7 +309,7 @@ function renderResults(result, prompt) {
     showTemplateIndicator(currentTemplate)
     showOutputActions()
     showFlyerReadyPill()
-    document.querySelector('.studio-right').scrollTo({ top: 0, behavior: 'smooth' })
+    document.querySelector('.page-content')?.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // Add this function
@@ -596,17 +623,17 @@ document.getElementById('copyHashtagsBtn').addEventListener('click', async () =>
 
 //  Refine Buttons 
 document.getElementById('refineFlyerBtn').addEventListener('click', () => {
-    mainPrompt.value = mainPrompt.value + ' (make the flyer headline more catchy)'
+    mainPrompt.value = lastSentPrompt + ' (make the flyer headline more catchy)'
     document.getElementById('generateCampaignBtn').click()
 })
 
 document.getElementById('refineCaptionBtn').addEventListener('click', () => {
-    mainPrompt.value = mainPrompt.value + ' (make the caption shorter and punchier)'
+    mainPrompt.value = lastSentPrompt + ' (make the caption shorter and punchier)'
     document.getElementById('generateCampaignBtn').click()
 })
 
 document.getElementById('refineHashtagsBtn').addEventListener('click', () => {
-    mainPrompt.value = mainPrompt.value + ' (suggest different hashtags more specific to Nigeria)'
+    mainPrompt.value = lastSentPrompt + ' (suggest different hashtags more specific to Nigeria)'
     document.getElementById('generateCampaignBtn').click()
 })
 
@@ -618,7 +645,9 @@ function setGenerating(loading) {
     const empty = document.getElementById('flyerEmpty')
 
     btn.disabled = loading
-    btn.textContent = loading ? '✦ Generating...' : '✦ Generate campaign'
+    btn.innerHTML = loading
+        ? '<i class="fa-solid fa-spinner fa-spin"></i>'
+        : '<i class="fa-solid fa-arrow-up"></i>'
 
     if (loading) {
         empty.style.display = 'none'
