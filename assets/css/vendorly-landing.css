@@ -1194,49 +1194,79 @@ footer ul li a:hover {
 }
 
 .guide-index {
-  padding: 64px 0 20px;
+  padding: 72px 0 28px;
 }
 
 .guide-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
 }
 
 .guide-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 24px 20px;
+  min-height: 360px;
+  padding: 0;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--white);
+  overflow: hidden;
   transition:
     transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease;
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .guide-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   border-color: var(--blue-light);
-  box-shadow: 0 16px 30px -14px rgba(11, 31, 58, 0.12);
+  box-shadow: 0 16px 30px -14px rgba(11, 31, 58, 0.16);
 }
 
-.guide-card .feature-icon {
-  background: rgba(91, 61, 245, 0.08);
-  color: var(--blue);
+.guide-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 112px;
+  padding: 20px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.guide-card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 28px 24px 24px;
+}
+
+.guide-number {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 24px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .guide-card h3 {
-  font-size: 0.98rem;
+  font-size: 1.02rem;
   color: var(--navy);
-  margin-bottom: 6px;
   font-weight: 700;
 }
 
 .guide-card p {
-  font-size: 0.84rem;
+  font-size: 0.88rem;
   color: var(--slate);
   line-height: 1.5;
   margin-bottom: 14px;
@@ -1321,11 +1351,268 @@ footer ul li a:hover {
 }
 
 @media (max-width: 640px) {
+  .guide-index {
+    padding: 48px 0 16px;
+  }
+
   .guide-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .guide-card {
+    min-height: 0;
+  }
+
+  .guide-card-heading {
+    min-height: 92px;
+  }
+
+  .guide-card-content {
+    min-height: 220px;
+    padding: 24px 20px 20px;
   }
 
   .guide-article {
     padding: 52px 0;
+  }
+}
+
+/* ---------- SELLER GUIDE DETAIL PAGE ---------- */
+.seller-guide-page {
+  background: var(--bg);
+}
+
+.guide-hero-inner {
+  max-width: 760px;
+}
+
+.guide-steps-section {
+  padding-top: 76px;
+  padding-bottom: 86px;
+}
+
+.guide-section-head {
+  max-width: 620px;
+  margin-bottom: 36px;
+}
+
+.guide-section-head h2 {
+  margin-top: 10px;
+}
+
+.guide-label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--blue);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.guide-card-heading {
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 128px;
+  padding: 24px 22px;
+  text-align: left;
+}
+
+.guide-card-heading h3 {
+  font-family: "Archivo Expanded", sans-serif;
+  font-size: 1.08rem;
+  line-height: 1.2;
+}
+
+.guide-card-content {
+  padding: 26px 22px 22px;
+}
+
+.guide-number {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.guide-card p {
+  font-size: 0.9rem;
+}
+
+.guide-details {
+  border-top: 1px solid var(--line);
+}
+
+.guide-detail {
+  padding: 88px 0;
+  scroll-margin-top: 90px;
+}
+
+.guide-detail.alt {
+  background: var(--white);
+}
+
+.guide-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(80px, 0.22fr) minmax(0, 1fr);
+  gap: 42px;
+  max-width: 900px;
+}
+
+.guide-detail-index {
+  padding-top: 4px;
+  color: var(--blue);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.guide-detail h2 {
+  margin: 10px 0 16px;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+}
+
+.guide-detail-intro {
+  max-width: 680px;
+  margin: 0 0 26px;
+  color: var(--slate);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.guide-action-box {
+  max-width: 680px;
+  margin-bottom: 22px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-secondary);
+}
+
+.guide-action-box h3 {
+  margin-bottom: 14px;
+  color: var(--navy);
+  font-size: 0.95rem;
+}
+
+.guide-action-box ul {
+  display: grid;
+  gap: 11px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guide-action-box li {
+  position: relative;
+  padding-left: 24px;
+  color: var(--slate);
+  font-size: 0.94rem;
+}
+
+.guide-action-box li::before {
+  content: "";
+  position: absolute;
+  top: 0.55em;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.guide-detail-note {
+  max-width: 680px;
+  margin: 0 0 18px;
+  color: var(--slate);
+  font-size: 0.94rem;
+  line-height: 1.7;
+}
+
+.guide-closing {
+  padding: 0 0 88px;
+}
+
+.guide-closing-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 48px 52px;
+  border-radius: var(--radius-lg);
+  background: var(--navy);
+}
+
+.guide-closing .eyebrow {
+  color: var(--yellow);
+}
+
+.guide-closing h2 {
+  max-width: 540px;
+  margin: 9px 0 12px;
+  color: var(--white);
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+}
+
+.guide-closing p {
+  max-width: 620px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.7;
+}
+
+.guide-closing .btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 960px) {
+  .guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .guide-detail-grid {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .guide-steps-section {
+    padding-top: 54px;
+    padding-bottom: 62px;
+  }
+
+  .guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-card {
+    min-height: 0;
+  }
+
+  .guide-detail {
+    padding: 60px 0;
+  }
+
+  .guide-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .guide-detail-index {
+    font-size: 1.7rem;
+  }
+
+  .guide-closing {
+    padding-bottom: 60px;
+  }
+
+  .guide-closing-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 32px 24px;
   }
 }
