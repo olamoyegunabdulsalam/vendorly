@@ -1,6 +1,6 @@
 export const WHATSAPP_GROUP_URL = 'https://chat.whatsapp.com/Lu81eLXaRfN5ZkeJdiV63C'
 
-const WHATSAPP_ICON_SRC = '/images/whatsapp.svg'
+const WHATSAPP_ICON_SRC = 'assets\images\whatsapp-color-svgrepo-com.svg'
 const POSITION_KEY = 'vendorly_community_fab_position'
 const LONG_PRESS_MS = 400
 const MOVE_TOLERANCE = 8
