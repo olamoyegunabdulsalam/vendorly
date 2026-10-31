@@ -520,16 +520,21 @@ function renderHashtags(hashtags) {
     })
 }
 
-//  Enable Buttons 
+// Enable Buttons
 function enableButtons() {
-    ;[ 'refineFlyerBtn', 'refineCaptionBtn', 'refineHashtagsBtn',
-        'downloadFlyerBtn', 'shareFlyerBtn', 'copyCaptionBtn',
-        'sendCaptionBtn', 'copyHashtagsBtn'
+    [
+        'refineCampaignBtn',
+        'downloadFlyerBtn',
+        'shareFlyerBtn',
+        'copyCaptionBtn',
+        'sendCaptionBtn',
+        'copyHashtagsBtn'
     ].forEach(id => {
         const el = document.getElementById(id)
         if (el) el.disabled = false
     })
 }
+
 
 //  Generate Flyer Image 
 // Renders #flyerCanvas to a PNG blob via html2canvas. Shared by the
