@@ -59,28 +59,49 @@ if (!canShareFiles) {
 }
 
 const storeUrl = getStoreUrl(store?.id, store?.slug)
-const DAILY_LIMIT = 10
+const DAILY_LIMIT = 5
+let limitReached = false
 
-//  Load and show usage count on page load 
+// Nigeria uses UTC+1 year-round. Calculate the current Lagos calendar day.
+function getLagosDayBounds() {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Africa/Lagos', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date())
+    const values = Object.fromEntries(parts.map(part => [ part.type, part.value ]))
+    const day = `${values.year}-${values.month}-${values.day}`
+    const start = new Date(`${day}T00:00:00+01:00`)
+    const end = new Date(start.getTime() + 24 * 60 * 60 * 1000)
+    return { start: start.toISOString(), end: end.toISOString() }
+}
+
+// Load successful and currently reserved campaign slots for the Lagos day.
 async function loadUsageCount() {
     try {
-        const today = new Date().toISOString().split('T')[ 0 ]
+        const { start, end } = getLagosDayBounds()
         const { data, error } = await supabase
             .from('ai_usage')
-            .select('id')
+            .select('id,status')
             .eq('vendor_id', user.id)
-            .gte('used_at', `${today}T00:00:00`)
+            .eq('type', 'campaign')
+            .in('status', [ 'reserved', 'success' ])
+            .gte('used_at', start)
+            .lt('used_at', end)
 
         if (error) throw error
         updateUsageDisplay(data?.length || 0, DAILY_LIMIT)
     } catch (err) {
         console.error('Could not load usage count:', err)
-        updateUsageDisplay(0, DAILY_LIMIT)
+        const counter = document.getElementById('usageCounter')
+        const inlineCounter = document.getElementById('usageInline')
+        if (counter) counter.textContent = 'Campaign usage temporarily unavailable'
+        if (inlineCounter) inlineCounter.textContent = 'Usage unavailable'
+        // The Edge Function remains authoritative; do not display a false zero.
     }
 }
 
 function updateUsageDisplay(used, limit) {
-    const remaining = limit - used
+    const remaining = Math.max(0, limit - used)
+    limitReached = remaining <= 0
     const counter = document.getElementById('usageCounter')
     const counterBar = document.getElementById('usageBarFill')
 
@@ -108,20 +129,27 @@ function updateUsageDisplay(used, limit) {
 
     // Disable generate button if limit reached
     const btn = document.getElementById('generateCampaignBtn')
-    if (btn && remaining <= 0) {
-        btn.disabled = true
-        btn.innerHTML = '<i class="fa-solid fa-lock"></i>'
+    if (btn && !btn.dataset.generating) {
+        btn.disabled = limitReached
+        btn.innerHTML = limitReached
+            ? '<i class="fa-solid fa-lock"></i>'
+            : '<i class="fa-solid fa-arrow-up"></i>'
     }
 }
 
 loadUsageCount()
+// Refresh the visible counter periodically; the server remains authoritative.
+setInterval(loadUsageCount, 60_000)
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) loadUsageCount()
+})
 
 //  Populate Product Selector 
 const productSelect = document.getElementById('productSelect')
 
 document.getElementById('chooseProductBtn')?.addEventListener('click', () => {
     productSelect.focus()
-    try { productSelect.showPicker?.() } catch {}
+    try { productSelect.showPicker?.() } catch { }
 })
 
 if (products && products.length > 0) {
@@ -262,9 +290,8 @@ async function callGeminiAPI(prompt, product, store) {
 
     if (!response.ok) {
         if (data.code === 'LIMIT_REACHED') {
-            throw new Error(
-                `You've used all ${DAILY_LIMIT} free campaigns for today!`
-            )
+            updateUsageDisplay(data.used ?? DAILY_LIMIT, data.limit ?? DAILY_LIMIT)
+            throw new Error(`You've used all ${DAILY_LIMIT} free campaigns for today. Your allowance resets at midnight Nigeria time.`)
         }
         if (data.code === 'API_QUOTA' || data.code === 'UNKNOWN') {
             throw new Error(
@@ -621,21 +648,31 @@ document.getElementById('copyHashtagsBtn').addEventListener('click', async () =>
     showToast(`${selectedHashtags.size > 0 ? 'Selected' : 'All'} hashtags copied ✓`)
 })
 
-//  Refine Buttons 
-document.getElementById('refineFlyerBtn').addEventListener('click', () => {
-    mainPrompt.value = lastSentPrompt + ' (make the flyer headline more catchy)'
-    document.getElementById('generateCampaignBtn').click()
-})
 
-document.getElementById('refineCaptionBtn').addEventListener('click', () => {
-    mainPrompt.value = lastSentPrompt + ' (make the caption shorter and punchier)'
-    document.getElementById('generateCampaignBtn').click()
-})
+// Refine the entire campaign in one request
+const refineCampaignBtn = document.getElementById('refineCampaignBtn');
 
-document.getElementById('refineHashtagsBtn').addEventListener('click', () => {
-    mainPrompt.value = lastSentPrompt + ' (suggest different hashtags more specific to Nigeria)'
-    document.getElementById('generateCampaignBtn').click()
-})
+refineCampaignBtn?.addEventListener('click', () => {
+    if (!lastSentPrompt) {
+        mainPrompt.value =
+            'Create a compelling marketing campaign for this product.';
+    } else {
+        mainPrompt.value = `${ lastSentPrompt }
+
+Refine the entire campaign:
+- Flyer headline: Make it more catchy, clear, and attention - grabbing.
+- Flyer subtext: Make it concise and persuasive.
+- Caption: Make it natural, engaging, and suitable for Nigerian customers.
+- Hashtags: Suggest relevant hashtags specific to the product and Nigerian market.
+
+Keep the flyer, caption, and hashtags consistent with one another.
+Do not invent product features, discounts, prices, or promotional claims.
+Preserve the original product and store information.`;
+    }
+
+    document.getElementById('generateCampaignBtn').click();
+});
+
 
 //  Helpers 
 function setGenerating(loading) {
@@ -644,10 +681,11 @@ function setGenerating(loading) {
     const canvas = document.getElementById('flyerCanvas')
     const empty = document.getElementById('flyerEmpty')
 
-    btn.disabled = loading
+    btn.dataset.generating = loading ? 'true' : 'false'
+    btn.disabled = loading || limitReached
     btn.innerHTML = loading
         ? '<i class="fa-solid fa-spinner fa-spin"></i>'
-        : '<i class="fa-solid fa-arrow-up"></i>'
+        : (limitReached ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-arrow-up"></i>')
 
     if (loading) {
         empty.style.display = 'none'
